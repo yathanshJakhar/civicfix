@@ -1,0 +1,51 @@
+{
+  "hook": {
+    "enabled": true,
+    "limits": {
+      "maxFindings": 5,
+      "maxChars": 8000
+    }
+  },
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/*.html"
+        ],
+        "createdAt": "2026-10-14T06:54:41.436Z",
+        "reason": "Agent: throwaway decision-round sketches from a closed direction round; never shipped"
+      },
+      {
+        "rule": "undersized-ui-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/*.html"
+        ],
+        "createdAt": "2026-10-14T06:54:41.878Z",
+        "reason": "Agent: throwaway decision-round sketches from a closed direction round; never shipped"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/*.html"
+        ],
+        "createdAt": "2026-10-14T06:54:42.217Z",
+        "reason": "Agent: throwaway decision-round sketches from a closed direction round; never shipped"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/*.html"
+        ],
+        "createdAt": "2026-10-14T06:54:42.597Z",
+        "reason": "Agent: throwaway decision-round sketches from a closed direction round; never shipped"
+      }
+    ]
+  }
+}

@@ -27,25 +27,10 @@ export function timeAgo(iso: string): string {
   return "just now";
 }
 
-export const STATUS_STYLES: Record<Status, { badge: string; dot: string; solid: string; hex: string }> = {
-  Open: {
-    badge: "bg-rose-500/10 text-rose-300 ring-rose-500/30",
-    dot: "bg-rose-400",
-    solid: "bg-rose-500 text-black",
-    hex: "#fb7185",
-  },
-  "In Progress": {
-    badge: "bg-amber-500/10 text-amber-300 ring-amber-500/30",
-    dot: "bg-amber-400",
-    solid: "bg-amber-400 text-black",
-    hex: "#fbbf24",
-  },
-  Resolved: {
-    badge: "bg-emerald-500/10 text-emerald-300 ring-emerald-500/30",
-    dot: "bg-emerald-400",
-    solid: "bg-emerald-400 text-black",
-    hex: "#34d399",
-  },
+export const STATUS_STYLES: Record<Status, { text: string; mark: string; solid: string; hex: string }> = {
+  Open: { text: "text-open", mark: "bg-open", solid: "bg-open text-ground", hex: "#f07052" },
+  "In Progress": { text: "text-progress", mark: "bg-progress", solid: "bg-progress text-ground", hex: "#7cb7d6" },
+  Resolved: { text: "text-fixed", mark: "bg-fixed", solid: "bg-fixed text-ground", hex: "#8cc07a" },
 };
 
 export function escapeHtml(s: string): string {
@@ -74,6 +59,52 @@ export function setUpvoted(id: string, upvoted: boolean) {
   } catch {
     /* storage unavailable — ignore */
   }
+}
+
+// Per-device memory of the status each issue had when this phone last opened it. A row
+// whose status has moved since then stays lit on the board until it is opened again.
+const SEEN_KEY = "civicfix:seen";
+
+export function getSeen(): Record<string, Status> {
+  try {
+    return JSON.parse(localStorage.getItem(SEEN_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function writeSeen(seen: Record<string, Status>) {
+  try {
+    localStorage.setItem(SEEN_KEY, JSON.stringify(seen));
+  } catch {
+    /* storage unavailable — ignore */
+  }
+}
+
+export function markSeen(id: string, status: Status) {
+  const seen = getSeen();
+  if (seen[id] === status) return;
+  writeSeen({ ...seen, [id]: status });
+}
+
+/** Records a baseline for issues this device has never seen, so only real changes light up. */
+export function baselineSeen(issues: { id: string; status: Status }[]): Record<string, Status> {
+  const seen = getSeen();
+  let added = false;
+  for (const i of issues) {
+    if (!(i.id in seen)) {
+      seen[i.id] = i.status;
+      added = true;
+    }
+  }
+  if (added) writeSeen(seen);
+  return seen;
+}
+
+/** Short ticket code derived from the issue id, e.g. seed-01 → CF-0001, e3728ac9 → CF-E372. */
+export function issueCode(id: string): string {
+  const seed = /^seed-(\d+)$/.exec(id);
+  return `CF-${seed ? seed[1].padStart(4, "0") : id.slice(0, 4).toUpperCase()}`;
 }
 
 export const DELHI_CENTER: [number, number] = [28.6139, 77.209];

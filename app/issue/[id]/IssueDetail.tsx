@@ -4,13 +4,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CategoryBadge, StatusBadge } from "@/components/Badges";
-import CategoryIcon from "@/components/CategoryIcon";
 import { ArrowUp, Bubble } from "@/components/IssueCard";
 import { MiniMap } from "@/components/map";
-import { ErrorState } from "@/components/States";
+import { EmptyState, ErrorState } from "@/components/States";
 import { api } from "@/lib/api";
 import { STATUSES, type Issue, type Status } from "@/lib/types";
-import { STATUS_STYLES, getUpvoted, setUpvoted, timeAgo } from "@/lib/utils";
+import { STATUS_STYLES, getUpvoted, issueCode, markSeen, setUpvoted, timeAgo } from "@/lib/utils";
 
 async function copyText(text: string) {
   try {
@@ -33,12 +32,12 @@ async function copyText(text: string) {
 function TopBar({ onShare }: { onShare?: () => void }) {
   const router = useRouter();
   return (
-    <div className="sticky top-0 z-900 flex items-center justify-between border-b border-zinc-800 bg-zinc-950 px-2 pb-2 pt-[max(0.5rem,env(safe-area-inset-top))]">
+    <div className="sticky top-0 z-900 flex items-center justify-between border-b border-line bg-ground pt-[env(safe-area-inset-top)]">
       <button
         onClick={() => (window.history.length > 1 ? router.back() : router.push("/"))}
-        className="flex h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-zinc-200 active:bg-zinc-800"
+        className="flex h-12 items-center gap-1 px-3 font-cond text-sm font-bold uppercase tracking-[0.08em] text-paper hover:bg-panel"
       >
-        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="square" aria-hidden>
           <path d="M15 18l-6-6 6-6" />
         </svg>
         Back
@@ -46,10 +45,10 @@ function TopBar({ onShare }: { onShare?: () => void }) {
       {onShare && (
         <button
           onClick={onShare}
-          className="flex h-10 items-center gap-1.5 rounded-lg border border-zinc-700 px-3 text-sm font-bold text-violet-300 active:bg-zinc-800"
+          className="flex h-12 items-center gap-1.5 border-l border-line px-4 font-cond text-sm font-bold uppercase tracking-[0.08em] text-marigold hover:bg-panel"
         >
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13" />
+          <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="square" aria-hidden>
+            <path d="M4 12v8h16v-8M16 6l-4-4-4 4M12 2v13" />
           </svg>
           Share
         </button>
@@ -60,14 +59,14 @@ function TopBar({ onShare }: { onShare?: () => void }) {
 
 export function IssueDetailSkeleton() {
   return (
-    <div className="animate-pulse">
-      <div className="h-14 border-b border-zinc-800 bg-zinc-950" />
-      <div className="aspect-[4/3] bg-zinc-800" />
+    <div className="animate-pulse" aria-hidden>
+      <div className="h-12 border-b border-line bg-ground" />
+      <div className="aspect-video bg-panel" />
       <div className="space-y-3 p-4">
-        <div className="h-5 w-1/3 rounded bg-zinc-800" />
-        <div className="h-6 w-5/6 rounded bg-zinc-800" />
-        <div className="h-4 w-full rounded bg-zinc-800" />
-        <div className="h-4 w-2/3 rounded bg-zinc-800" />
+        <div className="h-4 w-1/3 bg-raised" />
+        <div className="h-6 w-5/6 bg-raised" />
+        <div className="h-4 w-full bg-panel" />
+        <div className="h-4 w-2/3 bg-panel" />
       </div>
     </div>
   );
@@ -81,31 +80,25 @@ function StatusTimeline({ status, createdAt }: { status: Status; createdAt: stri
     { label: "Resolved", hint: "Issue fixed" },
   ];
   return (
-    <ol className="flex items-start">
+    <ol className="grid grid-cols-3 gap-1">
       {steps.map((step, i) => {
         const done = i <= current;
-                return (
-          <li key={step.label} className="relative flex flex-1 flex-col items-center text-center">
-            {i > 0 && (
-              <span
-                className={`absolute right-1/2 top-3.5 h-0.5 w-full -translate-y-1/2 ${i <= current ? "bg-violet-500" : "bg-zinc-800"}`}
-              />
-            )}
-            <span
-              className={`relative z-10 flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold ring-4 ring-zinc-900 ${
-                done ? "bg-violet-600 text-white" : "bg-zinc-800 text-zinc-500"
-              }`}
-            >
-              {done ? (
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+        const now = i === current;
+        return (
+          <li key={step.label} className="min-w-0">
+            <span className={`block h-1.5 ${done ? "bg-marigold" : "bg-line"}`} aria-hidden />
+            <span className={`mt-2.5 flex items-center gap-1.5 font-cond text-sm font-bold uppercase tracking-[0.06em] ${done ? "text-paper" : "text-faint"}`}>
+              {done && (
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0 text-marigold" fill="none" stroke="currentColor" strokeWidth={3.2} strokeLinecap="square" aria-hidden>
                   <path d="M5 12.5 10 17l9-10" />
                 </svg>
-              ) : (
-                i + 1
               )}
+              {step.label}
             </span>
-            <span className={`mt-1.5 text-xs font-bold ${done ? "text-white" : "text-zinc-500"}`}>{step.label}</span>
-            <span className="text-[11px] text-zinc-500">{done ? step.hint : "Pending"}</span>
+            <span className={`mt-0.5 block text-[13px] ${now ? "text-marigold" : "text-faint"}`}>
+              {done ? step.hint : "Pending"}
+              {now && <span className="sr-only"> (current)</span>}
+            </span>
           </li>
         );
       })}
@@ -128,7 +121,10 @@ export default function IssueDetail({ id }: { id: string }) {
     setError(null);
     setNotFound(false);
     try {
-      setIssue(await api.get(id));
+      const loaded = await api.get(id);
+      setIssue(loaded);
+      // Opening an issue acknowledges its current status, which clears its highlight on the board.
+      markSeen(loaded.id, loaded.status);
     } catch (e) {
       const msg = (e as Error).message;
       if (msg === "Issue not found") setNotFound(true);
@@ -218,12 +214,12 @@ export default function IssueDetail({ id }: { id: string }) {
     return (
       <>
         <TopBar />
-        <div className="p-6 text-center">
-          <p className="text-lg font-bold text-white">Issue not found</p>
-          <p className="mt-1 text-sm text-zinc-400">It may have been removed, or the link is wrong.</p>
-          <Link href="/" className="mt-4 inline-flex h-12 items-center rounded-xl bg-violet-600 px-6 text-sm font-bold text-white">
-            Back to feed
-          </Link>
+        <div className="px-4 py-8">
+          <EmptyState title="Issue not found" message="It may have been removed, or the link is wrong.">
+            <Link href="/" className="btn btn-primary mt-5">
+              Back to the board
+            </Link>
+          </EmptyState>
         </div>
       </>
     );
@@ -243,120 +239,139 @@ export default function IssueDetail({ id }: { id: string }) {
   if (!issue) return <IssueDetailSkeleton />;
 
   const sortedComments = [...issue.comments].sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
+  const sectionHead = "font-cond text-base font-bold uppercase tracking-[0.06em] text-paper";
 
   return (
     <>
       <TopBar onShare={share} />
 
-      {/* Photo */}
-      {issue.imageUrl ? (
+      {/* Photo — only when one exists; no placeholder standing in for content. */}
+      {issue.imageUrl && (
         // eslint-disable-next-line @next/next/no-img-element -- user upload
-        <img src={issue.imageUrl} alt={issue.title} className="max-h-[60vh] w-full bg-black object-contain" />
-      ) : (
-        <div className="flex aspect-video w-full flex-col items-center justify-center border-b border-zinc-800 bg-zinc-900 text-zinc-600">
-          <CategoryIcon category={issue.category} className="h-14 w-14" strokeWidth={1.4} />
-          <span className="mt-2 text-xs font-semibold text-zinc-500">No photo provided</span>
-        </div>
+        <img src={issue.imageUrl} alt={issue.title} className="max-h-[60vh] w-full border-b border-line bg-panel object-contain" />
       )}
 
-      <div className="space-y-4 p-4">
-        {/* Details */}
-        <section>
-          <div className="flex flex-wrap items-center gap-1.5">
-            <CategoryBadge category={issue.category} />
-            <StatusBadge status={issue.status} />
-            <span className="ml-auto text-xs text-zinc-500">Reported {timeAgo(issue.createdAt)}</span>
+      {/* The issue as a pass: header strip, title, segments, then the torn-off upvote stub. */}
+      <section className="mx-4 mt-4 border border-line-strong bg-panel">
+        <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-2.5">
+          <CategoryBadge category={issue.category} />
+          <span className="figure text-[13px] text-dim">{issueCode(issue.id)}</span>
+        </div>
+        <div className="px-4 pb-4 pt-3">
+          <h1 className="text-2xl font-semibold leading-tight text-paper">{issue.title}</h1>
+          {issue.description && (
+            <p className="mt-2.5 max-w-[65ch] whitespace-pre-line text-base leading-relaxed text-dim">{issue.description}</p>
+          )}
+          <dl className="mt-4 grid grid-cols-3 divide-x divide-line border-t border-line pt-3">
+            <div className="pr-3">
+              <dt className="label">Status</dt>
+              <dd className="mt-1.5">
+                <StatusBadge status={issue.status} />
+              </dd>
+            </div>
+            <div className="px-3">
+              <dt className="label">Reported</dt>
+              <dd className="mt-1 text-[15px] font-medium text-paper">{timeAgo(issue.createdAt)}</dd>
+            </div>
+            <div className="pl-3">
+              <dt className="label">Comments</dt>
+              <dd className="figure mt-1 text-[15px] font-bold text-paper">{issue.comments.length}</dd>
+            </div>
+          </dl>
+        </div>
+        <div className="perf-x grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4 p-4">
+          <div className="text-center">
+            <span className="figure block text-[2.75rem] font-bold leading-none text-marigold">{issue.upvotes}</span>
+            <span className="label mt-1 block">Upvotes</span>
           </div>
-          <h1 className="mt-2 text-xl font-extrabold leading-snug text-white">{issue.title}</h1>
-          {issue.description && <p className="mt-2 whitespace-pre-line text-[15px] leading-relaxed text-zinc-300">{issue.description}</p>}
-        </section>
+          <div>
+            <button
+              onClick={toggleUpvote}
+              aria-pressed={hasUpvoted}
+              className={`btn min-h-14 w-full text-lg ${
+                hasUpvoted ? "border-marigold bg-changed text-marigold hover:bg-raised" : "btn-primary"
+              }`}
+            >
+              <ArrowUp className="h-5 w-5" />
+              {hasUpvoted ? "Upvoted" : "Upvote"}
+            </button>
+            {hasUpvoted && <p className="mt-1.5 text-center text-[13px] text-faint">Tap again to remove your upvote</p>}
+          </div>
+        </div>
+      </section>
 
+      <div className="space-y-6 px-4 pb-4 pt-6">
         {issue.status === "Resolved" && (
-          <p className="rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">
-            <span className="font-bold">Resolved.</span> This issue no longer appears in the feed or on the map. Set
-            it back to Open or In Progress below to show it again.
+          <p className="flex items-start gap-2.5 border border-fixed px-4 py-3 text-sm text-paper">
+            <span className="mt-1.5 h-2 w-2 shrink-0 bg-fixed" aria-hidden />
+            <span>
+              <span className="font-semibold text-fixed">Resolved.</span> This issue no longer appears in the feed or on the
+              map. Set it back to Open or In Progress below to show it again.
+            </span>
           </p>
         )}
 
-        {/* Upvote */}
-        <div>
-          <button
-            onClick={toggleUpvote}
-            aria-pressed={hasUpvoted}
-            className={`flex h-14 w-full items-center justify-center gap-2 rounded-xl text-base font-extrabold transition active:scale-[0.99] ${
-              hasUpvoted
-                ? "border-2 border-violet-500 text-violet-300 hover:bg-violet-500/10"
-                : "bg-violet-600 text-white hover:bg-violet-500"
-            }`}
-          >
-            <ArrowUp className="h-5 w-5" />
-            {hasUpvoted ? "Upvoted" : "Upvote"} · {issue.upvotes}
-          </button>
-          {hasUpvoted && <p className="mt-1.5 text-center text-xs text-zinc-500">Tap again to remove your upvote</p>}
-        </div>
-
         {/* Timeline */}
-        <section className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-          <h2 className="mb-3 text-sm font-bold text-zinc-200">Progress</h2>
+        <section>
+          <h2 className={`${sectionHead} mb-3`}>Progress</h2>
           <StatusTimeline status={issue.status} createdAt={issue.createdAt} />
         </section>
 
         {/* Map */}
-        <section className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900">
+        <section className="border border-line-strong">
           <div className="h-44">
             <MiniMap issue={issue} />
           </div>
-          <div className="flex items-center justify-between px-4 py-3">
-            <span className="font-mono text-xs text-zinc-400">
+          <div className="flex items-center justify-between gap-3 border-t border-line px-4 py-2.5">
+            <span className="figure text-xs text-dim">
               {issue.lat.toFixed(5)}, {issue.lng.toFixed(5)}
             </span>
-            <a
-              href={`https://www.google.com/maps/search/?api=1&query=${issue.lat},${issue.lng}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg border border-zinc-700 px-3 py-1.5 text-sm font-bold text-violet-300"
-            >
-              Directions
-            </a>
+            <span className="flex gap-4 font-cond text-sm font-bold uppercase tracking-[0.06em]">
+              {issue.status !== "Resolved" && (
+                <Link href={`/map?issue=${issue.id}`} className="py-1.5 text-paper underline decoration-line-strong underline-offset-4 hover:decoration-marigold">
+                  On the map
+                </Link>
+              )}
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${issue.lat},${issue.lng}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="py-1.5 text-marigold underline decoration-marigold/0 underline-offset-4 hover:decoration-marigold"
+              >
+                Directions
+              </a>
+            </span>
           </div>
         </section>
 
         {/* Comments */}
-        <section className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-          <h2 className="flex items-center gap-1.5 text-sm font-bold text-zinc-200">
-            <Bubble className="h-4 w-4" /> Comments ({issue.comments.length})
+        <section>
+          <h2 className={`${sectionHead} flex items-center gap-2`}>
+            <Bubble className="h-4 w-4 text-dim" /> Comments <span className="figure text-dim">({issue.comments.length})</span>
           </h2>
-          <form onSubmit={addComment} className="mt-3 flex gap-2">
+          <form onSubmit={addComment} className="mt-3 flex">
             <input
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               maxLength={500}
               placeholder="Add an update or comment…"
-              className="h-12 min-w-0 flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-3.5 text-[15px] text-white placeholder:text-zinc-500 focus:border-violet-500 focus:outline-none"
+              aria-label="Comment"
+              className="field min-w-0 flex-1"
             />
-            <button
-              type="submit"
-              disabled={posting || !comment.trim()}
-              className="h-12 rounded-xl bg-violet-600 px-5 text-sm font-bold text-white disabled:opacity-40"
-            >
-              {posting ? "…" : "Post"}
+            <button type="submit" disabled={posting || !comment.trim()} className="btn btn-primary -ml-px px-5">
+              {posting ? "Posting…" : "Post"}
             </button>
           </form>
           {sortedComments.length === 0 ? (
-            <p className="mt-4 rounded-lg border border-dashed border-zinc-800 py-6 text-center text-sm text-zinc-500">
+            <p className="mt-3 border border-dashed border-line px-4 py-6 text-center text-sm text-faint">
               No comments yet. Be the first to add an update.
             </p>
           ) : (
-            <ul className="mt-4 space-y-3">
+            <ul className="mt-3 border-t border-line">
               {sortedComments.map((c, i) => (
-                <li key={`${c.at}-${i}`} className="flex gap-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-violet-600/20 text-xs font-bold text-violet-300">
-                    C
-                  </span>
-                  <div className="min-w-0 flex-1 rounded-xl rounded-tl-sm bg-zinc-800/70 px-3.5 py-2.5">
-                    <p className="text-[11px] font-semibold text-zinc-500">Citizen · {timeAgo(c.at)}</p>
-                    <p className="mt-0.5 break-words text-sm text-zinc-100">{c.text}</p>
-                  </div>
+                <li key={`${c.at}-${i}`} className="border-b border-line py-3">
+                  <p className="label">Citizen · {timeAgo(c.at)}</p>
+                  <p className="mt-1 break-words text-[15px] leading-snug text-paper">{c.text}</p>
                 </li>
               ))}
             </ul>
@@ -364,25 +379,26 @@ export default function IssueDetail({ id }: { id: string }) {
         </section>
 
         {/* Admin demo control */}
-        <section className="rounded-xl border-2 border-dashed border-zinc-700 p-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold text-zinc-200">Admin demo control</h2>
-            <span className="rounded bg-zinc-800 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+        <section className="border border-dashed border-line-strong p-4">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className={sectionHead}>Admin demo control</h2>
+            <span className="border border-line-strong px-1.5 py-0.5 font-cond text-xs font-bold uppercase tracking-[0.1em] text-dim">
               Demo only
             </span>
           </div>
-          <p className="mt-0.5 text-xs text-zinc-500">Simulates a municipal officer updating the status.</p>
-          <div className="mt-3 grid grid-cols-3 gap-2">
-            {STATUSES.map((s) => {
+          <p className="mt-1 text-[13px] text-faint">Simulates a municipal officer updating the status.</p>
+          <div className="mt-3 grid grid-cols-3 border border-line-strong" role="group" aria-label="Set status">
+            {STATUSES.map((s, i) => {
               const active = issue.status === s;
               return (
                 <button
                   key={s}
                   onClick={() => changeStatus(s)}
                   disabled={statusSaving !== null}
-                  className={`h-12 rounded-xl text-sm font-bold transition ${
-                    active ? STATUS_STYLES[s].solid : "border border-zinc-700 text-zinc-300 hover:border-zinc-500"
-                  } disabled:opacity-70`}
+                  aria-pressed={active}
+                  className={`h-12 font-cond text-sm font-bold uppercase tracking-[0.06em] transition-colors ${i > 0 ? "border-l border-line-strong" : ""} ${
+                    active ? STATUS_STYLES[s].solid : "text-dim hover:bg-panel hover:text-paper"
+                  }`}
                 >
                   {statusSaving === s ? "Saving…" : s}
                 </button>
@@ -395,7 +411,7 @@ export default function IssueDetail({ id }: { id: string }) {
       {toast && (
         <div
           role="status"
-          className="fixed inset-x-0 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-1100 mx-auto w-fit rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm font-semibold text-white shadow-lg"
+          className="fixed inset-x-0 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-1100 mx-auto w-fit border border-line-strong bg-raised px-4 py-2.5 text-sm font-medium text-paper shadow-[0_8px_24px_rgb(0_0_0/0.45)]"
         >
           {toast}
         </div>

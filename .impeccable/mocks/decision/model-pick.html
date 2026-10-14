@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=390">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Hind:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--slate:#1b211d;--slate2:#232b26;--chalk:#ece6d6;--dim:#a9ad9f;--marigold:#f0a63a;--red:#f07a5f;--green:#9bcc88;--rule:rgba(236,230,214,.22)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:390px;height:844px;overflow:hidden;background:var(--slate);color:var(--chalk);font-family:Hind,sans-serif;position:relative}
+header{padding:20px 18px 12px;border-bottom:2px solid var(--rule);border-top:10px solid #6b4a2e}
+header h1{font-family:Kalam;font-size:38px;line-height:1}
+header p{color:var(--dim);font-size:14px}
+header small{color:var(--marigold);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.counts{display:flex;gap:18px;padding:12px 18px;font-size:14px;color:var(--dim)}
+.counts b{font-family:Kalam;font-size:26px;color:var(--chalk);margin-right:4px}
+.chips{display:flex;gap:14px;padding:4px 18px 12px;font-weight:600;font-size:15px;color:var(--dim)}
+.chips .on{color:var(--marigold);text-decoration:underline wavy;text-underline-offset:6px}
+.row{padding:14px 18px;border-top:1px dashed var(--rule);display:grid;grid-template-columns:1fr 84px;gap:10px}
+.row h2{font-size:17px;font-weight:600;line-height:1.25}
+.row .m{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.tally{font-family:Kalam;color:var(--marigold);text-align:right}
+.tally b{font-size:30px;line-height:1;display:block}
+.tally span{font-size:15px;letter-spacing:2px;color:var(--chalk)}
+nav{position:absolute;left:0;right:0;bottom:0;height:68px;border-top:2px solid var(--rule);background:#151a17;display:flex;justify-content:space-around;align-items:center;font-weight:700;color:var(--dim)}
+nav .r{background:var(--marigold);color:#1b211d;padding:10px 20px;font-family:Kalam;font-size:20px}
+nav .on{color:var(--chalk)}
+</style></head><body>
+<header><small>Mohalla board · Delhi NCR</small><h1>CivicFix</h1><p>Chalk it up. Back what your neighbours saw.</p></header>
+<div class="counts"><span><b>7</b>open</span><span><b>4</b>being fixed</span><span><b style="color:var(--green)">6</b>fixed</span></div>
+<div class="chips"><span class="on">All</span><span>Pothole</span><span>Garbage</span><span>Lights</span><span>Sewage</span></div>
+<div class="row"><div><p class="m" style="color:var(--red)">Open · Pothole</p><h2>Deep pothole near Inner Circle, Block A</h2></div><div class="tally"><b>39</b><span>𝍸𝍸𝍸𝍸</span></div></div>
+<div class="row"><div><p class="m" style="color:var(--marigold)">Being fixed · Sewage</p><h2>Open sewer manhole outside Noida Sector 62 metro</h2></div><div class="tally"><b>34</b><span>𝍸𝍸𝍸</span></div></div>
+<div class="row"><div><p class="m" style="color:var(--marigold)">Being fixed · Garbage</p><h2>Overflowing garbage bins at Lajpat Nagar Central Market</h2></div><div class="tally"><b>27</b><span>𝍸𝍸𝍸</span></div></div>
+<div class="row"><div><p class="m" style="color:var(--marigold)">Being fixed · Pothole</p><h2>Series of potholes on Outer Ring Road near Rohini</h2></div><div class="tally"><b>24</b><span>𝍸𝍸</span></div></div>
+<div class="row"><div><p class="m" style="color:var(--red)">Open · Streetlight</p><h2>Streetlights not working on Sector 10 main road</h2></div><div class="tally"><b>19</b><span>𝍸𝍸</span></div></div>
+<nav><span class="on">Board</span><span class="r">+ Chalk one up</span><span>Map</span></nav>
+</body></html>

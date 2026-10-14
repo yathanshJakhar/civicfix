@@ -8,7 +8,7 @@ import { useFreshMapKey } from "./useFreshMapKey";
 
 export default function MiniMap({ issue }: { issue: Issue }) {
   const mapKey = useFreshMapKey();
-  if (mapKey === null) return <div className="h-full w-full bg-zinc-900" />;
+  if (mapKey === null) return <div className="h-full w-full bg-panel" />;
 
   return (
     <MapContainer
@@ -24,7 +24,7 @@ export default function MiniMap({ issue }: { issue: Issue }) {
       attributionControl={false}
     >
       <TileLayer url={TILE_URL} className={TILE_CLASS} />
-      <Marker position={[issue.lat, issue.lng]} icon={issueIcon(issue.category, issue.status)} interactive={false} />
+      <Marker position={[issue.lat, issue.lng]} icon={issueIcon(issue.category, issue.status, issue.upvotes)} interactive={false} />
     </MapContainer>
   );
 }
