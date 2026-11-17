@@ -5,12 +5,12 @@ import CategoryIcon from "./CategoryIcon";
 import { CategoryBadge, ChangedChip, StatusBadge } from "./Badges";
 
 /** The column grid shared by the board header and every row. */
-export const BOARD_COLS = "grid grid-cols-[3.5rem_minmax(0,1fr)_6.5rem] sm:grid-cols-[3.5rem_minmax(0,1fr)_7.5rem] items-center gap-x-3 px-4";
+export const BOARD_COLS = "grid grid-cols-[3rem_minmax(0,1fr)_6rem] sm:grid-cols-[3.5rem_minmax(0,1fr)_7.5rem] items-center gap-x-2.5 sm:gap-x-3 px-4";
 
 export function BoardHeader() {
   return (
     <div className={`${BOARD_COLS} h-9 border-y border-line`} aria-hidden>
-      <span className="label">Upvotes</span>
+      <span className="label tracking-[0.04em]">Upvotes</span>
       <span className="label">Issue</span>
       <span className="label text-right">Status</span>
     </div>
@@ -38,7 +38,7 @@ export function BoardRow({ issue, changed }: { issue: Issue; changed: boolean })
         </span>
       </span>
       <span className="flex justify-end text-right">
-        {changed ? <ChangedChip status={issue.status} /> : <StatusBadge status={issue.status} className="text-left" />}
+        {changed ? <ChangedChip status={issue.status} /> : <StatusBadge status={issue.status} nowrap />}
       </span>
     </Link>
   );
@@ -62,20 +62,21 @@ export function LeadTicket({ issue, changed }: { issue: Issue; changed: boolean 
             {changed ? <ChangedChip status={issue.status} /> : <span className="figure text-[13px] text-dim">{issueCode(issue.id)}</span>}
           </div>
           <h2 className="mt-3 text-xl font-semibold leading-tight text-paper">{issue.title}</h2>
-          <dl className="mt-4 grid grid-cols-3 divide-x divide-line border-t border-line pt-3">
-            <div className="pr-2">
+          <dl className="mt-4 grid grid-cols-2 divide-x divide-line border-t border-line pt-3 sm:grid-cols-3">
+            <div className="pr-3">
               <dt className="label">Status</dt>
               <dd className="mt-1">
-                <StatusBadge status={issue.status} />
+                <StatusBadge status={issue.status} nowrap />
               </dd>
             </div>
-            <div className="px-2.5">
+            <div className="pl-3 sm:px-3">
               <dt className="label">Reported</dt>
               <dd className="mt-1 text-[15px] font-medium text-paper">{timeAgo(issue.createdAt)}</dd>
             </div>
-            <div className="pl-2.5">
+            {/* At phone width the stub leaves no room for a third segment; comments show on the issue pass. */}
+            <div className="hidden pl-3 sm:block">
               <dt className="label">Comments</dt>
-              <dd className="figure mt-1 text-sm text-paper">{issue.comments.length}</dd>
+              <dd className="figure mt-1 text-[15px] font-bold text-paper">{issue.comments.length}</dd>
             </div>
           </dl>
         </div>

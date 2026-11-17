@@ -18,11 +18,25 @@ export interface Comment {
   at: string;
 }
 
+/** What the image model predicted for the uploaded photo. */
+export interface AiClassification {
+  /** Raw model class, e.g. "Potholes and RoadCracks". */
+  label: string;
+  /** 0–1 softmax confidence of the top class. */
+  confidence: number;
+  /** The app category that label maps to. */
+  category: Category;
+}
+
 export interface Issue {
   id: string;
   title: string;
   description: string;
   category: Category;
+  /** Present when the photo was classified by the AI at report time. */
+  ai?: AiClassification | null;
+  /** "ai" while the category is still the AI's pick; "user" once someone chose it by hand. */
+  categorySource?: "ai" | "user";
   lat: number;
   lng: number;
   imageUrl: string | null;

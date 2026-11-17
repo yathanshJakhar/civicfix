@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import type { Issue, Status } from "./types";
+import type { Category, Issue, Status } from "./types";
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, { cache: "no-store", ...init });
@@ -20,7 +20,8 @@ export const api = {
       | { action: "upvote" }
       | { action: "unvote" }
       | { action: "comment"; text: string }
-      | { action: "status"; status: Status },
+      | { action: "status"; status: Status }
+      | { action: "category"; category: Category },
   ) =>
     request<Issue>(`/api/issues/${encodeURIComponent(id)}`, {
       method: "PATCH",

@@ -1,5 +1,37 @@
 [
   {
+    "id": "2247095d",
+    "title": "Garbage near somewhere",
+    "description": "sdfsdf",
+    "category": "Garbage",
+    "ai": {
+      "label": "Garbage",
+      "confidence": 0.9988,
+      "category": "Garbage"
+    },
+    "categorySource": "ai",
+    "lat": 28.43656800448967,
+    "lng": 77.32422347059162,
+    "imageUrl": "/uploads/1794739718742-garbage_tet.jpg",
+    "status": "Resolved",
+    "upvotes": 1,
+    "comments": [],
+    "createdAt": "2026-11-15T10:48:38.745Z"
+  },
+  {
+    "id": "fc6522a2",
+    "title": "dbgthfyht",
+    "description": "fgbgfb",
+    "category": "Other",
+    "lat": 28.504300777110156,
+    "lng": 77.049449102103,
+    "imageUrl": null,
+    "status": "Open",
+    "upvotes": 1,
+    "comments": [],
+    "createdAt": "2026-10-14T07:47:16.376Z"
+  },
+  {
     "id": "e3728ac9",
     "title": "kushagra dead",
     "description": "Kushagra dead, causing sewage blockage in NCU",

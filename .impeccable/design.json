@@ -1,0 +1,471 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-14T07:13:59.558Z",
+  "title": "Design System: CivicFix",
+  "extensions": {
+    "colorMeta": {
+      "ground": {
+        "role": "neutral",
+        "displayName": "Station Black",
+        "canonical": "#17120f",
+        "tonalRamp": [
+          "oklch(15% 0.006 52.8)",
+          "oklch(26% 0.010 52.8)",
+          "oklch(38% 0.010 52.8)",
+          "oklch(49% 0.010 52.8)",
+          "oklch(61% 0.010 52.8)",
+          "oklch(72% 0.010 52.8)",
+          "oklch(84% 0.010 52.8)",
+          "oklch(95% 0.006 52.8)"
+        ]
+      },
+      "panel": {
+        "role": "neutral",
+        "displayName": "Ticket Brown",
+        "canonical": "#221b16",
+        "tonalRamp": [
+          "oklch(15% 0.009 57.5)",
+          "oklch(26% 0.015 57.5)",
+          "oklch(38% 0.015 57.5)",
+          "oklch(49% 0.015 57.5)",
+          "oklch(61% 0.015 57.5)",
+          "oklch(72% 0.015 57.5)",
+          "oklch(84% 0.015 57.5)",
+          "oklch(95% 0.009 57.5)"
+        ]
+      },
+      "raised": {
+        "role": "neutral",
+        "displayName": "Raised Brown",
+        "canonical": "#2b231d",
+        "tonalRamp": [
+          "oklch(15% 0.010 58.8)",
+          "oklch(26% 0.016 58.8)",
+          "oklch(38% 0.016 58.8)",
+          "oklch(49% 0.016 58.8)",
+          "oklch(61% 0.016 58.8)",
+          "oklch(72% 0.016 58.8)",
+          "oklch(84% 0.016 58.8)",
+          "oklch(95% 0.010 58.8)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#42362c",
+        "tonalRamp": [
+          "oklch(15% 0.014 61.7)",
+          "oklch(26% 0.024 61.7)",
+          "oklch(38% 0.024 61.7)",
+          "oklch(49% 0.024 61.7)",
+          "oklch(61% 0.024 61.7)",
+          "oklch(72% 0.024 61.7)",
+          "oklch(84% 0.024 61.7)",
+          "oklch(95% 0.014 61.7)"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Strong Hairline",
+        "canonical": "#5c4b3d",
+        "tonalRamp": [
+          "oklch(15% 0.019 61.3)",
+          "oklch(26% 0.032 61.3)",
+          "oklch(38% 0.032 61.3)",
+          "oklch(49% 0.032 61.3)",
+          "oklch(61% 0.032 61.3)",
+          "oklch(72% 0.032 61.3)",
+          "oklch(84% 0.032 61.3)",
+          "oklch(95% 0.019 61.3)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#f4ead8",
+        "tonalRamp": [
+          "oklch(15% 0.016 82.4)",
+          "oklch(26% 0.026 82.4)",
+          "oklch(38% 0.026 82.4)",
+          "oklch(49% 0.026 82.4)",
+          "oklch(61% 0.026 82.4)",
+          "oklch(72% 0.026 82.4)",
+          "oklch(84% 0.026 82.4)",
+          "oklch(95% 0.016 82.4)"
+        ]
+      },
+      "dim": {
+        "role": "neutral",
+        "displayName": "Dim",
+        "canonical": "#bcac95",
+        "tonalRamp": [
+          "oklch(15% 0.022 77.0)",
+          "oklch(26% 0.037 77.0)",
+          "oklch(38% 0.037 77.0)",
+          "oklch(49% 0.037 77.0)",
+          "oklch(61% 0.037 77.0)",
+          "oklch(72% 0.037 77.0)",
+          "oklch(84% 0.037 77.0)",
+          "oklch(95% 0.022 77.0)"
+        ]
+      },
+      "faint": {
+        "role": "neutral",
+        "displayName": "Faint",
+        "canonical": "#a08f78",
+        "tonalRamp": [
+          "oklch(15% 0.023 75.3)",
+          "oklch(26% 0.039 75.3)",
+          "oklch(38% 0.039 75.3)",
+          "oklch(49% 0.039 75.3)",
+          "oklch(61% 0.039 75.3)",
+          "oklch(72% 0.039 75.3)",
+          "oklch(84% 0.039 75.3)",
+          "oklch(95% 0.023 75.3)"
+        ]
+      },
+      "marigold": {
+        "role": "primary",
+        "displayName": "Board Marigold",
+        "canonical": "#f2a93b",
+        "tonalRamp": [
+          "oklch(15% 0.088 73.0)",
+          "oklch(26% 0.147 73.0)",
+          "oklch(38% 0.147 73.0)",
+          "oklch(49% 0.147 73.0)",
+          "oklch(61% 0.147 73.0)",
+          "oklch(72% 0.147 73.0)",
+          "oklch(84% 0.147 73.0)",
+          "oklch(95% 0.088 73.0)"
+        ]
+      },
+      "marigold-hi": {
+        "role": "primary",
+        "displayName": "Marigold Hover",
+        "canonical": "#f7bb5c",
+        "tonalRamp": [
+          "oklch(15% 0.079 76.6)",
+          "oklch(26% 0.131 76.6)",
+          "oklch(38% 0.131 76.6)",
+          "oklch(49% 0.131 76.6)",
+          "oklch(61% 0.131 76.6)",
+          "oklch(72% 0.131 76.6)",
+          "oklch(84% 0.131 76.6)",
+          "oklch(95% 0.079 76.6)"
+        ]
+      },
+      "marigold-lo": {
+        "role": "primary",
+        "displayName": "Marigold Press",
+        "canonical": "#dd9425",
+        "tonalRamp": [
+          "oklch(15% 0.087 71.4)",
+          "oklch(26% 0.145 71.4)",
+          "oklch(38% 0.145 71.4)",
+          "oklch(49% 0.145 71.4)",
+          "oklch(61% 0.145 71.4)",
+          "oklch(72% 0.145 71.4)",
+          "oklch(84% 0.145 71.4)",
+          "oklch(95% 0.087 71.4)"
+        ]
+      },
+      "changed": {
+        "role": "neutral",
+        "displayName": "Changed Amber-Brown",
+        "canonical": "#33261a",
+        "tonalRamp": [
+          "oklch(15% 0.017 64.0)",
+          "oklch(26% 0.029 64.0)",
+          "oklch(38% 0.029 64.0)",
+          "oklch(49% 0.029 64.0)",
+          "oklch(61% 0.029 64.0)",
+          "oklch(72% 0.029 64.0)",
+          "oklch(84% 0.029 64.0)",
+          "oklch(95% 0.017 64.0)"
+        ]
+      },
+      "open": {
+        "role": "status",
+        "displayName": "Vermilion Open",
+        "canonical": "#f07052",
+        "tonalRamp": [
+          "oklch(15% 0.096 34.5)",
+          "oklch(26% 0.160 34.5)",
+          "oklch(38% 0.160 34.5)",
+          "oklch(49% 0.160 34.5)",
+          "oklch(61% 0.160 34.5)",
+          "oklch(72% 0.160 34.5)",
+          "oklch(84% 0.160 34.5)",
+          "oklch(95% 0.096 34.5)"
+        ]
+      },
+      "progress": {
+        "role": "status",
+        "displayName": "Works Blue",
+        "canonical": "#7cb7d6",
+        "tonalRamp": [
+          "oklch(15% 0.045 232.0)",
+          "oklch(26% 0.076 232.0)",
+          "oklch(38% 0.076 232.0)",
+          "oklch(49% 0.076 232.0)",
+          "oklch(61% 0.076 232.0)",
+          "oklch(72% 0.076 232.0)",
+          "oklch(84% 0.076 232.0)",
+          "oklch(95% 0.045 232.0)"
+        ]
+      },
+      "fixed": {
+        "role": "status",
+        "displayName": "Leaf Green",
+        "canonical": "#8cc07a",
+        "tonalRamp": [
+          "oklch(15% 0.067 137.9)",
+          "oklch(26% 0.111 137.9)",
+          "oklch(38% 0.111 137.9)",
+          "oklch(49% 0.111 137.9)",
+          "oklch(61% 0.111 137.9)",
+          "oklch(72% 0.111 137.9)",
+          "oklch(84% 0.111 137.9)",
+          "oklch(95% 0.067 137.9)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The CIVICFIX wordmark on the board only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page titles on map and report."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Issue titles on the lead ticket (1.25rem) and issue pass (1.5rem)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Row titles and comments at 15px; descriptions at 16px, relaxed leading, max 65ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Column heads, segment labels, field labels, meta."
+      },
+      "status": {
+        "displayName": "Status",
+        "purpose": "Status word beside its 8px square mark."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Upvote and tally counts, CF codes, coordinates. Mono for figures only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "map-popup",
+        "value": "0 8px 24px rgb(0 0 0 / 0.45)",
+        "purpose": "Leaflet popups only."
+      },
+      {
+        "name": "map-pin",
+        "value": "drop-shadow(0 2px 3px rgba(0,0,0,.55))",
+        "purpose": "Filter on square status-tag pins only."
+      },
+      {
+        "name": "select-rule-top",
+        "value": "inset 0 2px 0 var(--color-marigold)",
+        "purpose": "Active bottom-nav tab."
+      },
+      {
+        "name": "select-rule-bottom",
+        "value": "inset 0 -2px 0 var(--color-marigold)",
+        "purpose": "Selected tally segment."
+      },
+      {
+        "name": "field-focus",
+        "value": "inset 0 0 0 1px var(--color-marigold)",
+        "purpose": "Doubles the field border on focus."
+      }
+    ],
+    "motion": [
+      {
+        "name": "flip-rerank",
+        "value": "420ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Board rows glide to their new rank on sort or filter change; skipped under reduced motion."
+      },
+      {
+        "name": "state-fade",
+        "value": "150ms ease-out",
+        "purpose": "Background, border and colour changes on buttons, fields, rows and tabs."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "1ms",
+        "purpose": "All transitions and animations collapse under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      }
+    ],
+    "pinRamp": [
+      {
+        "minUpvotes": 0,
+        "size": "26px"
+      },
+      {
+        "minUpvotes": 10,
+        "size": "32px"
+      },
+      {
+        "minUpvotes": 25,
+        "size": "40px"
+      }
+    ],
+    "mapTiles": {
+      "filter": "invert(1) hue-rotate(180deg) brightness(0.82) contrast(0.92) sepia(0.32) saturate(0.75)",
+      "heatGradient": {
+        "1": "#f8e3b8",
+        "0.2": "#5a1f12",
+        "0.45": "#b8401f",
+        "0.7": "#f07052",
+        "0.9": "#f2a93b"
+      }
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Solid marigold plate; the one action on a surface.",
+      "html": "<button class=\"ds-btn-primary\">Submit report</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border:1px solid transparent;border-radius:0;background:var(--color-marigold,#f2a93b);color:var(--color-ground,#17120f);font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:15px;font-weight:700;letter-spacing:.08em;cursor:pointer;transition:background-color 150ms ease-out}.ds-btn-primary:hover{background:var(--color-marigold-hi,#f7bb5c)}.ds-btn-primary:active{background:var(--color-marigold-lo,#dd9425)}.ds-btn-primary:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:2px}.ds-btn-primary:disabled{background:var(--color-raised,#2b231d);color:var(--color-faint,#a08f78);cursor:not-allowed}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ground fill with a strong hairline; the quieter alternative.",
+      "html": "<button class=\"ds-btn-secondary\">Clear filters</button>",
+      "css": ".ds-btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border:1px solid var(--color-line-strong,#5c4b3d);border-radius:0;background:var(--color-ground,#17120f);color:var(--color-paper,#f4ead8);font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:15px;font-weight:700;letter-spacing:.08em;cursor:pointer;transition:background-color 150ms ease-out,border-color 150ms ease-out}.ds-btn-secondary:hover{background:var(--color-raised,#2b231d);border-color:var(--color-dim,#bcac95)}.ds-btn-secondary:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:2px}"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Square panel field; border and inset ring go marigold on focus.",
+      "html": "<input class=\"ds-field\" placeholder=\"Add a comment\" />",
+      "css": ".ds-field{width:100%;min-height:48px;padding:12px 14px;background:var(--color-panel,#221b16);border:1px solid var(--color-line-strong,#5c4b3d);border-radius:0;color:var(--color-paper,#f4ead8);font-family:Barlow,sans-serif;font-size:16px;line-height:1.4;transition:border-color 150ms ease-out}.ds-field::placeholder{color:var(--color-faint,#a08f78)}.ds-field:focus{outline:none;border-color:var(--color-marigold,#f2a93b);box-shadow:inset 0 0 0 1px var(--color-marigold,#f2a93b)}"
+    },
+    {
+      "name": "Status Badge and NOW Chip",
+      "kind": "chip",
+      "refersTo": "chip-changed",
+      "description": "Square status mark plus word in its ink; the marigold NOW chip replaces it on a changed row.",
+      "html": "<div class=\"ds-chips\"><span class=\"ds-status ds-open\"><i></i>Open</span><span class=\"ds-status ds-prog\"><i></i>In Progress</span><span class=\"ds-status ds-fixed\"><i></i>Resolved</span><span class=\"ds-now\">Now In Progress</span></div>",
+      "css": ".ds-chips{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.ds-status{display:inline-flex;align-items:flex-start;gap:6px;white-space:nowrap;font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:13px;font-weight:700;line-height:1.25;letter-spacing:.06em}.ds-status i{width:8px;height:8px;margin-top:.3em;flex-shrink:0;background:currentColor}.ds-open{color:var(--color-open,#f07052)}.ds-prog{color:var(--color-progress,#7cb7d6)}.ds-fixed{color:var(--color-fixed,#8cc07a)}.ds-now{display:inline-block;white-space:nowrap;padding:4px;background:var(--color-marigold,#f2a93b);color:var(--color-ground,#17120f);font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:11px;font-weight:700;line-height:1.25;letter-spacing:.02em}"
+    },
+    {
+      "name": "Category Tab",
+      "kind": "chip",
+      "refersTo": "tab-category",
+      "description": "Square filter tabs; the selected one is a marigold plate.",
+      "html": "<div class=\"ds-tabs\"><button class=\"ds-tab ds-on\">All</button><button class=\"ds-tab\">Pothole</button><button class=\"ds-tab\">Garbage</button></div>",
+      "css": ".ds-tabs{display:flex;gap:8px}.ds-tab{height:40px;padding:0 12px;border:1px solid var(--color-line-strong,#5c4b3d);border-radius:0;background:transparent;color:var(--color-paper,#f4ead8);font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:14px;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:border-color 150ms ease-out}.ds-tab:hover{border-color:var(--color-dim,#bcac95)}.ds-tab:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:2px}.ds-tab.ds-on{background:var(--color-marigold,#f2a93b);border-color:var(--color-marigold,#f2a93b);color:var(--color-ground,#17120f)}"
+    },
+    {
+      "name": "Board Rows",
+      "kind": "custom",
+      "refersTo": "board-row",
+      "description": "Ranked three-column rows; a changed row is solid tinted and carries the NOW chip.",
+      "html": "<div class=\"ds-board\"><div class=\"ds-row ds-head\"><span class=\"ds-lbl\">Upvotes</span><span class=\"ds-lbl\">Issue</span><span class=\"ds-lbl ds-r\">Status</span></div><a class=\"ds-row\" href=\"#\"><span class=\"ds-fig\">34</span><span><span class=\"ds-t\">Deep pothole outside Lajpat Nagar metro gate 2</span><span class=\"ds-m\">Pothole · 2d ago</span></span><span class=\"ds-r ds-st\"><i></i>Open</span></a><a class=\"ds-row ds-changed\" href=\"#\"><span class=\"ds-fig\">12</span><span><span class=\"ds-t\">Streetlight out on Ring Road service lane</span><span class=\"ds-m\">Streetlight · 5d ago</span></span><span class=\"ds-r\"><span class=\"ds-now\">Now Resolved</span></span></a></div>",
+      "css": ".ds-board{background:var(--color-ground,#17120f);color:var(--color-paper,#f4ead8);font-family:Barlow,sans-serif;max-width:512px}.ds-row{display:grid;grid-template-columns:3rem minmax(0,1fr) 6rem;align-items:center;column-gap:10px;padding:12px 16px;min-height:72px;border-bottom:1px solid var(--color-line,#42362c);color:inherit;text-decoration:none;transition:background-color 150ms ease-out}.ds-row:hover{background:var(--color-panel,#221b16)}.ds-row:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:2px}.ds-head{min-height:36px;padding-top:0;padding-bottom:0;border-top:1px solid var(--color-line,#42362c)}.ds-head:hover{background:none}.ds-lbl{font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--color-dim,#bcac95)}.ds-r{display:flex;justify-content:flex-end;text-align:right}.ds-fig{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.02em;font-size:22px;font-weight:700;line-height:1;color:var(--color-marigold,#f2a93b)}.ds-t{display:block;font-size:15px;font-weight:500;line-height:1.375}.ds-m{display:block;margin-top:4px;font-size:13px;color:var(--color-faint,#a08f78)}.ds-st{gap:6px;white-space:nowrap;font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--color-open,#f07052)}.ds-st i{width:8px;height:8px;margin-top:.3em;background:currentColor}.ds-changed{background:var(--color-changed,#33261a)}.ds-changed:hover{background:var(--color-raised,#2b231d)}.ds-now{padding:4px;background:var(--color-marigold,#f2a93b);color:var(--color-ground,#17120f);font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:11px;font-weight:700;letter-spacing:.02em;white-space:nowrap}"
+    },
+    {
+      "name": "Lead Ticket",
+      "kind": "card",
+      "refersTo": "ticket",
+      "description": "Top issue as a ticket: segments left, punched perforation, upvote stub right.",
+      "html": "<a class=\"ds-ticket\" href=\"#\"><div class=\"ds-body\"><div class=\"ds-hd\"><span class=\"ds-cat\">Pothole</span><span class=\"ds-code\">CF-0001</span></div><h3>Deep pothole outside Lajpat Nagar metro gate 2</h3><dl><div><dt>Status</dt><dd class=\"ds-open\">Open</dd></div><div><dt>Reported</dt><dd>2d ago</dd></div></dl></div><div class=\"ds-stub\"><span class=\"ds-big\">34</span><span class=\"ds-lbl\">Upvotes</span></div></a>",
+      "css": ".ds-ticket{display:grid;grid-template-columns:minmax(0,1fr) 5.75rem;max-width:420px;background:var(--color-panel,#221b16);border:1px solid var(--color-line-strong,#5c4b3d);color:var(--color-paper,#f4ead8);text-decoration:none;font-family:Barlow,sans-serif;transition:border-color 150ms ease-out}.ds-ticket:hover{border-color:var(--color-dim,#bcac95)}.ds-ticket:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:2px}.ds-body{padding:12px 16px 16px}.ds-hd{display:flex;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid var(--color-line,#42362c)}.ds-cat{font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:13px;font-weight:600;letter-spacing:.08em;color:var(--color-dim,#bcac95)}.ds-code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--color-dim,#bcac95)}.ds-ticket h3{margin:12px 0 0;font-size:20px;font-weight:600;line-height:1.25}.ds-ticket dl{display:grid;grid-template-columns:1fr 1fr;margin:16px 0 0;padding-top:12px;border-top:1px solid var(--color-line,#42362c)}.ds-ticket dl div+div{border-left:1px solid var(--color-line,#42362c);padding-left:12px}.ds-ticket dt,.ds-lbl{font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--color-dim,#bcac95)}.ds-ticket dd{margin:4px 0 0;font-size:15px;font-weight:500}.ds-ticket dd.ds-open{color:var(--color-open,#f07052);font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:13px;font-weight:700;letter-spacing:.06em}.ds-stub{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-left:2px dashed var(--color-line-strong,#5c4b3d)}.ds-stub::before,.ds-stub::after{content:\"\";position:absolute;left:-7px;width:12px;height:12px;background:var(--color-ground,#17120f);border:1px solid var(--color-line-strong,#5c4b3d)}.ds-stub::before{top:-7px;border-top-color:var(--color-ground,#17120f)}.ds-stub::after{bottom:-7px;border-bottom-color:var(--color-ground,#17120f)}.ds-big{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.02em;font-size:40px;font-weight:700;line-height:1;color:var(--color-marigold,#f2a93b)}"
+    },
+    {
+      "name": "Bottom Plank",
+      "kind": "nav",
+      "refersTo": "button-primary",
+      "description": "Fixed bottom nav; Report is a marigold plate in the wider centre column, active tabs carry a 2px inset marigold top rule.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-tab-n ds-act\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"square\"><path d=\"M4 5h16M4 10h16M4 15h16M4 20h10\"/></svg>Board</a><span class=\"ds-plate-w\"><a class=\"ds-plate\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"square\"><path d=\"M12 5v14M5 12h14\"/></svg>Report</a></span><a class=\"ds-tab-n\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Zm0 0v14m6-12v14\"/></svg>Map</a></nav>",
+      "css": ".ds-nav{display:grid;grid-template-columns:1fr 1.3fr 1fr;height:64px;max-width:512px;background:var(--color-ground,#17120f);border-top:1px solid var(--color-line,#42362c)}.ds-tab-n{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--color-faint,#a08f78);text-decoration:none;font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:12px;font-weight:700;letter-spacing:.12em;transition:color 150ms ease-out}.ds-tab-n:hover{color:var(--color-dim,#bcac95)}.ds-tab-n:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:-2px}.ds-tab-n.ds-act{color:var(--color-paper,#f4ead8);box-shadow:inset 0 2px 0 var(--color-marigold,#f2a93b)}.ds-plate-w{display:flex;padding:8px}.ds-plate{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--color-marigold,#f2a93b);color:var(--color-ground,#17120f);text-decoration:none;font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:16px;font-weight:700;letter-spacing:.08em;transition:background-color 150ms ease-out}.ds-plate:hover{background:var(--color-marigold-hi,#f7bb5c)}.ds-plate:active{background:var(--color-marigold-lo,#dd9425)}.ds-plate:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Ticket & Gate Board",
+    "overview": "CivicFix reads the neighbourhood's issues the way a station reads its departures: a ranked board on a warm near-black ground, one lead issue printed as a ticket with a punched stub, and every row split into columns by hairlines. The world is dark and warm, flat, square-cornered and dense enough to scan in sunlight on a phone held at arm's length. Nothing floats; surfaces step up in tone (ground, panel, raised) and 1px rules do the dividing.\n\nMarigold is the board's lamp. It marks the one action on any surface, the upvote figures, and anything that has changed since this device last looked. The three status colours (vermilion, works blue, leaf green) appear only where they carry status meaning: a small square mark, the status word, a map tag's border. Type is a station-signage pairing: Barlow Semi Condensed in uppercase for labels, buttons and the wordmark; Barlow for titles and reading text; JetBrains Mono tabular figures for counts, codes and coordinates.\n\nMotion is functional. Rows keep their identity when the board re-sorts and glide to their new rank; state changes fade colour over 150ms; reduced motion collapses all of it.",
+    "keyCharacteristics": [
+      "Warm near-black ground with tonal panels; no gradients on surfaces, no translucent buttons.",
+      "Zero radius everywhere; 1px hairlines divide segments, columns and rows.",
+      "One tear device: a dashed perforation with 12px punched notches between a ticket and its stub.",
+      "Marigold is the single action colour and the change signal.",
+      "Uppercase condensed labels, mixed-case Barlow reading text, mono tabular figures.",
+      "Ranked board rows that re-rank in place (FLIP) and stay lit until a changed issue is opened."
+    ],
+    "rules": [
+      {
+        "name": "The One Lamp Rule",
+        "body": "Marigold means \"act here\" or \"this moved\". It is never decoration, never a background wash, and never a second meaning.",
+        "section": "colors"
+      },
+      {
+        "name": "The Status Ink Rule",
+        "body": "Vermilion, works blue and leaf green appear only where a status is being stated. They do not decorate headings, icons or chrome.",
+        "section": "colors"
+      },
+      {
+        "name": "The Lit Row Rule",
+        "body": "A changed issue is shown by a solid tinted row (changed) plus a marigold \"NOW <STATUS>\" chip in the status column, held until the issue is opened. It is never a coloured side bar.",
+        "section": "colors"
+      },
+      {
+        "name": "The Figures-Only Mono Rule",
+        "body": "JetBrains Mono sets numbers, ticket codes and coordinates, and nothing else. It is never used as costume for words.",
+        "section": "typography"
+      },
+      {
+        "name": "The Uppercase Is Condensed Rule",
+        "body": "Anything set in uppercase uses Barlow Semi Condensed with positive tracking; Barlow body text stays mixed case.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Board Rule",
+        "body": "Nothing on the board floats. If a surface needs separation, step its tone or draw a hairline.",
+        "section": "elevation"
+      },
+      {
+        "name": "The One Tear Rule",
+        "body": "The punched perforation appears only where a ticket meets its stub. Do not use it as a section divider.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "**Do** keep every corner square (0px), including pins, popups and map controls.",
+      "**Do** divide with 1px hairlines (line, or line-strong for outlines) and step tone (ground, panel, raised) for separation.",
+      "**Do** spend marigold only on the surface's action and on change: one primary plate per view plus the NOW chip and upvote figures.",
+      "**Do** pair every status ink with its 8px square mark and the status word, never colour alone.",
+      "**Do** set counts, CF codes and coordinates in JetBrains Mono tabular figures, and labels in Barlow Semi Condensed uppercase.",
+      "**Do** show a changed issue as a solid changed row plus a NOW <STATUS> chip, held until opened.",
+      "**Do** honour reduced motion: the FLIP re-rank and all transitions collapse."
+    ],
+    "donts": [
+      "**Don't** round anything or use soft rounded cards.",
+      "**Don't** use translucent or ghost buttons; buttons are solid plates or hairline-bordered ground.",
+      "**Don't** mark change or status with a coloured side stripe wider than 1px.",
+      "**Don't** use the punched perforation anywhere except where a ticket meets its stub.",
+      "**Don't** cast shadows on board surfaces; shadows belong only to map pins and map popups.",
+      "**Don't** use status inks for decoration, or marigold as a background wash.",
+      "**Don't** set words in mono for flavour."
+    ]
+  }
+}

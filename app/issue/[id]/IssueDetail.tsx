@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CategoryBadge, StatusBadge } from "@/components/Badges";
+import CategoryPicker from "@/components/CategoryPicker";
 import { ArrowUp, Bubble } from "@/components/IssueCard";
 import { MiniMap } from "@/components/map";
 import { EmptyState, ErrorState } from "@/components/States";
+import { prettyLabel } from "@/lib/aiMap";
 import { api } from "@/lib/api";
-import { STATUSES, type Issue, type Status } from "@/lib/types";
+import { STATUSES, type Category, type Issue, type Status } from "@/lib/types";
 import { STATUS_STYLES, getUpvoted, issueCode, markSeen, setUpvoted, timeAgo } from "@/lib/utils";
 
 async function copyText(text: string) {
@@ -106,6 +108,74 @@ function StatusTimeline({ status, createdAt }: { status: Status; createdAt: stri
   );
 }
 
+const LOW_CONFIDENCE = 0.6;
+
+/** Shows where the ticket's category came from (AI or a person) and lets anyone correct it. */
+function CategoryCheck({
+  issue,
+  saving,
+  onChange,
+}: {
+  issue: Issue;
+  saving: boolean;
+  onChange: (c: Category) => Promise<boolean>;
+}) {
+  const [editing, setEditing] = useState(false);
+  const ai = issue.ai;
+  const pct = ai ? Math.round(ai.confidence * 100) : 0;
+  const byAi = ai && issue.categorySource !== "user" && ai.category === issue.category;
+
+  return (
+    <div className="border-b border-line px-4 py-3">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 text-[13px] leading-snug">
+          {byAi ? (
+            <>
+              <p className="font-cond text-sm font-bold uppercase tracking-[0.06em] text-marigold">AI classified</p>
+              <p className="mt-0.5 text-dim">
+                Detected <span className="text-paper">{prettyLabel(ai.label)}</span> ·{" "}
+                <span className="figure text-paper">{pct}%</span> confidence
+              </p>
+              {ai.confidence < LOW_CONFIDENCE && (
+                <p className="mt-0.5 font-medium text-marigold">Low confidence — please check the category.</p>
+              )}
+            </>
+          ) : ai ? (
+            <>
+              <p className="font-cond text-sm font-bold uppercase tracking-[0.06em] text-paper">Category corrected</p>
+              <p className="mt-0.5 text-dim">
+                AI suggested <span className="text-paper">{ai.category}</span> ({prettyLabel(ai.label)} ·{" "}
+                <span className="figure">{pct}%</span>)
+              </p>
+            </>
+          ) : (
+            <p className="font-cond text-sm font-bold uppercase tracking-[0.06em] text-dim">Category chosen by reporter</p>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={() => setEditing((v) => !v)}
+          aria-expanded={editing}
+          className="btn btn-secondary shrink-0 px-3 py-1.5 text-sm"
+        >
+          {editing ? "Cancel" : byAi ? "Not right? Change" : "Change category"}
+        </button>
+      </div>
+      {editing && (
+        <div className="mt-3">
+          <CategoryPicker
+            value={issue.category}
+            disabled={saving}
+            onChange={async (c) => {
+              if (await onChange(c)) setEditing(false);
+            }}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function IssueDetail({ id }: { id: string }) {
   const [issue, setIssue] = useState<Issue | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -115,6 +185,7 @@ export default function IssueDetail({ id }: { id: string }) {
   const [comment, setComment] = useState("");
   const [posting, setPosting] = useState(false);
   const [statusSaving, setStatusSaving] = useState<Status | null>(null);
+  const [categorySaving, setCategorySaving] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
   const load = useCallback(async () => {
@@ -200,6 +271,26 @@ export default function IssueDetail({ id }: { id: string }) {
     }
   }
 
+  /** Returns true when saved, so the picker can close. */
+  async function changeCategory(category: Category): Promise<boolean> {
+    if (!issue) return false;
+    if (issue.category === category) return true;
+    const previous = { category: issue.category, categorySource: issue.categorySource };
+    setCategorySaving(true);
+    setIssue({ ...issue, category, categorySource: "user" });
+    try {
+      setIssue(await api.patch(issue.id, { action: "category", category }));
+      setToast(`Category changed to ${category}`);
+      return true;
+    } catch {
+      setIssue((cur) => (cur ? { ...cur, ...previous } : cur));
+      setToast("Couldn't change category");
+      return false;
+    } finally {
+      setCategorySaving(false);
+    }
+  }
+
   async function share() {
     const url = window.location.href;
     try {
@@ -257,6 +348,7 @@ export default function IssueDetail({ id }: { id: string }) {
           <CategoryBadge category={issue.category} />
           <span className="figure text-[13px] text-dim">{issueCode(issue.id)}</span>
         </div>
+        <CategoryCheck issue={issue} saving={categorySaving} onChange={changeCategory} />
         <div className="px-4 pb-4 pt-3">
           <h1 className="text-2xl font-semibold leading-tight text-paper">{issue.title}</h1>
           {issue.description && (

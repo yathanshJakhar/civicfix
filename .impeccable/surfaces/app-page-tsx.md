@@ -29,7 +29,7 @@ FIRST VIEWPORT (home, 390 wide):
 - The board header (UPVOTES / ISSUE / STATUS), then ranked rows.
 - A bottom plank whose Report button is a marigold plate.
 
-Signature interaction: rows re-rank in place (FLIP) when the sort or filter changes. A row whose status changed since you last opened it holds a marigold bar and a NOW <STATUS> chip until you open it. Map pins are square tags sized on a fixed upvote ramp. A ticket's location links to its own pin on the map.
+Signature interaction: rows re-rank in place (FLIP) when the sort or filter changes. A row whose status changed since you last opened it holds a tinted row (token `changed`) and a marigold NOW <STATUS> chip until you open it; no side bar. Map pins are square tags sized on a fixed upvote ramp. A ticket's location links to its own pin on the map.
 
 FORM: Ticket & Gate Board (catalog challenger, vernacular-ephemera-boarding-pass-and-gate-board, chosen over assigned candidate 3, Painted Notice Board); seed key 0c571c1c.
 

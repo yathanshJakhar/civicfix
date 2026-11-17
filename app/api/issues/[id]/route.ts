@@ -1,23 +1,17 @@
-import { readIssues, updateIssues } from "@/lib/db";
-import { isStatus, type Issue } from "@/lib/types";
+import { addComment, getIssue, setCategory, setStatus, upvote } from "@/lib/db";
+import { isCategory, isStatus } from "@/lib/types";
 
 export async function GET(_req: Request, { params }: RouteContext<"/api/issues/[id]">) {
   const { id } = await params;
-  const issue = (await readIssues()).find((i) => i.id === id);
+  const issue = await getIssue(id);
   if (!issue) return Response.json({ error: "Issue not found" }, { status: 404 });
   return Response.json(issue);
-}
-
-class HttpError extends Error {
-  constructor(public status: number, message: string) {
-    super(message);
-  }
 }
 
 export async function PATCH(request: Request, { params }: RouteContext<"/api/issues/[id]">) {
   const { id } = await params;
 
-  let body: { action?: string; text?: string; status?: string };
+  let body: { action?: string; text?: string; status?: string; category?: string };
   try {
     body = await request.json();
   } catch {
@@ -25,35 +19,34 @@ export async function PATCH(request: Request, { params }: RouteContext<"/api/iss
   }
 
   try {
-    const updated = await updateIssues<Issue>((issues) => {
-      const issue = issues.find((i) => i.id === id);
-      if (!issue) throw new HttpError(404, "Issue not found");
-
-      switch (body.action) {
-        case "upvote":
-          issue.upvotes += 1;
-          break;
-        case "unvote":
-          issue.upvotes = Math.max(0, issue.upvotes - 1);
-          break;
-        case "comment": {
-          const text = String(body.text ?? "").trim();
-          if (!text) throw new HttpError(400, "Comment text is required");
-          issue.comments.push({ text: text.slice(0, 500), at: new Date().toISOString() });
-          break;
-        }
-        case "status":
-          if (!isStatus(body.status)) throw new HttpError(400, "Invalid status");
-          issue.status = body.status;
-          break;
-        default:
-          throw new HttpError(400, "Unknown action");
+    let updated = null;
+    switch (body.action) {
+      case "upvote":
+        updated = await upvote(id, 1);
+        break;
+      case "unvote":
+        updated = await upvote(id, -1);
+        break;
+      case "comment": {
+        const text = String(body.text ?? "").trim();
+        if (!text) return Response.json({ error: "Comment text is required" }, { status: 400 });
+        updated = await addComment(id, text.slice(0, 500));
+        break;
       }
-      return issue;
-    });
+      case "status":
+        if (!isStatus(body.status)) return Response.json({ error: "Invalid status" }, { status: 400 });
+        updated = await setStatus(id, body.status);
+        break;
+      case "category":
+        if (!isCategory(body.category)) return Response.json({ error: "Invalid category" }, { status: 400 });
+        updated = await setCategory(id, body.category);
+        break;
+      default:
+        return Response.json({ error: "Unknown action" }, { status: 400 });
+    }
+    if (!updated) return Response.json({ error: "Issue not found" }, { status: 404 });
     return Response.json(updated);
   } catch (err) {
-    if (err instanceof HttpError) return Response.json({ error: err.message }, { status: err.status });
     console.error(err);
     return Response.json({ error: "Could not update issue" }, { status: 500 });
   }
