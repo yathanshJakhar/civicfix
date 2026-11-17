@@ -1,23 +1,38 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import CategoryIcon from "@/components/CategoryIcon";
-import IssueCard, { IssueCardSkeleton } from "@/components/IssueCard";
+import { BoardHeader, BoardRow, BoardSkeleton, LeadTicket } from "@/components/IssueCard";
 import { EmptyState, ErrorState } from "@/components/States";
 import { useIssues } from "@/lib/api";
+import { useFlip } from "@/lib/useFlip";
 import { ACTIVE_STATUSES, CATEGORIES, STATUSES, isActive, type Category, type Status } from "@/lib/types";
-import { STATUS_STYLES } from "@/lib/utils";
+import { STATUS_STYLES, baselineSeen } from "@/lib/utils";
 
 type Sort = "newest" | "upvotes";
 type ActiveStatus = (typeof ACTIVE_STATUSES)[number];
+
+const SORTS: [Sort, string][] = [
+  ["upvotes", "Most upvoted"],
+  ["newest", "Newest"],
+];
 
 export default function HomePage() {
   const { issues, error, loading, reload } = useIssues();
   const [category, setCategory] = useState<Category | "All">("All");
   const [status, setStatus] = useState<ActiveStatus | "All">("All");
-  const [sort, setSort] = useState<Sort>("newest");
+  const [sort, setSort] = useState<Sort>("upvotes");
+  const [seen, setSeen] = useState<Record<string, Status>>({});
+  const [updatedAt, setUpdatedAt] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!issues) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reads per-device storage once issues arrive
+    setSeen(baselineSeen(issues));
+    setUpdatedAt(new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false }));
+  }, [issues]);
 
   const visible = useMemo(() => {
     if (!issues) return [];
@@ -38,112 +53,109 @@ export default function HomePage() {
     return c;
   }, [issues]);
 
+  const boardRef = useFlip<HTMLDivElement>(visible.map((i) => i.id).join());
+  const changed = (id: string, s: Status) => seen[id] !== undefined && seen[id] !== s;
   const filtered = category !== "All" || status !== "All";
+  const [lead, ...rest] = visible;
 
   return (
     <>
-      <PageHeader title="CivicFix" subtitle="Civic issues across Delhi NCR">
-        <span className="rounded-md border border-violet-500/40 px-2 py-1 text-xs font-bold tracking-wider text-violet-300">
-          NCR
+      <PageHeader title="CivicFix" subtitle={<span className="label">Civic issues · Delhi NCR</span>} display>
+        <span className="shrink-0 text-right">
+          <span className="figure block text-lg font-bold leading-none text-marigold">
+            {issues ? counts.Open + counts["In Progress"] : "–"}
+            <span className="font-cond text-sm font-bold uppercase tracking-[0.08em]"> active</span>
+          </span>
+          <span className="label mt-1.5 block">{updatedAt ? `Updated ${updatedAt}` : "Updating…"}</span>
         </span>
       </PageHeader>
 
-      <div className="space-y-4 px-4 pt-4">
-        {/* Summary */}
-        <div className="grid grid-cols-3 gap-2">
-          {STATUSES.map((s) => {
-            const label = (
-              <>
-                <div className="flex items-center gap-1.5 text-[11px] font-semibold text-zinc-400">
-                  <span className={`h-2 w-2 rounded-full ${STATUS_STYLES[s].dot}`} />
-                  {s}
-                </div>
-                <div className="mt-1 text-2xl font-extrabold text-white">{issues ? counts[s] : "–"}</div>
-              </>
-            );
-            // Resolved issues aren't listed, so that tile is just a count of fixed issues.
-            if (s === "Resolved") {
-              return (
-                <div key={s} className="rounded-xl border border-dashed border-zinc-800 p-3" title="Resolved issues are hidden from the feed">
-                  {label}
-                </div>
-              );
-            }
+      {/* Tally strip: Open and In Progress filter the board; Fixed is a count only. */}
+      <div className="grid grid-cols-3 divide-x divide-line border-b border-line">
+        {STATUSES.map((s) => {
+          const body = (
+            <>
+              <span className="label flex items-center gap-1.5">
+                <span className={`h-2 w-2 ${STATUS_STYLES[s].mark}`} aria-hidden />
+                {s === "Resolved" ? "Fixed" : s}
+              </span>
+              <span className={`figure mt-1.5 block text-[1.75rem] font-bold leading-none ${s === "Resolved" ? "text-fixed" : "text-paper"}`}>
+                {issues ? counts[s] : "–"}
+              </span>
+            </>
+          );
+          if (s === "Resolved") {
             return (
-              <button
-                key={s}
-                onClick={() => setStatus(status === s ? "All" : s)}
-                className={`rounded-xl border bg-zinc-900 p-3 text-left transition active:scale-95 ${
-                  status === s ? "border-violet-500" : "border-zinc-800"
-                }`}
-              >
-                {label}
-              </button>
+              <div key={s} className="px-4 py-3" title="Fixed issues are kept on file but taken off the board">
+                {body}
+              </div>
             );
-          })}
-        </div>
+          }
+          const on = status === s;
+          return (
+            <button
+              key={s}
+              onClick={() => setStatus(on ? "All" : s)}
+              aria-pressed={on}
+              className={`px-4 py-3 text-left transition-colors ${
+                on ? "bg-panel shadow-[inset_0_-2px_0_var(--color-marigold)]" : "hover:bg-panel"
+              }`}
+            >
+              {body}
+            </button>
+          );
+        })}
+      </div>
 
-        {/* Category chips */}
-        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-none">
-          {(["All", ...CATEGORIES] as const).map((c) => (
+      {/* Category tabs */}
+      <div className="flex gap-2 overflow-x-auto px-4 py-3 [scrollbar-width:none]" role="group" aria-label="Filter by category">
+        {(["All", ...CATEGORIES] as const).map((c) => {
+          const on = category === c;
+          return (
             <button
               key={c}
               onClick={() => setCategory(c)}
-              className={`flex h-10 shrink-0 items-center gap-1.5 rounded-lg px-3.5 text-sm font-bold transition ${
-                category === c
-                  ? "bg-violet-600 text-white"
-                  : "border border-zinc-800 bg-zinc-900 text-zinc-300 hover:border-zinc-700"
+              aria-pressed={on}
+              className={`flex h-10 shrink-0 items-center gap-1.5 border px-3 font-cond text-sm font-semibold uppercase tracking-[0.06em] transition-colors ${
+                on ? "border-marigold bg-marigold text-ground" : "border-line-strong text-paper hover:border-dim"
               }`}
             >
               {c !== "All" && <CategoryIcon category={c} className="h-4 w-4" />}
               {c}
             </button>
+          );
+        })}
+      </div>
+
+      {/* Count + sort */}
+      <div className="flex items-center justify-between gap-3 px-4 pb-3">
+        <p className="label">
+          {issues ? `${visible.length} issue${visible.length === 1 ? "" : "s"} on the board` : "Loading the board"}
+        </p>
+        <div className="flex border border-line-strong" role="group" aria-label="Sort">
+          {SORTS.map(([value, label]) => (
+            <button
+              key={value}
+              onClick={() => setSort(value)}
+              aria-pressed={sort === value}
+              className={`h-9 px-3 font-cond text-[13px] font-semibold uppercase tracking-[0.06em] transition-colors ${
+                sort === value ? "bg-paper text-ground" : "text-dim hover:text-paper"
+              }`}
+            >
+              {label}
+            </button>
           ))}
         </div>
+      </div>
 
-        {/* Status + sort */}
-        <div className="flex gap-2">
-          <select
-            aria-label="Filter by status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value as ActiveStatus | "All")}
-            className="h-12 flex-1 rounded-xl border border-zinc-800 bg-zinc-900 px-3 text-sm font-semibold text-zinc-200 focus:border-violet-500 focus:outline-none"
-          >
-            <option value="All">All active</option>
-            {ACTIVE_STATUSES.map((s) => (
-              <option key={s}>{s}</option>
-            ))}
-          </select>
-          <div className="flex h-12 rounded-xl border border-zinc-800 bg-zinc-900 p-1">
-            {(
-              [
-                ["newest", "Newest"],
-                ["upvotes", "Top"],
-              ] as const
-            ).map(([value, label]) => (
-              <button
-                key={value}
-                onClick={() => setSort(value)}
-                className={`rounded-lg px-3.5 text-sm font-bold transition ${
-                  sort === value ? "bg-white text-black" : "text-zinc-400"
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Feed */}
-        {error ? (
+      {error ? (
+        <div className="px-4">
           <ErrorState message={error} onRetry={reload} />
-        ) : loading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 4 }, (_, i) => (
-              <IssueCardSkeleton key={i} />
-            ))}
-          </div>
-        ) : visible.length === 0 ? (
+        </div>
+      ) : loading ? (
+        <BoardSkeleton />
+      ) : !lead ? (
+        <div className="px-4">
           <EmptyState
             title={filtered ? "No matching issues" : counts.Resolved > 0 ? "No open issues" : "No issues yet"}
             message={
@@ -160,30 +172,30 @@ export default function HomePage() {
                   setCategory("All");
                   setStatus("All");
                 }}
-                className="mt-4 h-12 rounded-xl bg-white px-6 text-sm font-bold text-black"
+                className="btn btn-secondary mt-5"
               >
                 Clear filters
               </button>
             ) : (
-              <Link
-                href="/report"
-                className="mt-4 inline-flex h-12 items-center rounded-xl bg-violet-600 px-6 text-sm font-bold text-white"
-              >
+              <Link href="/report" className="btn btn-primary mt-5">
                 Report an issue
               </Link>
             )}
           </EmptyState>
-        ) : (
-          <div className="space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-              {visible.length} issue{visible.length === 1 ? "" : "s"}
-            </p>
-            {visible.map((issue) => (
-              <IssueCard key={issue.id} issue={issue} />
-            ))}
-          </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <>
+          <LeadTicket issue={lead} changed={changed(lead.id, lead.status)} />
+          {rest.length > 0 && (
+            <div className="mt-5" ref={boardRef}>
+              <BoardHeader />
+              {rest.map((issue) => (
+                <BoardRow key={issue.id} issue={issue} changed={changed(issue.id, issue.status)} />
+              ))}
+            </div>
+          )}
+        </>
+      )}
     </>
   );
 }

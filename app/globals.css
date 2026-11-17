@@ -1,8 +1,28 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-barlow);
+  --font-cond: var(--font-barlow-sc);
+  --font-mono: var(--font-jetbrains);
+}
+
+/* Warm departures-board palette. Zero radius everywhere; hairlines do the dividing. */
+@theme {
+  --color-ground: #17120f;
+  --color-panel: #221b16;
+  --color-raised: #2b231d;
+  --color-line: #42362c;
+  --color-line-strong: #5c4b3d;
+  --color-paper: #f4ead8;
+  --color-dim: #bcac95;
+  --color-faint: #a08f78;
+  --color-marigold: #f2a93b;
+  --color-marigold-hi: #f7bb5c;
+  --color-marigold-lo: #dd9425;
+  --color-changed: #33261a;
+  --color-open: #f07052;
+  --color-progress: #7cb7d6;
+  --color-fixed: #8cc07a;
 }
 
 :root {
@@ -10,43 +30,211 @@
 }
 
 body {
-  background: #000;
-  color: #f4f4f5;
+  background: var(--color-ground);
+  color: var(--color-paper);
+  caret-color: var(--color-marigold);
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Leaflet, restyled for the dark theme */
+::selection {
+  background: var(--color-marigold);
+  color: var(--color-ground);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-marigold);
+  outline-offset: 2px;
+}
+
+* {
+  scrollbar-color: var(--color-line-strong) transparent;
+  scrollbar-width: thin;
+}
+
+@layer components {
+  /* Small uppercase condensed label: column heads, segment labels, field labels. */
+  .label {
+    font-family: var(--font-cond);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--color-dim);
+  }
+
+  .figure {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0 1.25rem;
+    border: 1px solid transparent;
+    font-family: var(--font-cond);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition:
+      background-color 150ms ease-out,
+      border-color 150ms ease-out,
+      color 150ms ease-out;
+  }
+  .btn:disabled {
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--color-marigold);
+    color: var(--color-ground);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--color-marigold-hi);
+  }
+  .btn-primary:active:not(:disabled) {
+    background: var(--color-marigold-lo);
+  }
+  .btn-primary:disabled {
+    background: var(--color-raised);
+    color: var(--color-faint);
+  }
+  .btn-secondary {
+    background: var(--color-ground);
+    border-color: var(--color-line-strong);
+    color: var(--color-paper);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background: var(--color-raised);
+    border-color: var(--color-dim);
+  }
+  .btn-secondary:disabled {
+    color: var(--color-faint);
+  }
+
+  .field {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 0.875rem;
+    background: var(--color-panel);
+    border: 1px solid var(--color-line-strong);
+    color: var(--color-paper);
+    font-size: 1rem;
+    line-height: 1.4;
+    transition: border-color 150ms ease-out;
+  }
+  .field::placeholder {
+    color: var(--color-faint);
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-marigold);
+    box-shadow: inset 0 0 0 1px var(--color-marigold);
+  }
+
+  /* The tear line between a ticket and its stub, punched at both ends. */
+  .perf-x,
+  .perf-y {
+    position: relative;
+    border-color: var(--color-line-strong);
+    border-style: dashed;
+    border-width: 0;
+  }
+  .perf-x {
+    border-top-width: 2px;
+  }
+  .perf-y {
+    border-left-width: 2px;
+  }
+  .perf-x::before,
+  .perf-x::after,
+  .perf-y::before,
+  .perf-y::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--color-ground);
+    border: 1px solid var(--color-line-strong);
+  }
+  .perf-x::before,
+  .perf-x::after {
+    top: -7px;
+  }
+  .perf-x::before {
+    left: -7px;
+    border-left-color: var(--color-ground);
+  }
+  .perf-x::after {
+    right: -7px;
+    border-right-color: var(--color-ground);
+  }
+  .perf-y::before,
+  .perf-y::after {
+    left: -7px;
+  }
+  .perf-y::before {
+    top: -7px;
+    border-top-color: var(--color-ground);
+  }
+  .perf-y::after {
+    bottom: -7px;
+    border-bottom-color: var(--color-ground);
+  }
+}
+
+/* Honour reduced motion everywhere, including the board re-rank. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+}
+
+/* Leaflet, restyled for the board */
 .leaflet-container {
   font-family: inherit;
-  background: #18181b;
+  background: var(--color-panel);
 }
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-  background: #18181b;
-  color: #f4f4f5;
-  border: 1px solid #3f3f46;
-  box-shadow: 0 10px 30px rgb(0 0 0 / 0.5);
+  background: var(--color-panel);
+  color: var(--color-paper);
+  border: 1px solid var(--color-line-strong);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
 }
 .leaflet-popup-content-wrapper {
-  border-radius: 12px;
+  border-radius: 0;
 }
 .leaflet-popup-content {
-  margin: 12px 14px;
+  margin: 0;
 }
 .leaflet-container a.leaflet-popup-close-button {
-  color: #a1a1aa;
+  color: var(--color-dim);
+  top: 6px;
+  right: 6px;
 }
 .leaflet-control-attribution {
-  background: rgb(9 9 11 / 0.8) !important;
-  color: #71717a;
+  background: var(--color-ground) !important;
+  color: var(--color-faint);
 }
 .leaflet-control-attribution a {
-  color: #a78bfa;
+  color: var(--color-marigold);
+}
+.leaflet-bar {
+  border-radius: 0 !important;
+  border: 1px solid var(--color-line-strong) !important;
 }
 .leaflet-bar a {
-  background: #18181b;
-  color: #f4f4f5;
-  border-color: #3f3f46;
+  background: var(--color-panel);
+  color: var(--color-paper);
+  border-color: var(--color-line-strong);
+  border-radius: 0 !important;
 }
 .civic-pin {
   background: transparent;
@@ -57,7 +245,7 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Dark map: invert the light OSM tiles, then rotate hues back so water stays blue. */
+/* Dark map: invert the light OSM tiles, rotate hues back so water stays blue, then warm them to the board. */
 .dark-tiles {
-  filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9) saturate(0.6);
+  filter: invert(1) hue-rotate(180deg) brightness(0.82) contrast(0.92) sepia(0.32) saturate(0.75);
 }

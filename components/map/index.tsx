@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 // Leaflet touches `window` on import, so every map is loaded client-side only.
 function MapLoading() {
   return (
-    <div className="flex h-full w-full animate-pulse items-center justify-center bg-zinc-900 text-sm font-semibold text-zinc-500">
+    <div className="flex h-full w-full animate-pulse items-center justify-center bg-panel font-cond text-sm font-semibold uppercase tracking-[0.12em] text-faint">
       Loading map…
     </div>
   );

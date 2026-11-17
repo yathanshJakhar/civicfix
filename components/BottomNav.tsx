@@ -7,22 +7,18 @@ import { Suspense } from "react";
 const items = [
   {
     href: "/",
-    label: "Home",
-    icon: (
-      <path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" />
-    ),
-  },
-  {
-    href: "/map",
-    label: "Map",
-    icon: (
-      <path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Zm0 0v14m6-12v14" />
-    ),
+    label: "Board",
+    icon: <path d="M4 5h16M4 10h16M4 15h16M4 20h10" />,
   },
   {
     href: "/report",
     label: "Report",
     icon: <path d="M12 5v14M5 12h14" />,
+  },
+  {
+    href: "/map",
+    label: "Map",
+    icon: <path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Zm0 0v14m6-12v14" />,
   },
 ];
 
@@ -42,38 +38,51 @@ function ActiveNavBar() {
 
 function NavBar({ pathname }: { pathname: string }) {
   return (
-    <nav className="pb-safe fixed inset-x-0 bottom-0 z-1000 border-t border-zinc-800 bg-black">
-      <ul className="mx-auto flex h-16 max-w-lg items-stretch justify-around">
+    <nav className="pb-safe fixed inset-x-0 bottom-0 z-1000 border-t border-line bg-ground">
+      <ul className="mx-auto grid h-16 max-w-lg grid-cols-[1fr_1.3fr_1fr] items-stretch sm:border-x sm:border-line">
         {items.map((item) => {
           const active =
             item.href === "/" ? pathname === "/" || pathname.startsWith("/issue") : pathname.startsWith(item.href);
-          const isReport = item.href === "/report";
+          const svg = (
+            <svg
+              viewBox="0 0 24 24"
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={item.href === "/report" ? 2.6 : 1.9}
+              strokeLinecap="square"
+              strokeLinejoin="miter"
+              aria-hidden
+            >
+              {item.icon}
+            </svg>
+          );
+
+          if (item.href === "/report") {
+            return (
+              <li key={item.href} className="flex p-2">
+                <Link
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`btn flex-1 px-0 text-base ${active ? "bg-marigold-lo text-ground" : "btn-primary"}`}
+                >
+                  {svg}
+                  {item.label}
+                </Link>
+              </li>
+            );
+          }
+
           return (
-            <li key={item.href} className="relative flex flex-1">
-              {active && <span className="absolute inset-x-6 top-0 h-0.5 rounded-full bg-violet-500" />}
+            <li key={item.href} className="flex">
               <Link
                 href={item.href}
-                className={`flex flex-1 flex-col items-center justify-center gap-0.5 text-xs font-bold transition-colors ${
-                  active ? "text-violet-400" : "text-zinc-500 hover:text-zinc-300"
+                aria-current={active ? "page" : undefined}
+                className={`flex flex-1 flex-col items-center justify-center gap-1 font-cond text-xs font-bold uppercase tracking-[0.12em] transition-colors ${
+                  active ? "text-paper shadow-[inset_0_2px_0_var(--color-marigold)]" : "text-faint hover:text-dim"
                 }`}
               >
-                <span
-                  className={`flex items-center justify-center ${
-                    isReport ? "h-8 w-11 rounded-lg bg-violet-600 text-white" : "h-7 w-7"
-                  }`}
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    className={isReport ? "h-5 w-5" : "h-6 w-6"}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={isReport ? 2.5 : 1.8}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    {item.icon}
-                  </svg>
-                </span>
+                {svg}
                 {item.label}
               </Link>
             </li>

@@ -1,12 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { MODEL_TO_CATEGORY, prettyLabel } from "@/lib/aiMap";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import PageHeader from "@/components/PageHeader";
+import CategoryIcon from "@/components/CategoryIcon";
+import CategoryPicker from "@/components/CategoryPicker";
 import { LocationPicker } from "@/components/map";
 import { api, useIssues } from "@/lib/api";
-import { CATEGORIES, isActive, type Category } from "@/lib/types";
+import { isActive, type AiClassification, type Category } from "@/lib/types";
 import { getUpvoted, haversine, setUpvoted } from "@/lib/utils";
 
 type LatLng = { lat: number; lng: number };
@@ -27,8 +30,12 @@ async function downscale(file: File): Promise<File> {
     const canvas = document.createElement("canvas");
     canvas.width = Math.round(bitmap.width * scale);
     canvas.height = Math.round(bitmap.height * scale);
-    canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-    const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/jpeg", 0.85));
+    canvas
+      .getContext("2d")!
+      .drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise<Blob | null>((r) =>
+      canvas.toBlob(r, "image/jpeg", 0.85),
+    );
     if (!blob) return file;
     const name = file.name.replace(/\.[^.]+$/, "") + ".jpg";
     return new File([blob], name, { type: "image/jpeg" });
@@ -39,7 +46,8 @@ async function downscale(file: File): Promise<File> {
 
 function geoErrorMessage(err: GeolocationPositionError | null): string {
   if (!err) return "Location isn't available in this browser.";
-  if (err.code === err.PERMISSION_DENIED) return "Location permission was denied.";
+  if (err.code === err.PERMISSION_DENIED)
+    return "Location permission was denied.";
   if (err.code === err.TIMEOUT) return "Finding your location took too long.";
   return "Couldn't determine your location.";
 }
@@ -52,6 +60,9 @@ export default function ReportPage() {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState<Category | "">("");
   const [photo, setPhoto] = useState<File | null>(null);
+  const [ai, setAi] = useState<AiClassification | null>(null);
+  const [aiBusy, setAiBusy] = useState(false);
+  const [aiFailed, setAiFailed] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -65,7 +76,11 @@ export default function ReportPage() {
   const [error, setError] = useState<string | null>(null);
 
   function locate() {
-    if (typeof navigator === "undefined" || !navigator.geolocation || !window.isSecureContext) {
+    if (
+      typeof navigator === "undefined" ||
+      !navigator.geolocation ||
+      !window.isSecureContext
+    ) {
       setLoc({
         kind: "error",
         message: window.isSecureContext
@@ -100,15 +115,56 @@ export default function ReportPage() {
     };
   }, [preview]);
 
+  // Ignore results from an older photo if the user retakes before the AI answers.
+  const aiRequest = useRef(0);
+
+  /** The AI picks the category. If it's down or returns an unknown label, the user picks by hand. */
+  async function runAi(file: File) {
+    const req = ++aiRequest.current;
+    setAiBusy(true);
+    setAi(null);
+    setAiFailed(false);
+    setCategory("");
+    try {
+      const form = new FormData();
+      form.append("photo", await downscale(file));
+      const res = await fetch("/api/classify", { method: "POST", body: form });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      if (req !== aiRequest.current) return;
+      const label = String(data.category ?? "");
+      const confidence = Number(data.confidence);
+      const mapped = Object.hasOwn(MODEL_TO_CATEGORY, label) ? MODEL_TO_CATEGORY[label] : undefined;
+      if (!mapped || !Number.isFinite(confidence)) throw new Error();
+      setAi({ label, confidence, category: mapped });
+      setCategory(mapped);
+    } catch {
+      if (req === aiRequest.current) setAiFailed(true);
+    } finally {
+      if (req === aiRequest.current) setAiBusy(false);
+    }
+  }
+
   function onPhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] ?? null;
     setPhoto(file);
     setPreview(file ? URL.createObjectURL(file) : null);
+    if (file) runAi(file);
+    else resetAi();
+  }
+
+  function resetAi() {
+    aiRequest.current++;
+    setAi(null);
+    setAiBusy(false);
+    setAiFailed(false);
+    setCategory("");
   }
 
   function clearPhoto() {
     setPhoto(null);
     setPreview(null);
+    resetAi();
     if (fileInput.current) fileInput.current.value = "";
   }
 
@@ -122,12 +178,18 @@ export default function ReportPage() {
     if (!issues || !location || !category) return [];
     return issues
       .filter((i) => isActive(i) && i.category === category)
-      .map((i) => ({ issue: i, distance: haversine(location.lat, location.lng, i.lat, i.lng) }))
+      .map((i) => ({
+        issue: i,
+        distance: haversine(location.lat, location.lng, i.lat, i.lng),
+      }))
       .filter((x) => x.distance <= DUPLICATE_RADIUS_M)
       .sort((a, b) => a.distance - b.distance);
   }, [issues, location, category]);
 
-  const dupKey = location && category ? `${category}|${location.lat.toFixed(5)}|${location.lng.toFixed(5)}` : null;
+  const dupKey =
+    location && category
+      ? `${category}|${location.lat.toFixed(5)}|${location.lng.toFixed(5)}`
+      : null;
   const showDuplicates = nearby.length > 0 && dismissedKey !== dupKey;
 
   async function upvoteExisting(id: string) {
@@ -149,6 +211,7 @@ export default function ReportPage() {
     e.preventDefault();
     setError(null);
     if (!title.trim()) return setError("Please add a short title.");
+    if (aiBusy) return setError("Still analysing the photo — one moment.");
     if (!category) return setError("Please choose a category.");
     if (!location) return setError("Please set the issue location.");
 
@@ -158,6 +221,10 @@ export default function ReportPage() {
       form.set("title", title.trim());
       form.set("description", description.trim());
       form.set("category", category);
+      if (ai) {
+        form.set("aiLabel", ai.label);
+        form.set("aiConfidence", String(ai.confidence));
+      }
       form.set("lat", String(location.lat));
       form.set("lng", String(location.lng));
       if (photo) form.set("photo", await downscale(photo));
@@ -169,34 +236,34 @@ export default function ReportPage() {
     }
   }
 
-  const labelCls = "mb-1.5 block text-sm font-bold text-zinc-200";
-  const inputCls =
-    "w-full rounded-xl border border-zinc-800 bg-zinc-900 px-3.5 py-3 text-[15px] text-white placeholder:text-zinc-500 focus:border-violet-500 focus:outline-none";
-
   return (
     <>
       <PageHeader title="Report an issue" subtitle="Takes less than a minute" />
 
-      <form onSubmit={onSubmit} className="space-y-5 px-4 pt-4" noValidate>
+      <form onSubmit={onSubmit} className="space-y-6 px-4 pt-5" noValidate>
         {/* Photo */}
         <section>
-          <label className={labelCls}>Photo</label>
+          <p className="label mb-2">Photo</p>
           {preview ? (
-            <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900">
+            <div className="border border-line-strong bg-panel">
               {/* eslint-disable-next-line @next/next/no-img-element -- local blob preview */}
-              <img src={preview} alt="Selected photo preview" className="max-h-72 w-full object-cover" />
-              <div className="flex gap-2 p-2">
+              <img
+                src={preview}
+                alt="Selected photo preview"
+                className="max-h-72 w-full object-cover"
+              />
+              <div className="grid grid-cols-[1fr_auto] border-t border-line">
                 <button
                   type="button"
                   onClick={() => fileInput.current?.click()}
-                  className="h-11 flex-1 rounded-lg bg-white text-sm font-bold text-black"
+                  className="btn text-paper hover:bg-raised"
                 >
                   Retake
                 </button>
                 <button
                   type="button"
                   onClick={clearPhoto}
-                  className="h-11 rounded-lg border border-zinc-700 px-5 text-sm font-bold text-rose-400"
+                  className="btn border-l border-line text-open hover:bg-raised"
                 >
                   Remove
                 </button>
@@ -206,14 +273,26 @@ export default function ReportPage() {
             <button
               type="button"
               onClick={() => fileInput.current?.click()}
-              className="flex h-36 w-full flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-zinc-700 bg-zinc-900 text-zinc-200 transition hover:border-violet-500 active:scale-[0.99]"
+              className="flex h-36 w-full flex-col items-center justify-center gap-1.5 border border-dashed border-line-strong bg-panel text-paper transition-colors hover:border-marigold"
             >
-              <svg viewBox="0 0 24 24" className="h-8 w-8 text-violet-400" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z" />
+              <svg
+                viewBox="0 0 24 24"
+                className="h-8 w-8 text-marigold"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.8}
+                strokeLinejoin="miter"
+                aria-hidden
+              >
+                <path d="M3 8h4l2-3h6l2 3h4v12H3V8Z" />
                 <circle cx="12" cy="13.5" r="3.5" />
               </svg>
-              <span className="text-sm font-bold">Take or choose a photo</span>
-              <span className="text-xs text-zinc-500">Optional, but it helps a lot</span>
+              <span className="font-cond text-base font-bold uppercase tracking-[0.06em]">
+                Take or choose a photo
+              </span>
+              <span className="text-sm text-faint">
+                Optional, but it helps a lot
+              </span>
             </button>
           )}
           <input
@@ -228,8 +307,9 @@ export default function ReportPage() {
 
         {/* Title */}
         <section>
-          <label htmlFor="title" className={labelCls}>
-            Title <span className="text-violet-400">*</span>
+          <label htmlFor="title" className="label mb-2 block">
+            Title
+            <Req />
           </label>
           <input
             id="title"
@@ -237,35 +317,64 @@ export default function ReportPage() {
             onChange={(e) => setTitle(e.target.value)}
             maxLength={120}
             placeholder="e.g. Deep pothole near the bus stop"
-            className={inputCls}
+            className="field"
           />
         </section>
 
-        {/* Category */}
-        <section>
-          <label htmlFor="category" className={labelCls}>
-            Category <span className="text-violet-400">*</span>
-          </label>
-          <select
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value as Category)}
-            className={`${inputCls} h-12 ${category ? "" : "text-zinc-500"}`}
-          >
-            <option value="" disabled>
-              Choose a category
-            </option>
-            {CATEGORIES.map((c) => (
-              <option key={c} value={c} className="text-white">
-                {c}
-              </option>
-            ))}
-          </select>
-        </section>
+        {/* Category — picked by the AI from the photo; manual grid only as a fallback. */}
+        <fieldset>
+          <legend className="label mb-2">
+            Category
+            <Req />
+          </legend>
+          {photo && aiBusy ? (
+            <div className="flex items-center gap-3 border border-line-strong bg-panel px-4 py-3.5 text-[15px] text-paper">
+              <span
+                className="h-4 w-4 shrink-0 animate-spin border-2 border-line-strong border-t-marigold"
+                aria-hidden
+              />
+              Analysing photo to pick a category…
+            </div>
+          ) : photo && ai ? (
+            <div className="border border-line-strong bg-panel px-4 py-3.5">
+              <p className="flex items-center gap-2 font-cond text-lg font-bold uppercase tracking-[0.04em] text-paper">
+                <CategoryIcon category={ai.category} className="h-5 w-5 text-marigold" />
+                {ai.category}
+              </p>
+              <p className="mt-1 text-[13px] text-dim">
+                AI detected{" "}
+                <span className="text-paper">{prettyLabel(ai.label)}</span> ·{" "}
+                <span className="figure text-marigold">
+                  {Math.round(ai.confidence * 100)}%
+                </span>{" "}
+                confidence
+              </p>
+              <p className="mt-1 text-[13px] text-faint">
+                You can change this on the ticket after submitting.
+              </p>
+            </div>
+          ) : (
+            <>
+              {photo && aiFailed && (
+                <p className="mb-2 text-[13px] text-faint">
+                  Couldn&apos;t classify the photo automatically — please pick a
+                  category.
+                </p>
+              )}
+              {!photo && (
+                <p className="mb-2 text-[13px] text-faint">
+                  Add a photo and the AI will pick this for you, or choose one
+                  below.
+                </p>
+              )}
+              <CategoryPicker value={category} onChange={setCategory} />
+            </>
+          )}
+        </fieldset>
 
         {/* Description */}
         <section>
-          <label htmlFor="description" className={labelCls}>
+          <label htmlFor="description" className="label mb-2 block">
             Description
           </label>
           <textarea
@@ -275,44 +384,63 @@ export default function ReportPage() {
             rows={3}
             maxLength={2000}
             placeholder="What's the problem? Any landmark nearby?"
-            className={`${inputCls} resize-none`}
+            className="field resize-none"
           />
         </section>
 
         {/* Location */}
-        <section className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-          <div className="flex items-start justify-between gap-3">
+        <section className="border border-line-strong bg-panel">
+          <div className="flex items-start justify-between gap-3 px-4 pb-3 pt-3.5">
             <div className="min-w-0">
-              <p className="text-sm font-bold text-zinc-200">
-                Location <span className="text-violet-400">*</span>
+              <p className="label">
+                Location
+                <Req />
               </p>
-              <p className="mt-0.5 text-sm text-zinc-400">
+              <p className="mt-1.5 text-[15px] text-paper">
                 {loc.kind === "locating" && "Detecting your location…"}
-                {loc.kind === "gps" && `Using your current location (±${Math.round(loc.accuracy)} m)`}
+                {loc.kind === "gps" &&
+                  `Using your current location (±${Math.round(loc.accuracy)} m)`}
                 {loc.kind === "manual" && "Pinned on the map"}
-                {loc.kind === "error" && (location ? "Pinned on the map" : `${loc.message} Tap the map to pick a spot.`)}
+                {loc.kind === "error" &&
+                  (location
+                    ? "Pinned on the map"
+                    : `${loc.message} Tap the map to pick a spot.`)}
               </p>
               {location && (
-                <p className="mt-1 font-mono text-xs text-violet-300">
+                <p className="figure mt-1 text-[13px] text-marigold">
                   {location.lat.toFixed(5)}, {location.lng.toFixed(5)}
                 </p>
               )}
             </div>
             {loc.kind === "locating" ? (
-              <span className="mt-1 h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-zinc-700 border-t-violet-500" />
+              <span
+                className="mt-1 h-4 w-4 shrink-0 animate-spin border-2 border-line-strong border-t-marigold"
+                aria-hidden
+              />
             ) : (
-              <span className={`mt-1 h-3 w-3 shrink-0 rounded-full ${location ? "bg-emerald-400" : "bg-amber-400"}`} />
+              <span
+                className={`mt-1 h-3 w-3 shrink-0 ${location ? "bg-fixed" : "bg-open"}`}
+                aria-hidden
+              />
             )}
           </div>
 
-          <div className="mt-3 flex gap-2">
+          <div className="grid grid-cols-2 border-t border-line">
             <button
               type="button"
               onClick={locate}
               disabled={loc.kind === "locating"}
-              className="flex h-12 flex-1 items-center justify-center gap-1.5 rounded-xl bg-white text-sm font-bold text-black disabled:opacity-50"
+              className="btn gap-1.5 px-2 text-sm text-paper hover:bg-raised disabled:text-faint"
             >
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round">
+              <svg
+                viewBox="0 0 24 24"
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.4}
+                strokeLinecap="square"
+                aria-hidden
+              >
                 <circle cx="12" cy="12" r="4" />
                 <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
               </svg>
@@ -321,60 +449,76 @@ export default function ReportPage() {
             <button
               type="button"
               onClick={() => setShowPicker((v) => !v)}
-              className="h-12 rounded-xl border border-zinc-700 px-4 text-sm font-bold text-zinc-200 hover:border-zinc-500"
+              aria-expanded={showPicker}
+              className="btn border-l border-line px-2 text-sm text-paper hover:bg-raised"
             >
               {showPicker ? "Hide map" : "Pick on map"}
             </button>
           </div>
 
           {showPicker && (
-            <div className="mt-3">
-              <div className="h-60 overflow-hidden rounded-lg border border-zinc-800">
+            <div className="border-t border-line">
+              <div className="h-60">
                 <LocationPicker value={location} onChange={pickOnMap} />
               </div>
-              <p className="mt-1.5 text-xs text-zinc-500">Tap the map to place the pin, or drag it to adjust.</p>
+              <p className="border-t border-line px-4 py-2 text-[13px] text-faint">
+                Tap the map to place the pin, or drag it to adjust.
+              </p>
             </div>
           )}
         </section>
 
         {/* Duplicate banner */}
         {showDuplicates && (
-          <section className="rounded-xl border border-amber-400/40 bg-amber-400/10 p-4" role="alert">
-            <p className="flex items-center gap-2 font-bold text-amber-300">
-              <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <section className="border border-marigold bg-changed" role="alert">
+            <p className="flex items-center gap-2 px-4 pt-3.5 font-cond text-lg font-bold uppercase leading-tight tracking-[0.03em] text-marigold">
+              <svg
+                viewBox="0 0 24 24"
+                className="h-5 w-5 shrink-0"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.2}
+                strokeLinejoin="miter"
+                aria-hidden
+              >
                 <path d="M12 3 2 20h20L12 3Z" />
-                <path d="M12 10v4M12 17h.01" />
+                <path d="M12 10v4M12 17v.5" />
               </svg>
-              {nearby.length} similar issue{nearby.length === 1 ? "" : "s"} already reported nearby
+              {nearby.length} similar issue{nearby.length === 1 ? "" : "s"}{" "}
+              already reported nearby
             </p>
-            <ul className="mt-3 space-y-1.5">
+            <ul className="mt-3 border-t border-line">
               {nearby.map(({ issue, distance }) => (
                 <li key={issue.id}>
                   <Link
                     href={`/issue/${issue.id}`}
-                    className="flex items-center justify-between gap-2 rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-sm hover:border-zinc-700"
+                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-line px-4 py-3 text-sm hover:bg-raised"
                   >
-                    <span className="min-w-0 truncate font-semibold text-zinc-100">{issue.title}</span>
-                    <span className="shrink-0 text-xs text-zinc-400">
-                      {Math.round(distance)} m · {issue.upvotes} upvotes
+                    <span className="truncate font-medium text-paper">
+                      {issue.title}
+                    </span>
+                    <span className="figure shrink-0 text-xs text-dim">
+                      {Math.round(distance)} m ·{" "}
+                      <span className="text-marigold">{issue.upvotes}</span>{" "}
+                      upvotes
                     </span>
                   </Link>
                 </li>
               ))}
             </ul>
-            <div className="mt-3 flex gap-2">
+            <div className="flex gap-2 p-3">
               <button
                 type="button"
                 onClick={() => upvoteExisting(nearby[0].issue.id)}
                 disabled={upvotingId !== null}
-                className="min-h-12 flex-1 rounded-xl bg-amber-400 px-3 py-2 text-sm leading-tight font-bold text-black disabled:opacity-60"
+                className="btn btn-primary flex-1 px-3 leading-tight"
               >
                 {upvotingId ? "Upvoting…" : "Upvote existing instead"}
               </button>
               <button
                 type="button"
                 onClick={() => setDismissedKey(dupKey)}
-                className="h-12 rounded-xl border border-amber-400/50 px-4 text-sm font-bold text-amber-300"
+                className="btn btn-secondary px-4"
               >
                 Report anyway
               </button>
@@ -383,7 +527,11 @@ export default function ReportPage() {
         )}
 
         {error && (
-          <p className="rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm font-semibold text-rose-300" role="alert">
+          <p
+            className="flex items-start gap-2 border border-open px-4 py-3 text-sm font-medium text-paper"
+            role="alert"
+          >
+            <span className="mt-1.5 h-2 w-2 shrink-0 bg-open" aria-hidden />
             {error}
           </p>
         )}
@@ -391,12 +539,26 @@ export default function ReportPage() {
         <button
           type="submit"
           disabled={submitting}
-          className="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-violet-600 text-base font-extrabold tracking-wide text-white transition hover:bg-violet-500 active:scale-[0.99] disabled:opacity-60"
+          className="btn btn-primary min-h-14 w-full text-lg"
         >
-          {submitting && <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white" />}
+          {submitting && (
+            <span
+              className="h-4 w-4 animate-spin border-2 border-faint border-t-paper"
+              aria-hidden
+            />
+          )}
           {submitting ? "Submitting…" : "Submit report"}
         </button>
       </form>
     </>
+  );
+}
+
+function Req() {
+  return (
+    <span className="text-marigold" aria-hidden>
+      {" "}
+      *
+    </span>
   );
 }

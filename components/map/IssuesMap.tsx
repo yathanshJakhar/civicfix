@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import L from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
@@ -31,7 +31,7 @@ function HeatLayer({ issues }: { issues: Issue[] }) {
         blur: 22,
         max: 2,
         minOpacity: 0.35,
-        gradient: { 0.2: "#4c1d95", 0.45: "#7c3aed", 0.7: "#c084fc", 0.9: "#f0abfc", 1: "#ffffff" },
+        gradient: { 0.2: "#5a1f12", 0.45: "#b8401f", 0.7: "#f07052", 0.9: "#f2a93b", 1: "#f8e3b8" },
       }).addTo(map);
     })();
 
@@ -44,38 +44,59 @@ function HeatLayer({ issues }: { issues: Issue[] }) {
   return null;
 }
 
-export default function IssuesMap({ issues, mode }: { issues: Issue[]; mode: MapMode }) {
+/** Centres on one issue and opens its popup when the map is opened from a ticket. */
+function FocusIssue({ issue, markers }: { issue: Issue | undefined; markers: React.RefObject<Map<string, L.Marker>> }) {
+  const map = useMap();
+  useEffect(() => {
+    if (!issue) return;
+    map.setView([issue.lat, issue.lng], 16);
+    const t = setTimeout(() => markers.current.get(issue.id)?.openPopup(), 300);
+    return () => clearTimeout(t);
+  }, [map, issue, markers]);
+  return null;
+}
+
+export default function IssuesMap({ issues, mode, focusId }: { issues: Issue[]; mode: MapMode; focusId?: string | null }) {
   const mapKey = useFreshMapKey();
-  if (mapKey === null) return <div className="h-full w-full bg-zinc-900" />;
+  const markers = useRef(new Map<string, L.Marker>());
+  if (mapKey === null) return <div className="h-full w-full bg-panel" />;
+
+  const focus = focusId ? issues.find((i) => i.id === focusId) : undefined;
 
   return (
     <MapContainer key={mapKey} center={DELHI_CENTER} zoom={11} className="h-full w-full" zoomControl={false}>
-      <TileLayer
-        attribution={TILE_ATTRIBUTION}
-        url={TILE_URL}
-        className={TILE_CLASS}
-      />
+      <TileLayer attribution={TILE_ATTRIBUTION} url={TILE_URL} className={TILE_CLASS} />
       {mode !== "markers" && <HeatLayer issues={issues} />}
       {mode !== "heatmap" &&
         issues.map((issue) => (
-          <Marker key={issue.id} position={[issue.lat, issue.lng]} icon={issueIcon(issue.category, issue.status)}>
-            <Popup>
-              <div className="w-52 space-y-2">
-                <p className="text-sm font-bold leading-snug text-white">{issue.title}</p>
-                <div className="flex items-center gap-2">
+          <Marker
+            key={issue.id}
+            position={[issue.lat, issue.lng]}
+            icon={issueIcon(issue.category, issue.status, issue.upvotes)}
+            zIndexOffset={issue.upvotes * 10}
+            ref={(m) => {
+              if (m) markers.current.set(issue.id, m);
+              else markers.current.delete(issue.id);
+            }}
+          >
+            <Popup autoPanPaddingTopLeft={[16, 200]} autoPanPaddingBottomRight={[16, 24]}>
+              <div className="w-56">
+                <div className="flex items-center justify-between gap-3 border-b border-line px-3.5 py-2.5 pr-8">
                   <StatusBadge status={issue.status} />
-                  <span className="text-xs font-semibold text-zinc-400">{issue.upvotes} upvotes</span>
+                  <span className="flex items-baseline gap-1.5">
+                    <span className="figure text-base font-bold text-marigold">{issue.upvotes}</span>
+                    <span className="label">Upvotes</span>
+                  </span>
                 </div>
-                <Link
-                  href={`/issue/${issue.id}`}
-                  className="block rounded-lg bg-violet-600 py-2.5 text-center text-sm font-bold text-white!"
-                >
+                <p className="px-3.5 py-3 text-sm font-medium leading-snug text-paper">{issue.title}</p>
+                <Link href={`/issue/${issue.id}`} className="btn btn-primary min-h-11 w-full text-ground!">
                   View issue
                 </Link>
               </div>
             </Popup>
           </Marker>
         ))}
+      <FocusIssue issue={focus} markers={markers} />
     </MapContainer>
   );
 }

@@ -26,7 +26,7 @@ function Recenter({ value }: { value: LatLng | null }) {
 
 export default function LocationPicker({ value, onChange }: { value: LatLng | null; onChange: (p: LatLng) => void }) {
   const mapKey = useFreshMapKey();
-  if (mapKey === null) return <div className="h-full w-full bg-zinc-900" />;
+  if (mapKey === null) return <div className="h-full w-full bg-panel" />;
 
   return (
     <MapContainer key={mapKey} center={value ? [value.lat, value.lng] : DELHI_CENTER} zoom={value ? 16 : 11} className="h-full w-full">

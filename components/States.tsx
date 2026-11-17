@@ -1,13 +1,13 @@
 export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <div className="rounded-xl border border-rose-500/30 bg-zinc-900 p-6 text-center">
-      <p className="font-bold text-white">Something went wrong</p>
-      <p className="mt-1 text-sm text-zinc-400">{message}</p>
+    <div className="border border-line bg-panel px-5 py-6">
+      <p className="flex items-center gap-2 font-cond text-lg font-bold uppercase tracking-[0.04em] text-open">
+        <span className="h-2 w-2 bg-open" aria-hidden />
+        Something went wrong
+      </p>
+      <p className="mt-1.5 text-sm text-dim">{message}</p>
       {onRetry && (
-        <button
-          onClick={onRetry}
-          className="mt-4 h-12 rounded-xl bg-violet-600 px-6 text-sm font-bold text-white hover:bg-violet-500 active:scale-95"
-        >
+        <button onClick={onRetry} className="btn btn-primary mt-4">
           Try again
         </button>
       )}
@@ -17,9 +17,9 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
 
 export function EmptyState({ title, message, children }: { title: string; message?: string; children?: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-dashed border-zinc-700 p-8 text-center">
-      <p className="font-bold text-white">{title}</p>
-      {message && <p className="mt-1 text-sm text-zinc-400">{message}</p>}
+    <div className="border border-line px-5 py-8 text-center">
+      <p className="font-cond text-xl font-bold uppercase tracking-[0.04em] text-paper">{title}</p>
+      {message && <p className="mt-1.5 text-sm text-dim">{message}</p>}
       {children}
     </div>
   );
