@@ -44,6 +44,19 @@ export interface Issue {
   upvotes: number;
   comments: Comment[];
   createdAt: string;
+  /** Owning department, set from the category when the ticket is created. */
+  department: string;
+  /** The contractor the department passed the work to, if any. */
+  contractor?: ContractorRef | null;
+  assignedAt?: string | null;
+  /** Latest progress note written by the contractor. */
+  progressNote?: string | null;
+}
+
+export interface ContractorRef {
+  id: number;
+  name: string;
+  phone: string | null;
 }
 
 export function isCategory(v: unknown): v is Category {

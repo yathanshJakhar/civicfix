@@ -7,7 +7,7 @@ import { STATUS_STYLES } from "@/lib/utils";
 // broken images under bundlers (the default icon URLs can't be resolved).
 const cache = new Map<string, L.DivIcon>();
 
-const GROUND = "#17120f";
+const STOCK = "#fdfaf1"; // ticket stock
 
 /** Fixed upvote ramp: pin size reads community weight before any label does. */
 export const PIN_STEPS = [
@@ -26,8 +26,8 @@ function pinSize(upvotes: number): number {
 function tagHtml(color: string, size: number, inner: string) {
   const tip = Math.round(size * 0.28);
   return `
-    <div style="position:relative;width:${size}px;height:${size + tip}px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))">
-      <div style="width:${size}px;height:${size}px;background:${GROUND};border:2px solid ${color};display:flex;align-items:center;justify-content:center">${inner}</div>
+    <div style="position:relative;width:${size}px;height:${size + tip}px;filter:drop-shadow(0 2px 2px rgba(60,40,12,.4))">
+      <div style="width:${size}px;height:${size}px;background:${STOCK};border:2px solid ${color};display:flex;align-items:center;justify-content:center">${inner}</div>
       <div style="position:absolute;left:50%;top:${size - 1}px;width:0;height:0;margin-left:-${tip}px;border-left:${tip}px solid transparent;border-right:${tip}px solid transparent;border-top:${tip}px solid ${color}"></div>
     </div>`;
 }
@@ -53,7 +53,7 @@ export function issueIcon(category: Category, status: Status, upvotes = 0): L.Di
 
 export const pickerIcon = L.divIcon({
   className: "civic-pin",
-  html: tagHtml("#f2a93b", 32, '<span style="width:10px;height:10px;background:#f2a93b;display:block"></span>'),
+  html: tagHtml("#8a4205", 32, '<span style="width:12px;height:12px;border-radius:50%;background:#e8922c;box-shadow:0 0 0 2px #8a4205;display:block"></span>'),
   iconSize: [32, 41],
   iconAnchor: [16, 41],
 });

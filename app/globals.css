@@ -6,52 +6,90 @@
   --font-mono: var(--font-jetbrains);
 }
 
-/* Warm departures-board palette. Zero radius everywhere; hairlines do the dividing. */
+/*
+ * Delhi bus-ticket stock. A manila desk, slips of ticket stock with pink counterfoils,
+ * carbon ink, saffron action plates and stamp-pad inks for status. Square corners;
+ * only punch holes and perforation notches are round.
+ */
 @theme {
-  --color-ground: #17120f;
-  --color-panel: #221b16;
-  --color-raised: #2b231d;
-  --color-line: #42362c;
-  --color-line-strong: #5c4b3d;
-  --color-paper: #f4ead8;
-  --color-dim: #bcac95;
-  --color-faint: #a08f78;
-  --color-marigold: #f2a93b;
-  --color-marigold-hi: #f7bb5c;
-  --color-marigold-lo: #dd9425;
-  --color-changed: #33261a;
-  --color-open: #f07052;
-  --color-progress: #7cb7d6;
-  --color-fixed: #8cc07a;
+  --color-desk: #ddcca6; /* the table beyond the phone column, desktop only */
+  --color-ground: #eee3ca; /* manila */
+  --color-panel: #fdfaf1; /* ticket stock */
+  --color-raised: #f2e9d5; /* pressed / hovered stock, skeleton blocks */
+  --color-stub: #f8e1d8; /* pink counterfoil */
+  --color-line: #d3c4a2;
+  --color-line-strong: #a08a62;
+  --color-ink: #2b2118; /* carbon ink */
+  --color-dim: #574837;
+  --color-faint: #5f4f3a;
+  --color-marigold: #e8922c; /* saffron action plate, ink text on it */
+  --color-marigold-hi: #f0a447;
+  --color-marigold-lo: #d27f1c;
+  --color-saffron: #8a4205; /* saffron as printed figures and links */
+  --color-changed: #f8e2b4; /* highlighter */
+  --color-open: #9c2714; /* stamp-pad red */
+  --color-progress: #265482; /* stamp-pad blue */
+  --color-fixed: #2f5c23; /* stamp-pad green */
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
+  /* Fine paper grain: low-alpha brown speckle over whatever stock it sits on. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .22 0 0 0 0 .1 0 0 0 .4 -.15'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* Long, faint fibres laid along the sheet. */
+  --fibre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.004 .09' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .33 0 0 0 0 .16 0 0 0 .16 -.08'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  /* Uneven stamp-pad coverage: mostly solid, with a few dry specks. */
+  --ink-wear: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='2' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -10 7.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E");
+  --shadow-slip: 0 1px 0 rgb(92 66 28 / 0.1), 0 3px 8px -3px rgb(92 66 28 / 0.28);
 }
 
 body {
-  background: var(--color-ground);
-  color: var(--color-paper);
-  caret-color: var(--color-marigold);
+  background-color: var(--color-desk);
+  background-image: var(--grain), var(--fibre);
+  color: var(--color-ink);
+  caret-color: var(--color-saffron);
   -webkit-tap-highlight-color: transparent;
 }
 
 ::selection {
-  background: var(--color-marigold);
-  color: var(--color-ground);
+  background: var(--color-changed);
+  color: var(--color-ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-marigold);
+  outline: 2px solid var(--color-saffron);
   outline-offset: 2px;
 }
 
-* {
-  scrollbar-color: var(--color-line-strong) transparent;
-  scrollbar-width: thin;
+/* Layered so utilities (scrollbar-none below) still win. */
+@layer base {
+  * {
+    scrollbar-color: var(--color-line-strong) transparent;
+    scrollbar-width: thin;
+  }
 }
 
 @layer components {
+  /* The manila sheet: the column, sticky bars and the bottom plank all share it. */
+  .manila {
+    background-color: var(--color-ground);
+    background-image: var(--grain), var(--fibre);
+  }
+
+  /* A slip of ticket stock lying on the manila. */
+  .ticket {
+    background-color: var(--color-panel);
+    background-image: var(--grain);
+    border: 1px solid var(--color-line-strong);
+    box-shadow: var(--shadow-slip);
+  }
+
+  /* The pink counterfoil torn from a ticket. */
+  .stub {
+    background-color: var(--color-stub);
+    background-image: var(--grain);
+  }
+
   /* Small uppercase condensed label: column heads, segment labels, field labels. */
   .label {
     font-family: var(--font-cond);
@@ -92,7 +130,8 @@ body {
   }
   .btn-primary {
     background: var(--color-marigold);
-    color: var(--color-ground);
+    border-color: var(--color-marigold-lo);
+    color: var(--color-ink);
   }
   .btn-primary:hover:not(:disabled) {
     background: var(--color-marigold-hi);
@@ -102,12 +141,13 @@ body {
   }
   .btn-primary:disabled {
     background: var(--color-raised);
+    border-color: var(--color-line);
     color: var(--color-faint);
   }
   .btn-secondary {
-    background: var(--color-ground);
+    background: var(--color-panel);
     border-color: var(--color-line-strong);
-    color: var(--color-paper);
+    color: var(--color-ink);
   }
   .btn-secondary:hover:not(:disabled) {
     background: var(--color-raised);
@@ -123,7 +163,7 @@ body {
     padding: 0.75rem 0.875rem;
     background: var(--color-panel);
     border: 1px solid var(--color-line-strong);
-    color: var(--color-paper);
+    color: var(--color-ink);
     font-size: 1rem;
     line-height: 1.4;
     transition: border-color 150ms ease-out;
@@ -133,23 +173,26 @@ body {
   }
   .field:focus {
     outline: none;
-    border-color: var(--color-marigold);
-    box-shadow: inset 0 0 0 1px var(--color-marigold);
+    border-color: var(--color-saffron);
+    box-shadow: inset 0 0 0 1px var(--color-saffron);
   }
 
-  /* The tear line between a ticket and its stub, punched at both ends. */
+  /*
+   * The tear line between a ticket and its counterfoil: a dotted perforation with a
+   * round notch bitten out of each edge. The notch shows the manila beneath.
+   */
   .perf-x,
   .perf-y {
     position: relative;
     border-color: var(--color-line-strong);
-    border-style: dashed;
+    border-style: dotted;
     border-width: 0;
   }
   .perf-x {
-    border-top-width: 2px;
+    border-top-width: 3px;
   }
   .perf-y {
-    border-left-width: 2px;
+    border-left-width: 3px;
   }
   .perf-x::before,
   .perf-x::after,
@@ -157,38 +200,106 @@ body {
   .perf-y::after {
     content: "";
     position: absolute;
-    width: 12px;
-    height: 12px;
-    background: var(--color-ground);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--color-ground);
+    background-image: var(--grain);
     border: 1px solid var(--color-line-strong);
+    box-shadow: inset 0 1px 2px rgb(92 66 28 / 0.25);
   }
   .perf-x::before,
   .perf-x::after {
-    top: -7px;
+    top: -9.5px;
   }
   .perf-x::before {
-    left: -7px;
-    border-left-color: var(--color-ground);
+    left: -9px;
+    clip-path: inset(0 0 0 50%);
   }
   .perf-x::after {
-    right: -7px;
-    border-right-color: var(--color-ground);
+    right: -9px;
+    clip-path: inset(0 50% 0 0);
   }
   .perf-y::before,
   .perf-y::after {
-    left: -7px;
+    left: -9.5px;
   }
   .perf-y::before {
-    top: -7px;
-    border-top-color: var(--color-ground);
+    top: -9px;
+    clip-path: inset(50% 0 0 0);
   }
   .perf-y::after {
-    bottom: -7px;
-    border-bottom-color: var(--color-ground);
+    bottom: -9px;
+    clip-path: inset(0 0 50% 0);
+  }
+
+  /* A rubber stamp in stamp-pad ink: double-ruled box, slight tilt, uneven coverage. */
+  .stamp {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.32em 0.55em 0.24em;
+    border: 2px solid currentColor;
+    box-shadow: inset 0 0 0 2px var(--color-panel), inset 0 0 0 3px currentColor;
+    font-family: var(--font-cond);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1.1;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transform: rotate(-3deg);
+    -webkit-mask-image: var(--ink-wear);
+    mask-image: var(--ink-wear);
+    mask-size: 140px 140px;
+  }
+  .stamp-fresh {
+    animation: stamp-down 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* The conductor's punch: a clean round hole through the counterfoil. */
+  .punch {
+    display: block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: var(--color-ground);
+    background-image: var(--grain);
+    box-shadow:
+      inset 0 1.5px 2px rgb(60 40 12 / 0.45),
+      0 0 0 1px rgb(92 66 28 / 0.35);
+  }
+  .punch-fresh {
+    animation: punch-in 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 }
 
-/* Honour reduced motion everywhere, including the board re-rank. */
+@keyframes stamp-down {
+  0% {
+    opacity: 0;
+    transform: rotate(-9deg) scale(1.7);
+  }
+  55% {
+    opacity: 1;
+    transform: rotate(-3deg) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-3deg) scale(1);
+  }
+}
+
+@keyframes punch-in {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Honour reduced motion everywhere, including the board re-rank, stamp and punch. */
 @media (prefers-reduced-motion: reduce) {
   * {
     transition-duration: 1ms !important;
@@ -196,17 +307,18 @@ body {
   }
 }
 
-/* Leaflet, restyled for the board */
+/* Leaflet, restyled as ticket stock */
 .leaflet-container {
   font-family: inherit;
-  background: var(--color-panel);
+  background: var(--color-ground);
 }
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-  background: var(--color-panel);
-  color: var(--color-paper);
+  background-color: var(--color-panel);
+  background-image: var(--grain);
+  color: var(--color-ink);
   border: 1px solid var(--color-line-strong);
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
+  box-shadow: 0 6px 18px -4px rgb(60 40 12 / 0.4);
 }
 .leaflet-popup-content-wrapper {
   border-radius: 0;
@@ -220,21 +332,25 @@ body {
   right: 6px;
 }
 .leaflet-control-attribution {
-  background: var(--color-ground) !important;
+  background: rgb(251 247 236 / 0.92) !important;
   color: var(--color-faint);
 }
 .leaflet-control-attribution a {
-  color: var(--color-marigold);
+  color: var(--color-saffron);
 }
 .leaflet-bar {
   border-radius: 0 !important;
   border: 1px solid var(--color-line-strong) !important;
+  box-shadow: var(--shadow-slip) !important;
 }
 .leaflet-bar a {
   background: var(--color-panel);
-  color: var(--color-paper);
-  border-color: var(--color-line-strong);
+  color: var(--color-ink);
+  border-color: var(--color-line) !important;
   border-radius: 0 !important;
+}
+.leaflet-bar a:hover {
+  background: var(--color-raised);
 }
 .civic-pin {
   background: transparent;
@@ -245,7 +361,15 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Dark map: invert the light OSM tiles, rotate hues back so water stays blue, then warm them to the board. */
-.dark-tiles {
-  filter: invert(1) hue-rotate(180deg) brightness(0.82) contrast(0.92) sepia(0.32) saturate(0.75);
+/* Paper map: keep the light OSM tiles, warm and soften them so they sit on manila. */
+.paper-tiles {
+  filter: sepia(0.38) saturate(0.78) contrast(0.94) brightness(1.01);
+}
+
+/* Horizontal tab strips scroll by touch or trackpad with no visible scrollbar. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }

@@ -5,10 +5,12 @@ import { MODEL_TO_CATEGORY, prettyLabel } from "@/lib/aiMap";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import PageHeader from "@/components/PageHeader";
+import { EmptyState } from "@/components/States";
 import CategoryIcon from "@/components/CategoryIcon";
 import CategoryPicker from "@/components/CategoryPicker";
 import { LocationPicker } from "@/components/map";
 import { api, useIssues } from "@/lib/api";
+import { homeFor, useAuth } from "@/lib/auth";
 import { isActive, type AiClassification, type Category } from "@/lib/types";
 import { getUpvoted, haversine, setUpvoted } from "@/lib/utils";
 
@@ -55,6 +57,7 @@ function geoErrorMessage(err: GeolocationPositionError | null): string {
 export default function ReportPage() {
   const router = useRouter();
   const { issues } = useIssues();
+  const { user, loading: authLoading } = useAuth();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -104,10 +107,13 @@ export default function ReportPage() {
     );
   }
 
+  const signedIn = !!user;
   useEffect(() => {
+    // Guests can't report, so don't ask them for their location.
+    if (!signedIn) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- auto-detect location on load
     locate();
-  }, []);
+  }, [signedIn]);
 
   useEffect(() => {
     return () => {
@@ -200,7 +206,8 @@ export default function ReportPage() {
         await api.patch(id, { action: "upvote" });
         setUpvoted(id, true);
       }
-      router.push(`/issue/${id}`);
+      // Other people's tickets are private, so the upvote is the whole action.
+      router.push("/tickets");
     } catch (e) {
       setError((e as Error).message);
       setUpvotingId(null);
@@ -236,6 +243,41 @@ export default function ReportPage() {
     }
   }
 
+  // Guests can only view; reporting needs an account (the API enforces this too).
+  if (!authLoading && !user) {
+    return (
+      <>
+        <PageHeader title="Report an issue" subtitle="Takes less than a minute" />
+        <div className="px-4 pt-5">
+          <EmptyState
+            title="Log in to report"
+            message="Reports are tied to your account, so you can follow each one's status in My tickets."
+          >
+            <Link href="/login" className="btn btn-primary mt-5">
+              Log in or create an account
+            </Link>
+          </EmptyState>
+        </div>
+      </>
+    );
+  }
+
+  // Complaints come from citizens; officers and contractors work them instead.
+  if (!authLoading && user && user.role !== "citizen") {
+    return (
+      <>
+        <PageHeader title="Report an issue" />
+        <div className="px-4 pt-5">
+          <EmptyState title="Citizens file complaints" message="Your account works on tickets rather than filing them.">
+            <Link href={homeFor(user)} className="btn btn-primary mt-5">
+              Go to your home page
+            </Link>
+          </EmptyState>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <PageHeader title="Report an issue" subtitle="Takes less than a minute" />
@@ -245,7 +287,7 @@ export default function ReportPage() {
         <section>
           <p className="label mb-2">Photo</p>
           {preview ? (
-            <div className="border border-line-strong bg-panel">
+            <div className="ticket">
               {/* eslint-disable-next-line @next/next/no-img-element -- local blob preview */}
               <img
                 src={preview}
@@ -256,7 +298,7 @@ export default function ReportPage() {
                 <button
                   type="button"
                   onClick={() => fileInput.current?.click()}
-                  className="btn text-paper hover:bg-raised"
+                  className="btn text-ink hover:bg-raised"
                 >
                   Retake
                 </button>
@@ -273,11 +315,11 @@ export default function ReportPage() {
             <button
               type="button"
               onClick={() => fileInput.current?.click()}
-              className="flex h-36 w-full flex-col items-center justify-center gap-1.5 border border-dashed border-line-strong bg-panel text-paper transition-colors hover:border-marigold"
+              className="flex h-36 w-full flex-col items-center justify-center gap-1.5 border border-dashed border-line-strong bg-panel text-ink transition-colors hover:border-saffron"
             >
               <svg
                 viewBox="0 0 24 24"
-                className="h-8 w-8 text-marigold"
+                className="h-8 w-8 text-saffron"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth={1.8}
@@ -328,7 +370,7 @@ export default function ReportPage() {
             <Req />
           </legend>
           {photo && aiBusy ? (
-            <div className="flex items-center gap-3 border border-line-strong bg-panel px-4 py-3.5 text-[15px] text-paper">
+            <div className="flex items-center gap-3 border border-line-strong bg-panel px-4 py-3.5 text-[15px] text-ink">
               <span
                 className="h-4 w-4 shrink-0 animate-spin border-2 border-line-strong border-t-marigold"
                 aria-hidden
@@ -337,14 +379,14 @@ export default function ReportPage() {
             </div>
           ) : photo && ai ? (
             <div className="border border-line-strong bg-panel px-4 py-3.5">
-              <p className="flex items-center gap-2 font-cond text-lg font-bold uppercase tracking-[0.04em] text-paper">
-                <CategoryIcon category={ai.category} className="h-5 w-5 text-marigold" />
+              <p className="flex items-center gap-2 font-cond text-lg font-bold uppercase tracking-[0.04em] text-ink">
+                <CategoryIcon category={ai.category} className="h-5 w-5 text-saffron" />
                 {ai.category}
               </p>
               <p className="mt-1 text-[13px] text-dim">
                 AI detected{" "}
-                <span className="text-paper">{prettyLabel(ai.label)}</span> ·{" "}
-                <span className="figure text-marigold">
+                <span className="text-ink">{prettyLabel(ai.label)}</span> ·{" "}
+                <span className="figure text-saffron">
                   {Math.round(ai.confidence * 100)}%
                 </span>{" "}
                 confidence
@@ -389,14 +431,14 @@ export default function ReportPage() {
         </section>
 
         {/* Location */}
-        <section className="border border-line-strong bg-panel">
+        <section className="ticket">
           <div className="flex items-start justify-between gap-3 px-4 pb-3 pt-3.5">
             <div className="min-w-0">
               <p className="label">
                 Location
                 <Req />
               </p>
-              <p className="mt-1.5 text-[15px] text-paper">
+              <p className="mt-1.5 text-[15px] text-ink">
                 {loc.kind === "locating" && "Detecting your location…"}
                 {loc.kind === "gps" &&
                   `Using your current location (±${Math.round(loc.accuracy)} m)`}
@@ -407,7 +449,7 @@ export default function ReportPage() {
                     : `${loc.message} Tap the map to pick a spot.`)}
               </p>
               {location && (
-                <p className="figure mt-1 text-[13px] text-marigold">
+                <p className="figure mt-1 text-[13px] text-saffron">
                   {location.lat.toFixed(5)}, {location.lng.toFixed(5)}
                 </p>
               )}
@@ -430,7 +472,7 @@ export default function ReportPage() {
               type="button"
               onClick={locate}
               disabled={loc.kind === "locating"}
-              className="btn gap-1.5 px-2 text-sm text-paper hover:bg-raised disabled:text-faint"
+              className="btn gap-1.5 px-2 text-sm text-ink hover:bg-raised disabled:text-faint"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -450,7 +492,7 @@ export default function ReportPage() {
               type="button"
               onClick={() => setShowPicker((v) => !v)}
               aria-expanded={showPicker}
-              className="btn border-l border-line px-2 text-sm text-paper hover:bg-raised"
+              className="btn border-l border-line px-2 text-sm text-ink hover:bg-raised"
             >
               {showPicker ? "Hide map" : "Pick on map"}
             </button>
@@ -470,8 +512,8 @@ export default function ReportPage() {
 
         {/* Duplicate banner */}
         {showDuplicates && (
-          <section className="border border-marigold bg-changed" role="alert">
-            <p className="flex items-center gap-2 px-4 pt-3.5 font-cond text-lg font-bold uppercase leading-tight tracking-[0.03em] text-marigold">
+          <section className="border border-marigold-lo bg-changed shadow-[0_3px_8px_-3px_rgb(92_66_28/0.28)]" role="alert">
+            <p className="flex items-center gap-2 px-4 pt-3.5 font-cond text-lg font-bold uppercase leading-tight tracking-[0.03em] text-saffron">
               <svg
                 viewBox="0 0 24 24"
                 className="h-5 w-5 shrink-0"
@@ -490,19 +532,16 @@ export default function ReportPage() {
             <ul className="mt-3 border-t border-line">
               {nearby.map(({ issue, distance }) => (
                 <li key={issue.id}>
-                  <Link
-                    href={`/issue/${issue.id}`}
-                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-line px-4 py-3 text-sm hover:bg-raised"
-                  >
-                    <span className="truncate font-medium text-paper">
+                  <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-line px-4 py-3 text-sm">
+                    <span className="truncate font-medium text-ink">
                       {issue.title}
                     </span>
                     <span className="figure shrink-0 text-xs text-dim">
                       {Math.round(distance)} m ·{" "}
-                      <span className="text-marigold">{issue.upvotes}</span>{" "}
+                      <span className="text-saffron">{issue.upvotes}</span>{" "}
                       upvotes
                     </span>
-                  </Link>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -528,7 +567,7 @@ export default function ReportPage() {
 
         {error && (
           <p
-            className="flex items-start gap-2 border border-open px-4 py-3 text-sm font-medium text-paper"
+            className="flex items-start gap-2 border border-open bg-panel px-4 py-3 text-sm font-medium text-ink"
             role="alert"
           >
             <span className="mt-1.5 h-2 w-2 shrink-0 bg-open" aria-hidden />
@@ -543,7 +582,7 @@ export default function ReportPage() {
         >
           {submitting && (
             <span
-              className="h-4 w-4 animate-spin border-2 border-faint border-t-paper"
+              className="h-4 w-4 animate-spin border-2 border-ink/30 border-t-ink"
               aria-hidden
             />
           )}
@@ -556,7 +595,7 @@ export default function ReportPage() {
 
 function Req() {
   return (
-    <span className="text-marigold" aria-hidden>
+    <span className="text-saffron" aria-hidden>
       {" "}
       *
     </span>

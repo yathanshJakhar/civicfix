@@ -7,30 +7,24 @@ related_targets: ["app/map/page.tsx","app/report/page.tsx","app/issue/[id]/Issue
 
 # CivicFix app shell (feed, map, report, issue)
 
-Scope: the whole citizen app, all four routes. Mode: Operate. Redesign of the prior zinc/violet look; every function and the product copy stay.
+Scope: the whole citizen app, all four routes. Mode: Operate. Re-materialisation of the departures-board world: the dark, heavy board is replaced by printed paper (user-pinned, 2026-11-17). Ticket structure, ranked board, functions and product copy all stay.
 
-Audience and job: a Delhi NCR resident on a phone, outdoors, reporting fast, backing existing issues, and checking whether status has moved. Examiners watch the same flows in a demo.
+Audience and job: a Delhi NCR resident on a phone, outdoors in bright light, reporting fast, backing existing issues, checking whether status has moved. Examiners watch the same flows in a demo.
 
-Constraints: dark and warm (user-pinned); no translucent buttons, no soft rounded cards (user-pinned); structure may change (user-confirmed). Build is code-led (Operate, no image generation).
+Constraints: light paper world, Delhi bus-ticket stock (user-pinned); subtle grain only, readable in sunlight (user-pinned); keep tickets, lead ticket + stub, ranked rows (user-pinned); square corners, no translucent buttons, no soft rounded cards (carried over). Code-led (Operate).
 
 ## Direction contract
 
-THESIS: The neighbourhood's issues as a live departures board. Each issue is a segmented ticket, and the feed is a ranked board where a status change stays lit until you've seen it. This replaces the category default of rounded image-left cards on a grey ground with a violet accent.
+THESIS: The neighbourhood's issues as printed bus tickets on a manila desk. Each issue is a slip of ticket stock with a tear-off counterfoil; status is rubber-stamped, and backing an issue punches your ticket. Refuses both the old dark gate board and the category default of white rounded cards on grey.
 
-OWN-WORLD: Warm near-black ground #17120f, panels #221b16, 1px hairlines #42362c, paper text #f4ead8. Marigold #f2a93b is both the action colour and the "changed" signal. Status colours are vermilion (Open), works blue (In Progress) and leaf green (Resolved). Barlow Semi Condensed uppercase labels, Barlow body text and JetBrains Mono tabular figures. Zero radius everywhere, segments split by hairlines, and a dashed perforation between a ticket and its stub.
+OWN-WORLD: Manila ground #eee3ca with fine paper grain; ticket stock #fdfaf1 with a soft contact shadow; pink counterfoil stub #f8e1d8 behind a dotted perforation with round notches. Carbon ink #2b2118 text. Saffron #e8922c action plates with ink text, deep saffron #8a4205 for figures. Stamp-pad inks: red #9c2714 Open, blue #265482 In Progress, green #2f5c23 Resolved. Highlighter #f8e2b4 marks changed rows. Barlow / Barlow Semi Condensed / JetBrains Mono figures. Square corners; round only for punch holes and perforation notches.
 
-STORY: The resident sees at a glance what's open, what's being worked on and what's fixed. They back what matters, report in under a minute, and notice when something they looked at has moved.
+STORY: The resident sees at a glance what's open, being worked on, fixed; backs what matters; reports in under a minute; notices what moved.
 
-FIRST VIEWPORT (home, 390 wide):
-- A wordmark bar: CIVICFIX, with a mono line beside it (DELHI NCR · n ACTIVE).
-- A three-segment tally strip (Open / In Progress / Fixed) that filters the board.
-- Square category tabs.
-- A lead ticket: the top issue with segments for status, reported time and comments, and a stub with a large marigold upvote figure.
-- The board header (UPVOTES / ISSUE / STATUS), then ranked rows.
-- A bottom plank whose Report button is a marigold plate.
+FIRST VIEWPORT (home, 390 wide): manila wordmark bar (CIVICFIX + saffron active count); three-segment tally strip filtering the board; square category tabs; count + sort; the lead ticket on ticket stock with stamped status and a pink upvote counterfoil; board header and ranked rows printed on the manila; bottom plank with a saffron Report plate.
 
-Signature interaction: rows re-rank in place (FLIP) when the sort or filter changes. A row whose status changed since you last opened it holds a tinted row (token `changed`) and a marigold NOW <STATUS> chip until you open it; no side bar. Map pins are square tags sized on a fixed upvote ramp. A ticket's location links to its own pin on the map.
+Signature interaction: upvoting punches a round conductor's hole in the counterfoil (pass and lead ticket); an admin status change re-stamps the status with a stamp-down motion. Rows still re-rank with FLIP; changed rows are highlighted until opened.
 
-FORM: Ticket & Gate Board (catalog challenger, vernacular-ephemera-boarding-pass-and-gate-board, chosen over assigned candidate 3, Painted Notice Board); seed key 0c571c1c.
+FORM: Ticket & Gate Board topology kept, re-materialised as Delhi bus-ticket stock (user-pinned direction, no roll; prior seed key 0c571c1c).
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance

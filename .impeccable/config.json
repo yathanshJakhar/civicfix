@@ -45,6 +45,15 @@
         ],
         "createdAt": "2026-10-14T06:54:42.597Z",
         "reason": "Agent: throwaway decision-round sketches from a closed direction round; never shipped"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "app/globals.css"
+        ],
+        "createdAt": "2026-11-17T06:10:47.527Z",
+        "reason": "Agent: .perf-y border-left is the dotted ticket perforation between ticket and counterfoil, not a coloured accent stripe on a card"
       }
     ]
   }

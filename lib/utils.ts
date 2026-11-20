@@ -28,9 +28,9 @@ export function timeAgo(iso: string): string {
 }
 
 export const STATUS_STYLES: Record<Status, { text: string; mark: string; solid: string; hex: string }> = {
-  Open: { text: "text-open", mark: "bg-open", solid: "bg-open text-ground", hex: "#f07052" },
-  "In Progress": { text: "text-progress", mark: "bg-progress", solid: "bg-progress text-ground", hex: "#7cb7d6" },
-  Resolved: { text: "text-fixed", mark: "bg-fixed", solid: "bg-fixed text-ground", hex: "#8cc07a" },
+  Open: { text: "text-open", mark: "bg-open", solid: "bg-open text-panel", hex: "#9c2714" },
+  "In Progress": { text: "text-progress", mark: "bg-progress", solid: "bg-progress text-panel", hex: "#265482" },
+  Resolved: { text: "text-fixed", mark: "bg-fixed", solid: "bg-fixed text-panel", hex: "#2f5c23" },
 };
 
 export function escapeHtml(s: string): string {

@@ -1,232 +1,295 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-14T07:13:59.558Z",
+  "generatedAt": "2026-11-17T06:20:51.516Z",
   "title": "Design System: CivicFix",
   "extensions": {
     "colorMeta": {
+      "desk": {
+        "role": "neutral",
+        "displayName": "Desk",
+        "canonical": "#ddcca6",
+        "oklch": "oklch(85.0% 0.054 86.7)",
+        "tonalRamp": [
+          "oklch(15% 0.018 86.7)",
+          "oklch(26% 0.054 86.7)",
+          "oklch(38% 0.054 86.7)",
+          "oklch(49% 0.054 86.7)",
+          "oklch(61% 0.054 86.7)",
+          "oklch(72% 0.054 86.7)",
+          "oklch(84% 0.054 86.7)",
+          "oklch(95% 0.015 86.7)"
+        ]
+      },
       "ground": {
         "role": "neutral",
-        "displayName": "Station Black",
-        "canonical": "#17120f",
+        "displayName": "Manila",
+        "canonical": "#eee3ca",
+        "oklch": "oklch(91.8% 0.035 87.1)",
         "tonalRamp": [
-          "oklch(15% 0.006 52.8)",
-          "oklch(26% 0.010 52.8)",
-          "oklch(38% 0.010 52.8)",
-          "oklch(49% 0.010 52.8)",
-          "oklch(61% 0.010 52.8)",
-          "oklch(72% 0.010 52.8)",
-          "oklch(84% 0.010 52.8)",
-          "oklch(95% 0.006 52.8)"
+          "oklch(15% 0.018 87.1)",
+          "oklch(26% 0.035 87.1)",
+          "oklch(38% 0.035 87.1)",
+          "oklch(49% 0.035 87.1)",
+          "oklch(61% 0.035 87.1)",
+          "oklch(72% 0.035 87.1)",
+          "oklch(84% 0.035 87.1)",
+          "oklch(95% 0.015 87.1)"
         ]
       },
       "panel": {
         "role": "neutral",
-        "displayName": "Ticket Brown",
-        "canonical": "#221b16",
+        "displayName": "Ticket Stock",
+        "canonical": "#fdfaf1",
+        "oklch": "oklch(98.5% 0.012 91.5)",
         "tonalRamp": [
-          "oklch(15% 0.009 57.5)",
-          "oklch(26% 0.015 57.5)",
-          "oklch(38% 0.015 57.5)",
-          "oklch(49% 0.015 57.5)",
-          "oklch(61% 0.015 57.5)",
-          "oklch(72% 0.015 57.5)",
-          "oklch(84% 0.015 57.5)",
-          "oklch(95% 0.009 57.5)"
+          "oklch(15% 0.007 91.5)",
+          "oklch(26% 0.012 91.5)",
+          "oklch(38% 0.012 91.5)",
+          "oklch(49% 0.012 91.5)",
+          "oklch(61% 0.012 91.5)",
+          "oklch(72% 0.012 91.5)",
+          "oklch(84% 0.012 91.5)",
+          "oklch(95% 0.006 91.5)"
         ]
       },
       "raised": {
         "role": "neutral",
-        "displayName": "Raised Brown",
-        "canonical": "#2b231d",
+        "displayName": "Pressed Stock",
+        "canonical": "#f2e9d5",
+        "oklch": "oklch(93.6% 0.028 86.6)",
         "tonalRamp": [
-          "oklch(15% 0.010 58.8)",
-          "oklch(26% 0.016 58.8)",
-          "oklch(38% 0.016 58.8)",
-          "oklch(49% 0.016 58.8)",
-          "oklch(61% 0.016 58.8)",
-          "oklch(72% 0.016 58.8)",
-          "oklch(84% 0.016 58.8)",
-          "oklch(95% 0.010 58.8)"
+          "oklch(15% 0.017 86.6)",
+          "oklch(26% 0.028 86.6)",
+          "oklch(38% 0.028 86.6)",
+          "oklch(49% 0.028 86.6)",
+          "oklch(61% 0.028 86.6)",
+          "oklch(72% 0.028 86.6)",
+          "oklch(84% 0.028 86.6)",
+          "oklch(95% 0.014 86.6)"
+        ]
+      },
+      "stub": {
+        "role": "neutral",
+        "displayName": "Counterfoil Pink",
+        "canonical": "#f8e1d8",
+        "oklch": "oklch(92.6% 0.028 42.7)",
+        "tonalRamp": [
+          "oklch(15% 0.017 42.7)",
+          "oklch(26% 0.028 42.7)",
+          "oklch(38% 0.028 42.7)",
+          "oklch(49% 0.028 42.7)",
+          "oklch(61% 0.028 42.7)",
+          "oklch(72% 0.028 42.7)",
+          "oklch(84% 0.028 42.7)",
+          "oklch(95% 0.014 42.7)"
         ]
       },
       "line": {
         "role": "neutral",
-        "displayName": "Hairline",
-        "canonical": "#42362c",
+        "displayName": "Rule",
+        "canonical": "#d3c4a2",
+        "oklch": "oklch(82.4% 0.049 87.0)",
         "tonalRamp": [
-          "oklch(15% 0.014 61.7)",
-          "oklch(26% 0.024 61.7)",
-          "oklch(38% 0.024 61.7)",
-          "oklch(49% 0.024 61.7)",
-          "oklch(61% 0.024 61.7)",
-          "oklch(72% 0.024 61.7)",
-          "oklch(84% 0.024 61.7)",
-          "oklch(95% 0.014 61.7)"
+          "oklch(15% 0.018 87.0)",
+          "oklch(26% 0.049 87.0)",
+          "oklch(38% 0.049 87.0)",
+          "oklch(49% 0.049 87.0)",
+          "oklch(61% 0.049 87.0)",
+          "oklch(72% 0.049 87.0)",
+          "oklch(84% 0.049 87.0)",
+          "oklch(95% 0.015 87.0)"
         ]
       },
       "line-strong": {
         "role": "neutral",
-        "displayName": "Strong Hairline",
-        "canonical": "#5c4b3d",
+        "displayName": "Strong Rule",
+        "canonical": "#a08a62",
+        "oklch": "oklch(64.4% 0.061 82.1)",
         "tonalRamp": [
-          "oklch(15% 0.019 61.3)",
-          "oklch(26% 0.032 61.3)",
-          "oklch(38% 0.032 61.3)",
-          "oklch(49% 0.032 61.3)",
-          "oklch(61% 0.032 61.3)",
-          "oklch(72% 0.032 61.3)",
-          "oklch(84% 0.032 61.3)",
-          "oklch(95% 0.019 61.3)"
+          "oklch(15% 0.018 82.1)",
+          "oklch(26% 0.061 82.1)",
+          "oklch(38% 0.061 82.1)",
+          "oklch(49% 0.061 82.1)",
+          "oklch(61% 0.061 82.1)",
+          "oklch(72% 0.061 82.1)",
+          "oklch(84% 0.061 82.1)",
+          "oklch(95% 0.015 82.1)"
         ]
       },
-      "paper": {
+      "ink": {
         "role": "neutral",
-        "displayName": "Paper",
-        "canonical": "#f4ead8",
+        "displayName": "Carbon Ink",
+        "canonical": "#2b2118",
+        "oklch": "oklch(25.7% 0.022 63.6)",
         "tonalRamp": [
-          "oklch(15% 0.016 82.4)",
-          "oklch(26% 0.026 82.4)",
-          "oklch(38% 0.026 82.4)",
-          "oklch(49% 0.026 82.4)",
-          "oklch(61% 0.026 82.4)",
-          "oklch(72% 0.026 82.4)",
-          "oklch(84% 0.026 82.4)",
-          "oklch(95% 0.016 82.4)"
+          "oklch(15% 0.013 63.6)",
+          "oklch(26% 0.022 63.6)",
+          "oklch(38% 0.022 63.6)",
+          "oklch(49% 0.022 63.6)",
+          "oklch(61% 0.022 63.6)",
+          "oklch(72% 0.022 63.6)",
+          "oklch(84% 0.022 63.6)",
+          "oklch(95% 0.011 63.6)"
         ]
       },
       "dim": {
         "role": "neutral",
         "displayName": "Dim",
-        "canonical": "#bcac95",
+        "canonical": "#574837",
+        "oklch": "oklch(41.2% 0.034 70.2)",
         "tonalRamp": [
-          "oklch(15% 0.022 77.0)",
-          "oklch(26% 0.037 77.0)",
-          "oklch(38% 0.037 77.0)",
-          "oklch(49% 0.037 77.0)",
-          "oklch(61% 0.037 77.0)",
-          "oklch(72% 0.037 77.0)",
-          "oklch(84% 0.037 77.0)",
-          "oklch(95% 0.022 77.0)"
+          "oklch(15% 0.018 70.2)",
+          "oklch(26% 0.034 70.2)",
+          "oklch(38% 0.034 70.2)",
+          "oklch(49% 0.034 70.2)",
+          "oklch(61% 0.034 70.2)",
+          "oklch(72% 0.034 70.2)",
+          "oklch(84% 0.034 70.2)",
+          "oklch(95% 0.015 70.2)"
         ]
       },
       "faint": {
         "role": "neutral",
         "displayName": "Faint",
-        "canonical": "#a08f78",
+        "canonical": "#5f4f3a",
+        "oklch": "oklch(43.8% 0.039 74.1)",
         "tonalRamp": [
-          "oklch(15% 0.023 75.3)",
-          "oklch(26% 0.039 75.3)",
-          "oklch(38% 0.039 75.3)",
-          "oklch(49% 0.039 75.3)",
-          "oklch(61% 0.039 75.3)",
-          "oklch(72% 0.039 75.3)",
-          "oklch(84% 0.039 75.3)",
-          "oklch(95% 0.023 75.3)"
+          "oklch(15% 0.018 74.1)",
+          "oklch(26% 0.039 74.1)",
+          "oklch(38% 0.039 74.1)",
+          "oklch(49% 0.039 74.1)",
+          "oklch(61% 0.039 74.1)",
+          "oklch(72% 0.039 74.1)",
+          "oklch(84% 0.039 74.1)",
+          "oklch(95% 0.015 74.1)"
         ]
       },
       "marigold": {
         "role": "primary",
-        "displayName": "Board Marigold",
-        "canonical": "#f2a93b",
+        "displayName": "Marigold Plate",
+        "canonical": "#e8922c",
+        "oklch": "oklch(73.3% 0.150 64.9)",
         "tonalRamp": [
-          "oklch(15% 0.088 73.0)",
-          "oklch(26% 0.147 73.0)",
-          "oklch(38% 0.147 73.0)",
-          "oklch(49% 0.147 73.0)",
-          "oklch(61% 0.147 73.0)",
-          "oklch(72% 0.147 73.0)",
-          "oklch(84% 0.147 73.0)",
-          "oklch(95% 0.088 73.0)"
+          "oklch(15% 0.018 64.9)",
+          "oklch(26% 0.150 64.9)",
+          "oklch(38% 0.150 64.9)",
+          "oklch(49% 0.150 64.9)",
+          "oklch(61% 0.150 64.9)",
+          "oklch(72% 0.150 64.9)",
+          "oklch(84% 0.150 64.9)",
+          "oklch(95% 0.015 64.9)"
         ]
       },
       "marigold-hi": {
         "role": "primary",
-        "displayName": "Marigold Hover",
-        "canonical": "#f7bb5c",
+        "displayName": "Marigold Hi",
+        "canonical": "#f0a447",
+        "oklch": "oklch(77.7% 0.139 68.3)",
         "tonalRamp": [
-          "oklch(15% 0.079 76.6)",
-          "oklch(26% 0.131 76.6)",
-          "oklch(38% 0.131 76.6)",
-          "oklch(49% 0.131 76.6)",
-          "oklch(61% 0.131 76.6)",
-          "oklch(72% 0.131 76.6)",
-          "oklch(84% 0.131 76.6)",
-          "oklch(95% 0.079 76.6)"
+          "oklch(15% 0.018 68.3)",
+          "oklch(26% 0.139 68.3)",
+          "oklch(38% 0.139 68.3)",
+          "oklch(49% 0.139 68.3)",
+          "oklch(61% 0.139 68.3)",
+          "oklch(72% 0.139 68.3)",
+          "oklch(84% 0.139 68.3)",
+          "oklch(95% 0.015 68.3)"
         ]
       },
       "marigold-lo": {
         "role": "primary",
-        "displayName": "Marigold Press",
-        "canonical": "#dd9425",
+        "displayName": "Marigold Lo",
+        "canonical": "#d27f1c",
+        "oklch": "oklch(67.1% 0.144 63.5)",
         "tonalRamp": [
-          "oklch(15% 0.087 71.4)",
-          "oklch(26% 0.145 71.4)",
-          "oklch(38% 0.145 71.4)",
-          "oklch(49% 0.145 71.4)",
-          "oklch(61% 0.145 71.4)",
-          "oklch(72% 0.145 71.4)",
-          "oklch(84% 0.145 71.4)",
-          "oklch(95% 0.087 71.4)"
+          "oklch(15% 0.018 63.5)",
+          "oklch(26% 0.144 63.5)",
+          "oklch(38% 0.144 63.5)",
+          "oklch(49% 0.144 63.5)",
+          "oklch(61% 0.144 63.5)",
+          "oklch(72% 0.144 63.5)",
+          "oklch(84% 0.144 63.5)",
+          "oklch(95% 0.015 63.5)"
+        ]
+      },
+      "saffron": {
+        "role": "primary",
+        "displayName": "Deep Saffron",
+        "canonical": "#8a4205",
+        "oklch": "oklch(46.3% 0.117 51.9)",
+        "tonalRamp": [
+          "oklch(15% 0.018 51.9)",
+          "oklch(26% 0.117 51.9)",
+          "oklch(38% 0.117 51.9)",
+          "oklch(49% 0.117 51.9)",
+          "oklch(61% 0.117 51.9)",
+          "oklch(72% 0.117 51.9)",
+          "oklch(84% 0.117 51.9)",
+          "oklch(95% 0.015 51.9)"
         ]
       },
       "changed": {
         "role": "neutral",
-        "displayName": "Changed Amber-Brown",
-        "canonical": "#33261a",
+        "displayName": "Highlighter",
+        "canonical": "#f8e2b4",
+        "oklch": "oklch(91.9% 0.064 85.4)",
         "tonalRamp": [
-          "oklch(15% 0.017 64.0)",
-          "oklch(26% 0.029 64.0)",
-          "oklch(38% 0.029 64.0)",
-          "oklch(49% 0.029 64.0)",
-          "oklch(61% 0.029 64.0)",
-          "oklch(72% 0.029 64.0)",
-          "oklch(84% 0.029 64.0)",
-          "oklch(95% 0.017 64.0)"
+          "oklch(15% 0.018 85.4)",
+          "oklch(26% 0.064 85.4)",
+          "oklch(38% 0.064 85.4)",
+          "oklch(49% 0.064 85.4)",
+          "oklch(61% 0.064 85.4)",
+          "oklch(72% 0.064 85.4)",
+          "oklch(84% 0.064 85.4)",
+          "oklch(95% 0.015 85.4)"
         ]
       },
       "open": {
-        "role": "status",
-        "displayName": "Vermilion Open",
-        "canonical": "#f07052",
+        "role": "tertiary",
+        "displayName": "Stamp Red",
+        "canonical": "#9c2714",
+        "oklch": "oklch(45.9% 0.156 31.9)",
         "tonalRamp": [
-          "oklch(15% 0.096 34.5)",
-          "oklch(26% 0.160 34.5)",
-          "oklch(38% 0.160 34.5)",
-          "oklch(49% 0.160 34.5)",
-          "oklch(61% 0.160 34.5)",
-          "oklch(72% 0.160 34.5)",
-          "oklch(84% 0.160 34.5)",
-          "oklch(95% 0.096 34.5)"
+          "oklch(15% 0.018 31.9)",
+          "oklch(26% 0.156 31.9)",
+          "oklch(38% 0.156 31.9)",
+          "oklch(49% 0.156 31.9)",
+          "oklch(61% 0.156 31.9)",
+          "oklch(72% 0.156 31.9)",
+          "oklch(84% 0.156 31.9)",
+          "oklch(95% 0.015 31.9)"
         ]
       },
       "progress": {
-        "role": "status",
-        "displayName": "Works Blue",
-        "canonical": "#7cb7d6",
+        "role": "tertiary",
+        "displayName": "Stamp Blue",
+        "canonical": "#265482",
+        "oklch": "oklch(43.7% 0.091 250.7)",
         "tonalRamp": [
-          "oklch(15% 0.045 232.0)",
-          "oklch(26% 0.076 232.0)",
-          "oklch(38% 0.076 232.0)",
-          "oklch(49% 0.076 232.0)",
-          "oklch(61% 0.076 232.0)",
-          "oklch(72% 0.076 232.0)",
-          "oklch(84% 0.076 232.0)",
-          "oklch(95% 0.045 232.0)"
+          "oklch(15% 0.018 250.7)",
+          "oklch(26% 0.091 250.7)",
+          "oklch(38% 0.091 250.7)",
+          "oklch(49% 0.091 250.7)",
+          "oklch(61% 0.091 250.7)",
+          "oklch(72% 0.091 250.7)",
+          "oklch(84% 0.091 250.7)",
+          "oklch(95% 0.015 250.7)"
         ]
       },
       "fixed": {
-        "role": "status",
-        "displayName": "Leaf Green",
-        "canonical": "#8cc07a",
+        "role": "tertiary",
+        "displayName": "Stamp Green",
+        "canonical": "#2f5c23",
+        "oklch": "oklch(42.8% 0.100 139.5)",
         "tonalRamp": [
-          "oklch(15% 0.067 137.9)",
-          "oklch(26% 0.111 137.9)",
-          "oklch(38% 0.111 137.9)",
-          "oklch(49% 0.111 137.9)",
-          "oklch(61% 0.111 137.9)",
-          "oklch(72% 0.111 137.9)",
-          "oklch(84% 0.111 137.9)",
-          "oklch(95% 0.067 137.9)"
+          "oklch(15% 0.018 139.5)",
+          "oklch(26% 0.100 139.5)",
+          "oklch(38% 0.100 139.5)",
+          "oklch(49% 0.100 139.5)",
+          "oklch(61% 0.100 139.5)",
+          "oklch(72% 0.100 139.5)",
+          "oklch(84% 0.100 139.5)",
+          "oklch(95% 0.015 139.5)"
         ]
       }
     },
@@ -237,7 +300,7 @@
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Page titles on map and report."
+        "purpose": "Page titles; empty, error and section heads step down from it."
       },
       "title": {
         "displayName": "Title",
@@ -245,7 +308,7 @@
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Row titles and comments at 15px; descriptions at 16px, relaxed leading, max 65ch."
+        "purpose": "Row titles, comments, segment values; descriptions at 16px capped at 65ch."
       },
       "label": {
         "displayName": "Label",
@@ -253,50 +316,78 @@
       },
       "status": {
         "displayName": "Status",
-        "purpose": "Status word beside its 8px square mark."
+        "purpose": "Status word beside its square mark on board rows."
+      },
+      "stamp": {
+        "displayName": "Stamp",
+        "purpose": "Rubber-stamp status on tickets."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Every plate; large plates step to 1.125rem."
       },
       "figure": {
         "displayName": "Figure",
-        "purpose": "Upvote and tally counts, CF codes, coordinates. Mono for figures only."
+        "purpose": "Counts, CF codes and coordinates only."
       }
     },
     "shadows": [
       {
-        "name": "map-popup",
-        "value": "0 8px 24px rgb(0 0 0 / 0.45)",
-        "purpose": "Leaflet popups only."
+        "name": "slip",
+        "value": "0 1px 0 rgb(92 66 28 / 0.1), 0 3px 8px -3px rgb(92 66 28 / 0.28)",
+        "purpose": "Every ticket slip on the manila (--shadow-slip); also map zoom controls and the duplicate notice."
       },
       {
-        "name": "map-pin",
-        "value": "drop-shadow(0 2px 3px rgba(0,0,0,.55))",
-        "purpose": "Filter on square status-tag pins only."
+        "name": "slip-lifted",
+        "value": "0 1px 0 rgb(92 66 28 / 0.1), 0 6px 14px -4px rgb(92 66 28 / 0.32)",
+        "purpose": "Hover on the lead ticket."
       },
       {
-        "name": "select-rule-top",
-        "value": "inset 0 2px 0 var(--color-marigold)",
-        "purpose": "Active bottom-nav tab."
+        "name": "loose-sheet",
+        "value": "0 6px 18px -4px rgb(60 40 12 / 0.4)",
+        "purpose": "Map popups; the toast uses 0.45 alpha."
       },
       {
-        "name": "select-rule-bottom",
-        "value": "inset 0 -2px 0 var(--color-marigold)",
-        "purpose": "Selected tally segment."
+        "name": "column-on-desk",
+        "value": "0 6px 28px -10px rgb(92 66 28 / 0.45)",
+        "purpose": "The phone column over the desk from 640px up."
       },
       {
-        "name": "field-focus",
-        "value": "inset 0 0 0 1px var(--color-marigold)",
-        "purpose": "Doubles the field border on focus."
+        "name": "notch",
+        "value": "inset 0 1px 2px rgb(92 66 28 / 0.25)",
+        "purpose": "Half-circle perforation notches."
+      },
+      {
+        "name": "punch-hole",
+        "value": "inset 0 1.5px 2px rgb(60 40 12 / 0.45), 0 0 0 1px rgb(92 66 28 / 0.35)",
+        "purpose": "Conductor's punch hole in the stub."
+      },
+      {
+        "name": "map-tag",
+        "value": "drop-shadow(0 2px 2px rgba(60,40,12,.4))",
+        "purpose": "CSS filter on map status pins."
       }
     ],
     "motion": [
       {
-        "name": "flip-rerank",
-        "value": "420ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "Board rows glide to their new rank on sort or filter change; skipped under reduced motion."
+        "name": "ease-paper",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Stamp-down, punch-in and the FLIP re-rank."
       },
       {
-        "name": "state-fade",
+        "name": "stamp-down",
+        "value": "360ms; rotate(-9deg) scale(1.7) -> rotate(-3deg) scale(0.94) at 55% -> rotate(-3deg) scale(1)",
+        "purpose": "New status stamp after an admin change on this screen; never on load."
+      },
+      {
+        "name": "punch-in",
+        "value": "220ms; scale(0.2), opacity 0 -> scale(1), opacity 1",
+        "purpose": "Punch hole appearing after upvoting on the issue pass."
+      },
+      {
+        "name": "colour-shift",
         "value": "150ms ease-out",
-        "purpose": "Background, border and colour changes on buttons, fields, rows and tabs."
+        "purpose": "Background, border and colour changes on plates, fields, tabs and rows."
       },
       {
         "name": "reduced-motion",
@@ -310,162 +401,167 @@
         "value": "640px"
       }
     ],
-    "pinRamp": [
+    "textures": [
       {
-        "minUpvotes": 0,
-        "size": "26px"
+        "name": "grain",
+        "value": "--grain: SVG fractalNoise, baseFrequency .85, 3 octaves, brown speckle, 220px tile",
+        "purpose": "Fine speckle on manila, ticket stock, stub, notches and punch holes."
       },
       {
-        "minUpvotes": 10,
-        "size": "32px"
+        "name": "fibre",
+        "value": "--fibre: SVG fractalNoise, baseFrequency .004 .09, 360px tile",
+        "purpose": "Long faint fibres on the manila sheet and the desk only."
       },
       {
-        "minUpvotes": 25,
-        "size": "40px"
+        "name": "ink-wear",
+        "value": "--ink-wear: SVG noise mask, 140px tile",
+        "purpose": "Uneven stamp-pad coverage on rubber stamps."
+      },
+      {
+        "name": "paper-tiles",
+        "value": "filter: sepia(0.38) saturate(0.78) contrast(0.94) brightness(1.01)",
+        "purpose": "Warms OSM map tiles onto the manila."
       }
-    ],
-    "mapTiles": {
-      "filter": "invert(1) hue-rotate(180deg) brightness(0.82) contrast(0.92) sepia(0.32) saturate(0.75)",
-      "heatGradient": {
-        "1": "#f8e3b8",
-        "0.2": "#5a1f12",
-        "0.45": "#b8401f",
-        "0.7": "#f07052",
-        "0.9": "#f2a93b"
-      }
-    }
+    ]
   },
   "components": [
     {
-      "name": "Primary Button",
+      "name": "Primary Plate",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Solid marigold plate; the one action on a surface.",
-      "html": "<button class=\"ds-btn-primary\">Submit report</button>",
-      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border:1px solid transparent;border-radius:0;background:var(--color-marigold,#f2a93b);color:var(--color-ground,#17120f);font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:15px;font-weight:700;letter-spacing:.08em;cursor:pointer;transition:background-color 150ms ease-out}.ds-btn-primary:hover{background:var(--color-marigold-hi,#f7bb5c)}.ds-btn-primary:active{background:var(--color-marigold-lo,#dd9425)}.ds-btn-primary:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:2px}.ds-btn-primary:disabled{background:var(--color-raised,#2b231d);color:var(--color-faint,#a08f78);cursor:not-allowed}"
+      "description": "Marigold action plate with ink text; one per view plus the Report plate.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Report an issue</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border:1px solid transparent;border-radius:0;font-family:\"Barlow Semi Condensed\",sans-serif;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background-color 150ms ease-out,border-color 150ms ease-out,color 150ms ease-out}.ds-btn-primary{background:var(--color-marigold);border-color:var(--color-marigold-lo);color:var(--color-ink)}.ds-btn-primary:hover{background:var(--color-marigold-hi)}.ds-btn-primary:active{background:var(--color-marigold-lo)}.ds-btn-primary:focus-visible{outline:2px solid var(--color-saffron);outline-offset:2px}"
     },
     {
-      "name": "Secondary Button",
+      "name": "Secondary Plate",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Ground fill with a strong hairline; the quieter alternative.",
-      "html": "<button class=\"ds-btn-secondary\">Clear filters</button>",
-      "css": ".ds-btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border:1px solid var(--color-line-strong,#5c4b3d);border-radius:0;background:var(--color-ground,#17120f);color:var(--color-paper,#f4ead8);font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:15px;font-weight:700;letter-spacing:.08em;cursor:pointer;transition:background-color 150ms ease-out,border-color 150ms ease-out}.ds-btn-secondary:hover{background:var(--color-raised,#2b231d);border-color:var(--color-dim,#bcac95)}.ds-btn-secondary:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:2px}"
+      "description": "Ticket-stock button with a strong-rule edge for secondary actions.",
+      "html": "<button class=\"ds-btn2\">Clear filters</button>",
+      "css": ".ds-btn2{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border:1px solid var(--color-line-strong);border-radius:0;background:var(--color-panel);color:var(--color-ink);font-family:\"Barlow Semi Condensed\",sans-serif;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background-color 150ms ease-out,border-color 150ms ease-out}.ds-btn2:hover{background:var(--color-raised);border-color:var(--color-dim)}.ds-btn2:focus-visible{outline:2px solid var(--color-saffron);outline-offset:2px}"
     },
     {
       "name": "Field",
       "kind": "input",
       "refersTo": "field",
-      "description": "Square panel field; border and inset ring go marigold on focus.",
-      "html": "<input class=\"ds-field\" placeholder=\"Add a comment\" />",
-      "css": ".ds-field{width:100%;min-height:48px;padding:12px 14px;background:var(--color-panel,#221b16);border:1px solid var(--color-line-strong,#5c4b3d);border-radius:0;color:var(--color-paper,#f4ead8);font-family:Barlow,sans-serif;font-size:16px;line-height:1.4;transition:border-color 150ms ease-out}.ds-field::placeholder{color:var(--color-faint,#a08f78)}.ds-field:focus{outline:none;border-color:var(--color-marigold,#f2a93b);box-shadow:inset 0 0 0 1px var(--color-marigold,#f2a93b)}"
+      "description": "Square ticket-stock field; deep-saffron edge and inset ring on focus.",
+      "html": "<input class=\"ds-field\" placeholder=\"Add an update or comment…\" />",
+      "css": ".ds-field{width:100%;min-height:48px;padding:12px 14px;background:var(--color-panel);border:1px solid var(--color-line-strong);border-radius:0;color:var(--color-ink);caret-color:var(--color-saffron);font-family:Barlow,sans-serif;font-size:16px;line-height:1.4;transition:border-color 150ms ease-out}.ds-field::placeholder{color:var(--color-faint)}.ds-field:focus{outline:none;border-color:var(--color-saffron);box-shadow:inset 0 0 0 1px var(--color-saffron)}"
     },
     {
-      "name": "Status Badge and NOW Chip",
-      "kind": "chip",
-      "refersTo": "chip-changed",
-      "description": "Square status mark plus word in its ink; the marigold NOW chip replaces it on a changed row.",
-      "html": "<div class=\"ds-chips\"><span class=\"ds-status ds-open\"><i></i>Open</span><span class=\"ds-status ds-prog\"><i></i>In Progress</span><span class=\"ds-status ds-fixed\"><i></i>Resolved</span><span class=\"ds-now\">Now In Progress</span></div>",
-      "css": ".ds-chips{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.ds-status{display:inline-flex;align-items:flex-start;gap:6px;white-space:nowrap;font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:13px;font-weight:700;line-height:1.25;letter-spacing:.06em}.ds-status i{width:8px;height:8px;margin-top:.3em;flex-shrink:0;background:currentColor}.ds-open{color:var(--color-open,#f07052)}.ds-prog{color:var(--color-progress,#7cb7d6)}.ds-fixed{color:var(--color-fixed,#8cc07a)}.ds-now{display:inline-block;white-space:nowrap;padding:4px;background:var(--color-marigold,#f2a93b);color:var(--color-ground,#17120f);font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:11px;font-weight:700;line-height:1.25;letter-spacing:.02em}"
-    },
-    {
-      "name": "Category Tab",
+      "name": "Category Tabs",
       "kind": "chip",
       "refersTo": "tab-category",
-      "description": "Square filter tabs; the selected one is a marigold plate.",
-      "html": "<div class=\"ds-tabs\"><button class=\"ds-tab ds-on\">All</button><button class=\"ds-tab\">Pothole</button><button class=\"ds-tab\">Garbage</button></div>",
-      "css": ".ds-tabs{display:flex;gap:8px}.ds-tab{height:40px;padding:0 12px;border:1px solid var(--color-line-strong,#5c4b3d);border-radius:0;background:transparent;color:var(--color-paper,#f4ead8);font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:14px;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:border-color 150ms ease-out}.ds-tab:hover{border-color:var(--color-dim,#bcac95)}.ds-tab:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:2px}.ds-tab.ds-on{background:var(--color-marigold,#f2a93b);border-color:var(--color-marigold,#f2a93b);color:var(--color-ground,#17120f)}"
+      "description": "Square 40px filter tabs; selected is a marigold plate.",
+      "html": "<div class=\"ds-tabs\"><button class=\"ds-tab ds-on\" aria-pressed=\"true\">All</button><button class=\"ds-tab\">Pothole</button><button class=\"ds-tab\">Garbage</button></div>",
+      "css": ".ds-tabs{display:flex;gap:8px}.ds-tab{height:40px;padding:0 12px;border:1px solid var(--color-line-strong);border-radius:0;background:var(--color-panel);color:var(--color-ink);font-family:\"Barlow Semi Condensed\",sans-serif;font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background-color 150ms ease-out,border-color 150ms ease-out}.ds-tab:hover{background:var(--color-raised);border-color:var(--color-dim)}.ds-tab.ds-on{background:var(--color-marigold);border-color:var(--color-marigold)}.ds-tab:focus-visible{outline:2px solid var(--color-saffron);outline-offset:2px}"
     },
     {
-      "name": "Board Rows",
+      "name": "Status Stamp",
       "kind": "custom",
-      "refersTo": "board-row",
-      "description": "Ranked three-column rows; a changed row is solid tinted and carries the NOW chip.",
-      "html": "<div class=\"ds-board\"><div class=\"ds-row ds-head\"><span class=\"ds-lbl\">Upvotes</span><span class=\"ds-lbl\">Issue</span><span class=\"ds-lbl ds-r\">Status</span></div><a class=\"ds-row\" href=\"#\"><span class=\"ds-fig\">34</span><span><span class=\"ds-t\">Deep pothole outside Lajpat Nagar metro gate 2</span><span class=\"ds-m\">Pothole · 2d ago</span></span><span class=\"ds-r ds-st\"><i></i>Open</span></a><a class=\"ds-row ds-changed\" href=\"#\"><span class=\"ds-fig\">12</span><span><span class=\"ds-t\">Streetlight out on Ring Road service lane</span><span class=\"ds-m\">Streetlight · 5d ago</span></span><span class=\"ds-r\"><span class=\"ds-now\">Now Resolved</span></span></a></div>",
-      "css": ".ds-board{background:var(--color-ground,#17120f);color:var(--color-paper,#f4ead8);font-family:Barlow,sans-serif;max-width:512px}.ds-row{display:grid;grid-template-columns:3rem minmax(0,1fr) 6rem;align-items:center;column-gap:10px;padding:12px 16px;min-height:72px;border-bottom:1px solid var(--color-line,#42362c);color:inherit;text-decoration:none;transition:background-color 150ms ease-out}.ds-row:hover{background:var(--color-panel,#221b16)}.ds-row:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:2px}.ds-head{min-height:36px;padding-top:0;padding-bottom:0;border-top:1px solid var(--color-line,#42362c)}.ds-head:hover{background:none}.ds-lbl{font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--color-dim,#bcac95)}.ds-r{display:flex;justify-content:flex-end;text-align:right}.ds-fig{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.02em;font-size:22px;font-weight:700;line-height:1;color:var(--color-marigold,#f2a93b)}.ds-t{display:block;font-size:15px;font-weight:500;line-height:1.375}.ds-m{display:block;margin-top:4px;font-size:13px;color:var(--color-faint,#a08f78)}.ds-st{gap:6px;white-space:nowrap;font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--color-open,#f07052)}.ds-st i{width:8px;height:8px;margin-top:.3em;background:currentColor}.ds-changed{background:var(--color-changed,#33261a)}.ds-changed:hover{background:var(--color-raised,#2b231d)}.ds-now{padding:4px;background:var(--color-marigold,#f2a93b);color:var(--color-ground,#17120f);font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:11px;font-weight:700;letter-spacing:.02em;white-space:nowrap}"
+      "refersTo": "typography.stamp",
+      "description": "Rubber-stamp status on tickets: double-ruled, tilted -3deg, stamp-pad ink, uneven coverage.",
+      "html": "<div class=\"ds-stamps\"><span class=\"ds-stamp ds-s-open\">Open</span><span class=\"ds-stamp ds-s-prog\">In Progress</span><span class=\"ds-stamp ds-s-fix\">Resolved</span></div>",
+      "css": ".ds-stamps{display:flex;gap:16px;padding:14px;background:var(--color-panel)}.ds-s-open{color:var(--color-open)}.ds-s-prog{color:var(--color-progress)}.ds-s-fix{color:var(--color-fixed)}.ds-stamp{display:inline-flex;align-items:center;padding:.32em .55em .24em;border:2px solid currentColor;border-radius:0;box-shadow:inset 0 0 0 2px var(--color-panel),inset 0 0 0 3px currentColor;font-family:\"Barlow Semi Condensed\",sans-serif;font-size:15px;font-weight:700;letter-spacing:.1em;line-height:1.1;text-transform:uppercase;white-space:nowrap;transform:rotate(-3deg);-webkit-mask-image:var(--ink-wear);mask-image:var(--ink-wear);mask-size:140px 140px;animation:ds-stamp-down 360ms cubic-bezier(.16,1,.3,1) both}@keyframes ds-stamp-down{0%{opacity:0;transform:rotate(-9deg) scale(1.7)}55%{opacity:1;transform:rotate(-3deg) scale(.94)}100%{opacity:1;transform:rotate(-3deg) scale(1)}}"
     },
     {
       "name": "Lead Ticket",
       "kind": "card",
       "refersTo": "ticket",
-      "description": "Top issue as a ticket: segments left, punched perforation, upvote stub right.",
-      "html": "<a class=\"ds-ticket\" href=\"#\"><div class=\"ds-body\"><div class=\"ds-hd\"><span class=\"ds-cat\">Pothole</span><span class=\"ds-code\">CF-0001</span></div><h3>Deep pothole outside Lajpat Nagar metro gate 2</h3><dl><div><dt>Status</dt><dd class=\"ds-open\">Open</dd></div><div><dt>Reported</dt><dd>2d ago</dd></div></dl></div><div class=\"ds-stub\"><span class=\"ds-big\">34</span><span class=\"ds-lbl\">Upvotes</span></div></a>",
-      "css": ".ds-ticket{display:grid;grid-template-columns:minmax(0,1fr) 5.75rem;max-width:420px;background:var(--color-panel,#221b16);border:1px solid var(--color-line-strong,#5c4b3d);color:var(--color-paper,#f4ead8);text-decoration:none;font-family:Barlow,sans-serif;transition:border-color 150ms ease-out}.ds-ticket:hover{border-color:var(--color-dim,#bcac95)}.ds-ticket:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:2px}.ds-body{padding:12px 16px 16px}.ds-hd{display:flex;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid var(--color-line,#42362c)}.ds-cat{font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:13px;font-weight:600;letter-spacing:.08em;color:var(--color-dim,#bcac95)}.ds-code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--color-dim,#bcac95)}.ds-ticket h3{margin:12px 0 0;font-size:20px;font-weight:600;line-height:1.25}.ds-ticket dl{display:grid;grid-template-columns:1fr 1fr;margin:16px 0 0;padding-top:12px;border-top:1px solid var(--color-line,#42362c)}.ds-ticket dl div+div{border-left:1px solid var(--color-line,#42362c);padding-left:12px}.ds-ticket dt,.ds-lbl{font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--color-dim,#bcac95)}.ds-ticket dd{margin:4px 0 0;font-size:15px;font-weight:500}.ds-ticket dd.ds-open{color:var(--color-open,#f07052);font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:13px;font-weight:700;letter-spacing:.06em}.ds-stub{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-left:2px dashed var(--color-line-strong,#5c4b3d)}.ds-stub::before,.ds-stub::after{content:\"\";position:absolute;left:-7px;width:12px;height:12px;background:var(--color-ground,#17120f);border:1px solid var(--color-line-strong,#5c4b3d)}.ds-stub::before{top:-7px;border-top-color:var(--color-ground,#17120f)}.ds-stub::after{bottom:-7px;border-bottom-color:var(--color-ground,#17120f)}.ds-big{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.02em;font-size:40px;font-weight:700;line-height:1;color:var(--color-marigold,#f2a93b)}"
+      "description": "Ticket-stock slip with header strip, title, stamped status and a pink counterfoil stub behind a dotted perforation, punched when upvoted.",
+      "html": "<a class=\"ds-ticket\" href=\"#\"><div class=\"ds-tk-main\"><div class=\"ds-tk-head\"><span class=\"ds-cat\">Streetlight</span><span class=\"ds-code\">CF-9726</span></div><h3 class=\"ds-tk-title\">Streetlight out on the Ring Road service lane</h3><div class=\"ds-tk-segs\"><div><div class=\"ds-label\">Status</div><span class=\"ds-stamp2\">Open</span></div><div class=\"ds-seg2\"><div class=\"ds-label\">Reported</div><div class=\"ds-val\">1h ago</div></div></div></div><div class=\"ds-stub\"><span class=\"ds-punch\"></span><span class=\"ds-big\">14</span><span class=\"ds-label\">Upvotes</span></div></a>",
+      "css": ".ds-ticket{display:grid;grid-template-columns:minmax(0,1fr) 92px;max-width:360px;background-color:var(--color-panel);background-image:var(--grain);border:1px solid var(--color-line-strong);box-shadow:var(--shadow-slip);color:var(--color-ink);text-decoration:none;font-family:Barlow,sans-serif;transition:border-color 150ms,box-shadow 150ms}.ds-ticket:hover{border-color:var(--color-dim);box-shadow:0 1px 0 rgb(92 66 28/.1),0 6px 14px -4px rgb(92 66 28/.32)}.ds-ticket:focus-visible{outline:2px solid var(--color-saffron);outline-offset:2px}.ds-tk-main{padding:12px 16px 16px}.ds-tk-head{display:flex;justify-content:space-between;border-bottom:1px solid var(--color-line);padding-bottom:10px}.ds-cat{font-family:\"Barlow Semi Condensed\",sans-serif;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-dim)}.ds-code{font-family:\"JetBrains Mono\",monospace;font-size:13px;color:var(--color-dim)}.ds-tk-title{margin:12px 0 0;font-size:20px;font-weight:600;line-height:1.25}.ds-tk-segs{display:grid;grid-template-columns:1fr 1fr;margin-top:16px;padding-top:12px;border-top:1px solid var(--color-line)}.ds-seg2{border-left:1px solid var(--color-line);padding-left:12px}.ds-label{font-family:\"Barlow Semi Condensed\",sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--color-dim)}.ds-val{margin-top:4px;font-size:15px;font-weight:500}.ds-stamp2{display:inline-flex;margin-top:6px;padding:.32em .55em .24em;border:2px solid var(--color-open);box-shadow:inset 0 0 0 2px var(--color-panel),inset 0 0 0 3px var(--color-open);color:var(--color-open);font-family:\"Barlow Semi Condensed\",sans-serif;font-size:15px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;transform:rotate(-3deg);-webkit-mask-image:var(--ink-wear);mask-image:var(--ink-wear);mask-size:140px 140px}.ds-stub{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background-color:var(--color-stub);background-image:var(--grain);border-left:3px dotted var(--color-line-strong)}.ds-big{font-family:\"JetBrains Mono\",monospace;font-size:40px;font-weight:700;line-height:1;letter-spacing:-.02em;color:var(--color-saffron)}.ds-punch{position:absolute;top:10px;right:10px;width:14px;height:14px;border-radius:50%;background-color:var(--color-ground);background-image:var(--grain);box-shadow:inset 0 1.5px 2px rgb(60 40 12/.45),0 0 0 1px rgb(92 66 28/.35)}"
+    },
+    {
+      "name": "Board Row",
+      "kind": "card",
+      "refersTo": "board-row",
+      "description": "Ranked three-column row printed flat on manila; highlighter fill plus NOW chip when changed.",
+      "html": "<div class=\"ds-board\"><a class=\"ds-row\" href=\"#\"><span class=\"ds-n\">12</span><span><span class=\"ds-t\">Garbage pile outside Lajpat Nagar market</span><span class=\"ds-m\">Garbage · 2h ago</span></span><span class=\"ds-st\"><i></i>Open</span></a><a class=\"ds-row ds-changed\" href=\"#\"><span class=\"ds-n\">7</span><span><span class=\"ds-t\">Pothole on Aurobindo Marg</span><span class=\"ds-m\">Pothole · 1d ago</span></span><span class=\"ds-now\">Now In Progress</span></a></div>",
+      "css": ".ds-board{background-color:var(--color-ground);background-image:var(--grain);border-top:1px solid var(--color-line-strong)}.ds-row{display:grid;grid-template-columns:3rem minmax(0,1fr) 6rem;align-items:center;gap:10px;min-height:72px;padding:12px 16px;border-bottom:1px solid var(--color-line);color:var(--color-ink);text-decoration:none;font-family:Barlow,sans-serif;transition:background-color 150ms ease-out}.ds-row:hover{background:var(--color-raised)}.ds-row:focus-visible{outline:2px solid var(--color-saffron);outline-offset:2px}.ds-changed{background:var(--color-changed)}.ds-n{font-family:\"JetBrains Mono\",monospace;font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--color-saffron)}.ds-t{display:block;font-size:15px;font-weight:500;line-height:1.375}.ds-m{display:block;margin-top:4px;font-size:13px;color:var(--color-faint)}.ds-st{display:flex;justify-content:flex-end;align-items:center;gap:6px;font-family:\"Barlow Semi Condensed\",sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--color-open)}.ds-st i{width:8px;height:8px;background:var(--color-open)}.ds-now{justify-self:end;padding:4px;border:1px solid var(--color-marigold-lo);background:var(--color-marigold);color:var(--color-ink);font-family:\"Barlow Semi Condensed\",sans-serif;font-size:12px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}"
     },
     {
       "name": "Bottom Plank",
       "kind": "nav",
-      "refersTo": "button-primary",
-      "description": "Fixed bottom nav; Report is a marigold plate in the wider centre column, active tabs carry a 2px inset marigold top rule.",
-      "html": "<nav class=\"ds-nav\"><a class=\"ds-tab-n ds-act\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"square\"><path d=\"M4 5h16M4 10h16M4 15h16M4 20h10\"/></svg>Board</a><span class=\"ds-plate-w\"><a class=\"ds-plate\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"square\"><path d=\"M12 5v14M5 12h14\"/></svg>Report</a></span><a class=\"ds-tab-n\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Zm0 0v14m6-12v14\"/></svg>Map</a></nav>",
-      "css": ".ds-nav{display:grid;grid-template-columns:1fr 1.3fr 1fr;height:64px;max-width:512px;background:var(--color-ground,#17120f);border-top:1px solid var(--color-line,#42362c)}.ds-tab-n{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--color-faint,#a08f78);text-decoration:none;font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:12px;font-weight:700;letter-spacing:.12em;transition:color 150ms ease-out}.ds-tab-n:hover{color:var(--color-dim,#bcac95)}.ds-tab-n:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:-2px}.ds-tab-n.ds-act{color:var(--color-paper,#f4ead8);box-shadow:inset 0 2px 0 var(--color-marigold,#f2a93b)}.ds-plate-w{display:flex;padding:8px}.ds-plate{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--color-marigold,#f2a93b);color:var(--color-ground,#17120f);text-decoration:none;font-family:'Barlow Semi Condensed',sans-serif;text-transform:uppercase;font-size:16px;font-weight:700;letter-spacing:.08em;transition:background-color 150ms ease-out}.ds-plate:hover{background:var(--color-marigold-hi,#f7bb5c)}.ds-plate:active{background:var(--color-marigold-lo,#dd9425)}.ds-plate:focus-visible{outline:2px solid var(--color-marigold,#f2a93b);outline-offset:2px}"
+      "refersTo": "",
+      "description": "Fixed manila bottom bar: Board and Map tabs with an inset marigold rule when active, Report as a marigold plate.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-ni ds-act\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"square\"><path d=\"M4 5h16M4 10h16M4 15h16M4 20h10\"/></svg>Board</a><span class=\"ds-rp\"><a class=\"ds-rpb\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"square\"><path d=\"M12 5v14M5 12h14\"/></svg>Report</a></span><a class=\"ds-ni\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Zm0 0v14m6-12v14\"/></svg>Map</a></nav>",
+      "css": ".ds-nav{display:grid;grid-template-columns:1fr 1.3fr 1fr;height:64px;max-width:512px;background-color:var(--color-ground);background-image:var(--grain);border-top:1px solid var(--color-line-strong)}.ds-ni{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-family:\"Barlow Semi Condensed\",sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-faint);text-decoration:none;transition:color 150ms}.ds-ni:hover{color:var(--color-dim)}.ds-ni.ds-act{color:var(--color-ink);box-shadow:inset 0 2px 0 var(--color-marigold)}.ds-ni:focus-visible,.ds-rpb:focus-visible{outline:2px solid var(--color-saffron);outline-offset:2px}.ds-rp{display:flex;padding:8px}.ds-rpb{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--color-marigold);border:1px solid var(--color-marigold-lo);color:var(--color-ink);font-family:\"Barlow Semi Condensed\",sans-serif;font-size:16px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:background-color 150ms ease-out}.ds-rpb:hover{background:var(--color-marigold-hi)}.ds-rpb:active{background:var(--color-marigold-lo)}"
     }
   ],
   "narrative": {
-    "northStar": "The Ticket & Gate Board",
-    "overview": "CivicFix reads the neighbourhood's issues the way a station reads its departures: a ranked board on a warm near-black ground, one lead issue printed as a ticket with a punched stub, and every row split into columns by hairlines. The world is dark and warm, flat, square-cornered and dense enough to scan in sunlight on a phone held at arm's length. Nothing floats; surfaces step up in tone (ground, panel, raised) and 1px rules do the dividing.\n\nMarigold is the board's lamp. It marks the one action on any surface, the upvote figures, and anything that has changed since this device last looked. The three status colours (vermilion, works blue, leaf green) appear only where they carry status meaning: a small square mark, the status word, a map tag's border. Type is a station-signage pairing: Barlow Semi Condensed in uppercase for labels, buttons and the wordmark; Barlow for titles and reading text; JetBrains Mono tabular figures for counts, codes and coordinates.\n\nMotion is functional. Rows keep their identity when the board re-sorts and glide to their new rank; state changes fade colour over 150ms; reduced motion collapses all of it.",
+    "northStar": "The Ticket Counter",
+    "overview": "CivicFix lays the neighbourhood's issues out on a manila desk the way a Delhi bus conductor's float lays out ticket stock. The page is a sheet of manila card with a fine brown grain and faint fibres running along it; the top issue sits on it as a slip of cream ticket stock with a soft contact shadow, and its pink counterfoil is torn off behind a dotted perforation with round notches bitten out of each edge. Everything else (the tally strip, the tabs, the ranked board rows) is printed directly on the manila in carbon ink and divided by ruled lines.\n\nColour comes from the inks and plates of that counter. Saffron is the action plate: a solid marigold block with ink text for the one thing to do, and a deep saffron for printed figures, links and the bits of type that say \"this is live\". Status is a rubber stamp in stamp-pad ink, red for Open, blue for In Progress, green for Resolved, slightly tilted, double-ruled and unevenly inked. A row whose status moved since this phone last looked is run over with a highlighter until it is opened. Backing an issue punches a clean round conductor's hole through its counterfoil.\n\nThe world is light, warm and legible in direct sunlight: carbon ink on cream holds high contrast, grain stays low-alpha, and every corner is square. The only round shapes are holes in the paper: punch holes and perforation notches. Motion belongs to the paper too: a stamp comes down when an admin changes status, a punch pops in when you upvote, and board rows glide to their new rank; reduced motion collapses all of it.",
     "keyCharacteristics": [
-      "Warm near-black ground with tonal panels; no gradients on surfaces, no translucent buttons.",
-      "Zero radius everywhere; 1px hairlines divide segments, columns and rows.",
-      "One tear device: a dashed perforation with 12px punched notches between a ticket and its stub.",
-      "Marigold is the single action colour and the change signal.",
-      "Uppercase condensed labels, mixed-case Barlow reading text, mono tabular figures.",
-      "Ranked board rows that re-rank in place (FLIP) and stay lit until a changed issue is opened."
+      "Manila ground with SVG grain and fibre; cream ticket stock with grain; pink counterfoil stub.",
+      "Square corners everywhere; round only for punch holes and perforation notches.",
+      "One soft brown contact shadow lifts ticket slips off the manila; rows and chrome are printed flat.",
+      "Saffron in two weights: marigold plates for action, deep saffron for printed figures and links.",
+      "Status as a tilted, double-ruled rubber stamp on tickets and as a square mark plus word on rows.",
+      "Barlow Semi Condensed uppercase for labels and plates, Barlow for reading, JetBrains Mono for figures only."
     ],
     "rules": [
       {
-        "name": "The One Lamp Rule",
-        "body": "Marigold means \"act here\" or \"this moved\". It is never decoration, never a background wash, and never a second meaning.",
+        "name": "The Two Saffrons Rule",
+        "body": "Marigold is a plate and always carries ink text; deep saffron is ink and always sits on paper. Never set saffron text on a marigold plate, and never set body copy in marigold.",
         "section": "colors"
       },
       {
-        "name": "The Status Ink Rule",
-        "body": "Vermilion, works blue and leaf green appear only where a status is being stated. They do not decorate headings, icons or chrome.",
+        "name": "The Stamp Ink Rule",
+        "body": "Red, blue and green state status, or (red and green only) an error or confirmed state. They never decorate headings, icons or chrome, and status is never colour alone: a word or stamp always comes with it.",
         "section": "colors"
       },
       {
-        "name": "The Lit Row Rule",
-        "body": "A changed issue is shown by a solid tinted row (changed) plus a marigold \"NOW <STATUS>\" chip in the status column, held until the issue is opened. It is never a coloured side bar.",
+        "name": "The Highlighter Rule",
+        "body": "A changed issue is shown by a highlighter-filled row plus a marigold \"NOW <STATUS>\" chip, held until the issue is opened. It is never a coloured side bar.",
         "section": "colors"
       },
       {
         "name": "The Figures-Only Mono Rule",
-        "body": "JetBrains Mono sets numbers, ticket codes and coordinates, and nothing else. It is never used as costume for words.",
+        "body": "JetBrains Mono sets numbers, ticket codes and coordinates, and nothing else. It is never costume for words.",
         "section": "typography"
       },
       {
         "name": "The Uppercase Is Condensed Rule",
-        "body": "Anything set in uppercase uses Barlow Semi Condensed with positive tracking; Barlow body text stays mixed case.",
+        "body": "Anything set in uppercase uses Barlow Semi Condensed with positive tracking; Barlow reading text stays mixed case.",
         "section": "typography"
       },
       {
-        "name": "The Flat Board Rule",
-        "body": "Nothing on the board floats. If a surface needs separation, step its tone or draw a hairline.",
+        "name": "The Loose Slip Rule",
+        "body": "Only paper that lies on the manila casts a shadow: tickets, popups, the toast, map controls. Board rows, the tally strip, tabs, bars and buttons are printed on the sheet and stay flat.",
         "section": "elevation"
       },
       {
+        "name": "The Holes Are Round Rule",
+        "body": "A circle means a hole in the paper. Nothing else is rounded: no pills, no soft cards, no rounded buttons.",
+        "section": "shapes"
+      },
+      {
         "name": "The One Tear Rule",
-        "body": "The punched perforation appears only where a ticket meets its stub. Do not use it as a section divider.",
+        "body": "The perforation appears only where a ticket meets its counterfoil stub. It is never a section divider.",
         "section": "shapes"
       }
     ],
     "dos": [
-      "**Do** keep every corner square (0px), including pins, popups and map controls.",
-      "**Do** divide with 1px hairlines (line, or line-strong for outlines) and step tone (ground, panel, raised) for separation.",
-      "**Do** spend marigold only on the surface's action and on change: one primary plate per view plus the NOW chip and upvote figures.",
-      "**Do** pair every status ink with its 8px square mark and the status word, never colour alone.",
+      "**Do** keep every corner square (0px); round only punch holes and perforation notches.",
+      "**Do** print chrome and rows flat on manila, and lift only loose slips (tickets, popups, toast) with the brown Slip shadow.",
+      "**Do** put ink text on marigold plates and use deep saffron for figures, links and live text on paper.",
+      "**Do** show status on tickets as the tilted rubber stamp, and on rows as the 8px square mark plus the status word.",
       "**Do** set counts, CF codes and coordinates in JetBrains Mono tabular figures, and labels in Barlow Semi Condensed uppercase.",
-      "**Do** show a changed issue as a solid changed row plus a NOW <STATUS> chip, held until opened.",
-      "**Do** honour reduced motion: the FLIP re-rank and all transitions collapse."
+      "**Do** show a changed issue as a highlighter row plus a NOW <STATUS> chip, held until opened.",
+      "**Do** keep grain and fibre low-alpha so carbon ink stays legible in sunlight.",
+      "**Do** honour reduced motion: the stamp, the punch, the FLIP re-rank and all transitions collapse."
     ],
     "donts": [
-      "**Don't** round anything or use soft rounded cards.",
-      "**Don't** use translucent or ghost buttons; buttons are solid plates or hairline-bordered ground.",
-      "**Don't** mark change or status with a coloured side stripe wider than 1px.",
-      "**Don't** use the punched perforation anywhere except where a ticket meets its stub.",
-      "**Don't** cast shadows on board surfaces; shadows belong only to map pins and map popups.",
-      "**Don't** use status inks for decoration, or marigold as a background wash.",
-      "**Don't** set words in mono for flavour."
+      "**Don't** round anything else or use soft rounded cards, pills or rounded buttons.",
+      "**Don't** use translucent or ghost buttons; buttons are solid plates or rule-edged stock.",
+      "**Don't** mark change or status with a coloured side stripe.",
+      "**Don't** use the perforation anywhere except where a ticket meets its stub, or pink stock for anything but the stub.",
+      "**Don't** use stamp inks for decoration, or marigold as a background wash or text colour.",
+      "**Don't** use black or grey shadows, glows, or shadows on printed rows and bars.",
+      "**Don't** set words in mono for flavour.",
+      "**Don't** play the stamp or punch motion on page load; they mark a change made here."
     ]
   }
 }

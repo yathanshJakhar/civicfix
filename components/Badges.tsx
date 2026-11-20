@@ -15,6 +15,16 @@ export function StatusBadge({ status, className = "", nowrap = false }: { status
   );
 }
 
+/**
+ * Status as a rubber stamp in stamp-pad ink, used where an issue is shown as a ticket.
+ * `fresh` plays the stamp-down motion; pass it only when the status has just changed.
+ */
+export function StatusStamp({ status, fresh = false }: { status: Status; fresh?: boolean }) {
+  return (
+    <span className={`stamp ${fresh ? "stamp-fresh" : ""} ${STATUS_STYLES[status].text}`}>{status}</span>
+  );
+}
+
 export function CategoryBadge({ category, className = "" }: { category: Category; className?: string }) {
   return (
     <span className={`inline-flex items-center gap-1.5 font-cond text-[13px] font-semibold uppercase tracking-[0.08em] text-dim ${className}`}>
@@ -24,10 +34,10 @@ export function CategoryBadge({ category, className = "" }: { category: Category
   );
 }
 
-/** Marigold flag for an issue whose status moved since this device last opened it. */
+/** Saffron flag for an issue whose status moved since this device last opened it. */
 export function ChangedChip({ status }: { status: Status }) {
   return (
-    <span className="inline-block whitespace-nowrap bg-marigold px-1 py-1 font-cond text-[11px] font-bold uppercase leading-tight tracking-[0.02em] text-ground">
+    <span className="inline-block whitespace-nowrap border border-marigold-lo bg-marigold px-1 py-1 font-cond text-xs font-bold uppercase leading-tight tracking-[0.02em] text-ink">
       Now {status}
     </span>
   );

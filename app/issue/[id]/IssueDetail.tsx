@@ -3,15 +3,19 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CategoryBadge, StatusBadge } from "@/components/Badges";
+import { CategoryBadge, StatusStamp } from "@/components/Badges";
 import CategoryPicker from "@/components/CategoryPicker";
 import { ArrowUp, Bubble } from "@/components/IssueCard";
 import { MiniMap } from "@/components/map";
 import { EmptyState, ErrorState } from "@/components/States";
 import { prettyLabel } from "@/lib/aiMap";
 import { api } from "@/lib/api";
+import AssignContractor from "@/components/AssignContractor";
+import ProgressUpdate from "@/components/ProgressUpdate";
+import { isContractor, useAuth } from "@/lib/auth";
+import { ownsDepartment, runsDepartment } from "@/lib/departments";
 import { STATUSES, type Category, type Issue, type Status } from "@/lib/types";
-import { STATUS_STYLES, getUpvoted, issueCode, markSeen, setUpvoted, timeAgo } from "@/lib/utils";
+import { getUpvoted, issueCode, markSeen, setUpvoted, timeAgo } from "@/lib/utils";
 
 async function copyText(text: string) {
   try {
@@ -34,10 +38,10 @@ async function copyText(text: string) {
 function TopBar({ onShare }: { onShare?: () => void }) {
   const router = useRouter();
   return (
-    <div className="sticky top-0 z-900 flex items-center justify-between border-b border-line bg-ground pt-[env(safe-area-inset-top)]">
+    <div className="sticky top-0 z-900 flex items-center justify-between border-b border-line-strong manila pt-[env(safe-area-inset-top)]">
       <button
         onClick={() => (window.history.length > 1 ? router.back() : router.push("/"))}
-        className="flex h-12 items-center gap-1 px-3 font-cond text-sm font-bold uppercase tracking-[0.08em] text-paper hover:bg-panel"
+        className="flex h-12 items-center gap-1 px-3 font-cond text-sm font-bold uppercase tracking-[0.08em] text-ink hover:bg-panel"
       >
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="square" aria-hidden>
           <path d="M15 18l-6-6 6-6" />
@@ -47,7 +51,7 @@ function TopBar({ onShare }: { onShare?: () => void }) {
       {onShare && (
         <button
           onClick={onShare}
-          className="flex h-12 items-center gap-1.5 border-l border-line px-4 font-cond text-sm font-bold uppercase tracking-[0.08em] text-marigold hover:bg-panel"
+          className="flex h-12 items-center gap-1.5 border-l border-line px-4 font-cond text-sm font-bold uppercase tracking-[0.08em] text-saffron hover:bg-panel"
         >
           <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="square" aria-hidden>
             <path d="M4 12v8h16v-8M16 6l-4-4-4 4M12 2v13" />
@@ -62,8 +66,8 @@ function TopBar({ onShare }: { onShare?: () => void }) {
 export function IssueDetailSkeleton() {
   return (
     <div className="animate-pulse" aria-hidden>
-      <div className="h-12 border-b border-line bg-ground" />
-      <div className="aspect-video bg-panel" />
+      <div className="h-12 border-b border-line-strong manila" />
+      <div className="aspect-video bg-raised" />
       <div className="space-y-3 p-4">
         <div className="h-4 w-1/3 bg-raised" />
         <div className="h-6 w-5/6 bg-raised" />
@@ -89,15 +93,15 @@ function StatusTimeline({ status, createdAt }: { status: Status; createdAt: stri
         return (
           <li key={step.label} className="min-w-0">
             <span className={`block h-1.5 ${done ? "bg-marigold" : "bg-line"}`} aria-hidden />
-            <span className={`mt-2.5 flex items-center gap-1.5 font-cond text-sm font-bold uppercase tracking-[0.06em] ${done ? "text-paper" : "text-faint"}`}>
+            <span className={`mt-2.5 flex items-center gap-1.5 font-cond text-sm font-bold uppercase tracking-[0.06em] ${done ? "text-ink" : "text-faint"}`}>
               {done && (
-                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0 text-marigold" fill="none" stroke="currentColor" strokeWidth={3.2} strokeLinecap="square" aria-hidden>
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0 text-saffron" fill="none" stroke="currentColor" strokeWidth={3.2} strokeLinecap="square" aria-hidden>
                   <path d="M5 12.5 10 17l9-10" />
                 </svg>
               )}
               {step.label}
             </span>
-            <span className={`mt-0.5 block text-[13px] ${now ? "text-marigold" : "text-faint"}`}>
+            <span className={`mt-0.5 block text-[13px] ${now ? "text-saffron" : "text-faint"}`}>
               {done ? step.hint : "Pending"}
               {now && <span className="sr-only"> (current)</span>}
             </span>
@@ -115,10 +119,13 @@ function CategoryCheck({
   issue,
   saving,
   onChange,
+  canEdit,
 }: {
   issue: Issue;
   saving: boolean;
   onChange: (c: Category) => Promise<boolean>;
+  /** Guests can see where the category came from but not change it. */
+  canEdit: boolean;
 }) {
   const [editing, setEditing] = useState(false);
   const ai = issue.ai;
@@ -127,24 +134,24 @@ function CategoryCheck({
 
   return (
     <div className="border-b border-line px-4 py-3">
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex flex-col gap-2.5 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
         <div className="min-w-0 text-[13px] leading-snug">
           {byAi ? (
             <>
-              <p className="font-cond text-sm font-bold uppercase tracking-[0.06em] text-marigold">AI classified</p>
+              <p className="font-cond text-sm font-bold uppercase tracking-[0.06em] text-saffron">AI classified</p>
               <p className="mt-0.5 text-dim">
-                Detected <span className="text-paper">{prettyLabel(ai.label)}</span> ·{" "}
-                <span className="figure text-paper">{pct}%</span> confidence
+                Detected <span className="text-ink">{prettyLabel(ai.label)}</span> ·{" "}
+                <span className="figure text-ink">{pct}%</span> confidence
               </p>
               {ai.confidence < LOW_CONFIDENCE && (
-                <p className="mt-0.5 font-medium text-marigold">Low confidence — please check the category.</p>
+                <p className="mt-0.5 font-medium text-saffron">Low confidence — please check the category.</p>
               )}
             </>
           ) : ai ? (
             <>
-              <p className="font-cond text-sm font-bold uppercase tracking-[0.06em] text-paper">Category corrected</p>
+              <p className="font-cond text-sm font-bold uppercase tracking-[0.06em] text-ink">Category corrected</p>
               <p className="mt-0.5 text-dim">
-                AI suggested <span className="text-paper">{ai.category}</span> ({prettyLabel(ai.label)} ·{" "}
+                AI suggested <span className="text-ink">{ai.category}</span> ({prettyLabel(ai.label)} ·{" "}
                 <span className="figure">{pct}%</span>)
               </p>
             </>
@@ -152,14 +159,16 @@ function CategoryCheck({
             <p className="font-cond text-sm font-bold uppercase tracking-[0.06em] text-dim">Category chosen by reporter</p>
           )}
         </div>
-        <button
-          type="button"
-          onClick={() => setEditing((v) => !v)}
-          aria-expanded={editing}
-          className="btn btn-secondary shrink-0 px-3 py-1.5 text-sm"
-        >
-          {editing ? "Cancel" : byAi ? "Not right? Change" : "Change category"}
-        </button>
+        {canEdit && (
+          <button
+            type="button"
+            onClick={() => setEditing((v) => !v)}
+            aria-expanded={editing}
+            className="btn btn-secondary min-h-10 shrink-0 self-start px-3 py-1.5 text-sm"
+          >
+            {editing ? "Cancel" : byAi ? "Not right? Change" : "Change category"}
+          </button>
+        )}
       </div>
       {editing && (
         <div className="mt-3">
@@ -177,6 +186,7 @@ function CategoryCheck({
 }
 
 export default function IssueDetail({ id }: { id: string }) {
+  const { user } = useAuth();
   const [issue, setIssue] = useState<Issue | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notFound, setNotFound] = useState(false);
@@ -184,9 +194,11 @@ export default function IssueDetail({ id }: { id: string }) {
   const [hasUpvoted, setHasUpvoted] = useState(false);
   const [comment, setComment] = useState("");
   const [posting, setPosting] = useState(false);
-  const [statusSaving, setStatusSaving] = useState<Status | null>(null);
   const [categorySaving, setCategorySaving] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  // Motion plays only for changes made here, never on first load.
+  const [stampFresh, setStampFresh] = useState(false);
+  const [punchFresh, setPunchFresh] = useState(false);
 
   const load = useCallback(async () => {
     setError(null);
@@ -194,7 +206,7 @@ export default function IssueDetail({ id }: { id: string }) {
     try {
       const loaded = await api.get(id);
       setIssue(loaded);
-      // Opening an issue acknowledges its current status, which clears its highlight on the board.
+      // Opening an issue acknowledges its current status, which clears its "changed" highlight.
       markSeen(loaded.id, loaded.status);
     } catch (e) {
       const msg = (e as Error).message;
@@ -227,6 +239,7 @@ export default function IssueDetail({ id }: { id: string }) {
     // Optimistic update — roll back if the request fails.
     setIssue({ ...issue, upvotes: Math.max(0, issue.upvotes + delta) });
     setHasUpvoted(next);
+    setPunchFresh(next);
     try {
       const updated = await api.patch(issue.id, { action: next ? "upvote" : "unvote" });
       setUpvoted(issue.id, next);
@@ -255,20 +268,11 @@ export default function IssueDetail({ id }: { id: string }) {
     }
   }
 
-  async function changeStatus(status: Status) {
-    if (!issue || issue.status === status) return;
-    const previous = issue.status;
-    setStatusSaving(status);
-    setIssue({ ...issue, status });
-    try {
-      setIssue(await api.patch(issue.id, { action: "status", status }));
-      setToast(status === "Resolved" ? "Resolved — removed from the feed and map" : `Status set to ${status}`);
-    } catch {
-      setIssue((cur) => (cur ? { ...cur, status: previous } : cur));
-      setToast("Couldn't change status");
-    } finally {
-      setStatusSaving(null);
-    }
+  /** After the department assigns or the contractor posts progress. */
+  function workUpdated(updated: Issue) {
+    if (issue && updated.status !== issue.status) setStampFresh(true);
+    setIssue(updated);
+    markSeen(updated.id, updated.status);
   }
 
   /** Returns true when saved, so the picker can close. */
@@ -308,7 +312,7 @@ export default function IssueDetail({ id }: { id: string }) {
         <div className="px-4 py-8">
           <EmptyState title="Issue not found" message="It may have been removed, or the link is wrong.">
             <Link href="/" className="btn btn-primary mt-5">
-              Back to the board
+              Back
             </Link>
           </EmptyState>
         </div>
@@ -330,7 +334,11 @@ export default function IssueDetail({ id }: { id: string }) {
   if (!issue) return <IssueDetailSkeleton />;
 
   const sortedComments = [...issue.comments].sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
-  const sectionHead = "font-cond text-base font-bold uppercase tracking-[0.06em] text-paper";
+  // The owning department's officers assign (not the admin); only the assigned contractor moves progress.
+  const canView = !!user && ownsDepartment(user, issue.department);
+  const isDept = !!user && runsDepartment(user, issue.department);
+  const isAssignedContractor = isContractor(user) && !!issue.contractor;
+  const sectionHead = "font-cond text-base font-bold uppercase tracking-[0.06em] text-ink";
 
   return (
     <>
@@ -339,66 +347,82 @@ export default function IssueDetail({ id }: { id: string }) {
       {/* Photo — only when one exists; no placeholder standing in for content. */}
       {issue.imageUrl && (
         // eslint-disable-next-line @next/next/no-img-element -- user upload
-        <img src={issue.imageUrl} alt={issue.title} className="max-h-[60vh] w-full border-b border-line bg-panel object-contain" />
+        <img src={issue.imageUrl} alt={issue.title} className="max-h-[60vh] w-full border-b border-line-strong bg-raised object-contain" />
       )}
 
       {/* The issue as a pass: header strip, title, segments, then the torn-off upvote stub. */}
-      <section className="mx-4 mt-4 border border-line-strong bg-panel">
+      <section className="ticket mx-4 mt-4">
         <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-2.5">
           <CategoryBadge category={issue.category} />
           <span className="figure text-[13px] text-dim">{issueCode(issue.id)}</span>
         </div>
-        <CategoryCheck issue={issue} saving={categorySaving} onChange={changeCategory} />
+        <CategoryCheck issue={issue} saving={categorySaving} onChange={changeCategory} canEdit={isDept} />
         <div className="px-4 pb-4 pt-3">
-          <h1 className="text-2xl font-semibold leading-tight text-paper">{issue.title}</h1>
+          <h1 className="text-2xl font-semibold leading-tight text-ink">{issue.title}</h1>
           {issue.description && (
             <p className="mt-2.5 max-w-[65ch] whitespace-pre-line text-base leading-relaxed text-dim">{issue.description}</p>
           )}
-          <dl className="mt-4 grid grid-cols-3 divide-x divide-line border-t border-line pt-3">
+          <dl className="mt-4 grid grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] divide-x divide-line border-t border-line pt-3">
             <div className="pr-3">
               <dt className="label">Status</dt>
-              <dd className="mt-1.5">
-                <StatusBadge status={issue.status} />
+              <dd className="mt-2">
+                <StatusStamp key={issue.status} status={issue.status} fresh={stampFresh} />
               </dd>
             </div>
             <div className="px-3">
               <dt className="label">Reported</dt>
-              <dd className="mt-1 text-[15px] font-medium text-paper">{timeAgo(issue.createdAt)}</dd>
+              <dd className="mt-1 text-[15px] font-medium text-ink">{timeAgo(issue.createdAt)}</dd>
             </div>
             <div className="pl-3">
               <dt className="label">Comments</dt>
-              <dd className="figure mt-1 text-[15px] font-bold text-paper">{issue.comments.length}</dd>
+              <dd className="figure mt-1 text-[15px] font-bold text-ink">{issue.comments.length}</dd>
             </div>
           </dl>
         </div>
-        <div className="perf-x grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4 p-4">
+        <div className="perf-x stub relative grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4 p-4">
+          {/* The conductor's punch: backing an issue punches this device's ticket. */}
+          {hasUpvoted && (
+            <span className="absolute left-2.5 top-2.5">
+              <span className={`punch ${punchFresh ? "punch-fresh" : ""}`} aria-hidden />
+            </span>
+          )}
           <div className="text-center">
-            <span className="figure block text-[2.75rem] font-bold leading-none text-marigold">{issue.upvotes}</span>
+            <span className="figure block text-[2.75rem] font-bold leading-none text-saffron">{issue.upvotes}</span>
             <span className="label mt-1 block">Upvotes</span>
           </div>
-          <div>
-            <button
-              onClick={toggleUpvote}
-              aria-pressed={hasUpvoted}
-              className={`btn min-h-14 w-full text-lg ${
-                hasUpvoted ? "border-marigold bg-changed text-marigold hover:bg-raised" : "btn-primary"
-              }`}
-            >
-              <ArrowUp className="h-5 w-5" />
-              {hasUpvoted ? "Upvoted" : "Upvote"}
-            </button>
-            {hasUpvoted && <p className="mt-1.5 text-center text-[13px] text-faint">Tap again to remove your upvote</p>}
-          </div>
+          {!user ? (
+            // Guests can only view: backing an issue needs an account.
+            <div>
+              <Link href="/login" className="btn btn-primary min-h-14 w-full text-lg">
+                <ArrowUp className="h-5 w-5" />
+                Log in to upvote
+              </Link>
+            </div>
+          ) : (
+            <div>
+              <button
+                onClick={toggleUpvote}
+                aria-pressed={hasUpvoted}
+                className={`btn min-h-14 w-full text-lg ${
+                  hasUpvoted ? "border-saffron bg-panel text-saffron hover:bg-raised" : "btn-primary"
+                }`}
+              >
+                <ArrowUp className="h-5 w-5" />
+                {hasUpvoted ? "Upvoted" : "Upvote"}
+              </button>
+              {hasUpvoted && <p className="mt-1.5 text-center text-[13px] text-faint">Tap again to remove your upvote</p>}
+            </div>
+          )}
         </div>
       </section>
 
       <div className="space-y-6 px-4 pb-4 pt-6">
         {issue.status === "Resolved" && (
-          <p className="flex items-start gap-2.5 border border-fixed px-4 py-3 text-sm text-paper">
+          <p className="flex items-start gap-2.5 border border-fixed px-4 py-3 text-sm text-ink">
             <span className="mt-1.5 h-2 w-2 shrink-0 bg-fixed" aria-hidden />
             <span>
-              <span className="font-semibold text-fixed">Resolved.</span> This issue no longer appears in the feed or on the
-              map. Set it back to Open or In Progress below to show it again.
+              <span className="font-semibold text-fixed">Resolved</span>
+              {issue.contractor ? <> by {issue.contractor.name}.</> : "."} It no longer appears on the department map.
             </span>
           </p>
         )}
@@ -410,7 +434,7 @@ export default function IssueDetail({ id }: { id: string }) {
         </section>
 
         {/* Map */}
-        <section className="border border-line-strong">
+        <section className="ticket">
           <div className="h-44">
             <MiniMap issue={issue} />
           </div>
@@ -419,8 +443,8 @@ export default function IssueDetail({ id }: { id: string }) {
               {issue.lat.toFixed(5)}, {issue.lng.toFixed(5)}
             </span>
             <span className="flex gap-4 font-cond text-sm font-bold uppercase tracking-[0.06em]">
-              {issue.status !== "Resolved" && (
-                <Link href={`/map?issue=${issue.id}`} className="py-1.5 text-paper underline decoration-line-strong underline-offset-4 hover:decoration-marigold">
+              {canView && issue.status !== "Resolved" && (
+                <Link href={`/map?issue=${issue.id}`} className="py-1.5 text-ink underline decoration-line-strong underline-offset-4 hover:decoration-saffron">
                   On the map
                 </Link>
               )}
@@ -428,7 +452,7 @@ export default function IssueDetail({ id }: { id: string }) {
                 href={`https://www.google.com/maps/search/?api=1&query=${issue.lat},${issue.lng}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-1.5 text-marigold underline decoration-marigold/0 underline-offset-4 hover:decoration-marigold"
+                className="py-1.5 text-saffron underline decoration-saffron/0 underline-offset-4 hover:decoration-saffron"
               >
                 Directions
               </a>
@@ -441,69 +465,91 @@ export default function IssueDetail({ id }: { id: string }) {
           <h2 className={`${sectionHead} flex items-center gap-2`}>
             <Bubble className="h-4 w-4 text-dim" /> Comments <span className="figure text-dim">({issue.comments.length})</span>
           </h2>
-          <form onSubmit={addComment} className="mt-3 flex">
-            <input
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              maxLength={500}
-              placeholder="Add an update or comment…"
-              aria-label="Comment"
-              className="field min-w-0 flex-1"
-            />
-            <button type="submit" disabled={posting || !comment.trim()} className="btn btn-primary -ml-px px-5">
-              {posting ? "Posting…" : "Post"}
-            </button>
-          </form>
+          {!user ? (
+            <p className="mt-3 border border-line-strong bg-panel px-4 py-3 text-sm text-dim">
+              <Link href="/login" className="font-semibold text-saffron underline underline-offset-4">
+                Log in
+              </Link>{" "}
+              to add an update or comment.
+            </p>
+          ) : (
+            <form onSubmit={addComment} className="mt-3 flex">
+              <input
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                maxLength={500}
+                placeholder="Add an update or comment…"
+                aria-label="Comment"
+                className="field min-w-0 flex-1"
+              />
+              <button type="submit" disabled={posting || !comment.trim()} className="btn btn-primary -ml-px px-5">
+                {posting ? "Posting…" : "Post"}
+              </button>
+            </form>
+          )}
           {sortedComments.length === 0 ? (
-            <p className="mt-3 border border-dashed border-line px-4 py-6 text-center text-sm text-faint">
-              No comments yet. Be the first to add an update.
+            <p className="mt-3 border border-dashed border-line-strong px-4 py-6 text-center text-sm text-faint">
+              No comments yet.
             </p>
           ) : (
             <ul className="mt-3 border-t border-line">
               {sortedComments.map((c, i) => (
                 <li key={`${c.at}-${i}`} className="border-b border-line py-3">
                   <p className="label">Citizen · {timeAgo(c.at)}</p>
-                  <p className="mt-1 break-words text-[15px] leading-snug text-paper">{c.text}</p>
+                  <p className="mt-1 break-words text-[15px] leading-snug text-ink">{c.text}</p>
                 </li>
               ))}
             </ul>
           )}
         </section>
 
-        {/* Admin demo control */}
-        <section className="border border-dashed border-line-strong p-4">
-          <div className="flex items-center justify-between gap-3">
-            <h2 className={sectionHead}>Admin demo control</h2>
-            <span className="border border-line-strong px-1.5 py-0.5 font-cond text-xs font-bold uppercase tracking-[0.1em] text-dim">
-              Demo only
-            </span>
-          </div>
-          <p className="mt-1 text-[13px] text-faint">Simulates a municipal officer updating the status.</p>
-          <div className="mt-3 grid grid-cols-3 border border-line-strong" role="group" aria-label="Set status">
-            {STATUSES.map((s, i) => {
-              const active = issue.status === s;
-              return (
-                <button
-                  key={s}
-                  onClick={() => changeStatus(s)}
-                  disabled={statusSaving !== null}
-                  aria-pressed={active}
-                  className={`h-12 font-cond text-sm font-bold uppercase tracking-[0.06em] transition-colors ${i > 0 ? "border-l border-line-strong" : ""} ${
-                    active ? STATUS_STYLES[s].solid : "text-dim hover:bg-panel hover:text-paper"
-                  }`}
-                >
-                  {statusSaving === s ? "Saving…" : s}
-                </button>
-              );
-            })}
-          </div>
+        {/* Who owns the work: the department routes it, the contractor does it. */}
+        <section className="ticket p-4">
+          <h2 className={sectionHead}>Work order</h2>
+          <dl className="mt-2 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-[15px]">
+            <dt className="label pt-0.5">Department</dt>
+            <dd className="text-ink">{issue.department}</dd>
+            <dt className="label pt-0.5">Contractor</dt>
+            <dd className="text-ink">
+              {issue.contractor ? (
+                <>
+                  {issue.contractor.name}
+                  {issue.contractor.phone && <span className="text-dim"> · {issue.contractor.phone}</span>}
+                </>
+              ) : (
+                <span className="text-dim">Not assigned yet</span>
+              )}
+            </dd>
+          </dl>
+          {issue.progressNote && (
+            <p className="mt-3 border-l-2 border-line-strong pl-2.5 text-sm text-dim">
+              <span className="label mr-1.5">Latest update</span>
+              {issue.progressNote}
+            </p>
+          )}
+
+          {isDept && (
+            <div className="mt-4">
+              <AssignContractor issue={issue} onAssigned={workUpdated} />
+              <p className="mt-2 text-[13px] text-faint">Progress is updated by the contractor, not the department.</p>
+            </div>
+          )}
+          {user?.role === "admin" && (
+            <p className="mt-3 text-[13px] text-faint">Admin view: the department assigns contractors to its own tickets.</p>
+          )}
+
+          {isAssignedContractor && issue.status !== "Resolved" && (
+            <div className="mt-4">
+              <ProgressUpdate issue={issue} onSaved={workUpdated} />
+            </div>
+          )}
         </section>
       </div>
 
       {toast && (
         <div
           role="status"
-          className="fixed inset-x-0 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-1100 mx-auto w-fit border border-line-strong bg-raised px-4 py-2.5 text-sm font-medium text-paper shadow-[0_8px_24px_rgb(0_0_0/0.45)]"
+          className="fixed inset-x-0 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-1100 mx-auto w-fit border border-ink bg-ink px-4 py-2.5 text-sm font-medium text-panel shadow-[0_6px_18px_-4px_rgb(60_40_12/0.45)]"
         >
           {toast}
         </div>

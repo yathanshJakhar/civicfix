@@ -31,7 +31,7 @@ function HeatLayer({ issues }: { issues: Issue[] }) {
         blur: 22,
         max: 2,
         minOpacity: 0.35,
-        gradient: { 0.2: "#5a1f12", 0.45: "#b8401f", 0.7: "#f07052", 0.9: "#f2a93b", 1: "#f8e3b8" },
+        gradient: { 0.2: "#f2c46d", 0.45: "#e8922c", 0.7: "#c4531c", 0.9: "#9c2714", 1: "#6e140a" },
       }).addTo(map);
     })();
 
@@ -56,7 +56,36 @@ function FocusIssue({ issue, markers }: { issue: Issue | undefined; markers: Rea
   return null;
 }
 
-export default function IssuesMap({ issues, mode, focusId }: { issues: Issue[]; mode: MapMode; focusId?: string | null }) {
+/** Without a focused issue, frame every active issue so the first view shows the pins. */
+function FitIssues({ issues, skip, topInset }: { issues: Issue[]; skip: boolean; topInset: number }) {
+  const map = useMap();
+  const fitted = useRef(false);
+  useEffect(() => {
+    if (skip || fitted.current || issues.length === 0) return;
+    fitted.current = true;
+    if (issues.length === 1) map.setView([issues[0].lat, issues[0].lng], 14);
+    else
+      map.fitBounds(L.latLngBounds(issues.map((i) => [i.lat, i.lng] as L.LatLngTuple)), {
+        paddingTopLeft: [32, topInset],
+        paddingBottomRight: [32, 40],
+        maxZoom: 15,
+      });
+  }, [map, issues, skip, topInset]);
+  return null;
+}
+
+export default function IssuesMap({
+  issues,
+  mode,
+  focusId,
+  topInset = 190,
+}: {
+  issues: Issue[];
+  mode: MapMode;
+  focusId?: string | null;
+  /** Pixels kept clear at the top when fitting to the pins (room for an overlaid header card). */
+  topInset?: number;
+}) {
   const mapKey = useFreshMapKey();
   const markers = useRef(new Map<string, L.Marker>());
   if (mapKey === null) return <div className="h-full w-full bg-panel" />;
@@ -84,12 +113,12 @@ export default function IssuesMap({ issues, mode, focusId }: { issues: Issue[]; 
                 <div className="flex items-center justify-between gap-3 border-b border-line px-3.5 py-2.5 pr-8">
                   <StatusBadge status={issue.status} />
                   <span className="flex items-baseline gap-1.5">
-                    <span className="figure text-base font-bold text-marigold">{issue.upvotes}</span>
+                    <span className="figure text-base font-bold text-saffron">{issue.upvotes}</span>
                     <span className="label">Upvotes</span>
                   </span>
                 </div>
-                <p className="px-3.5 py-3 text-sm font-medium leading-snug text-paper">{issue.title}</p>
-                <Link href={`/issue/${issue.id}`} className="btn btn-primary min-h-11 w-full text-ground!">
+                <p className="px-3.5 py-3 text-sm font-medium leading-snug text-ink">{issue.title}</p>
+                <Link href={`/issue/${issue.id}`} className="btn btn-primary min-h-11 w-full text-ink!">
                   View issue
                 </Link>
               </div>
@@ -97,6 +126,7 @@ export default function IssuesMap({ issues, mode, focusId }: { issues: Issue[]; 
           </Marker>
         ))}
       <FocusIssue issue={focus} markers={markers} />
+      <FitIssues issues={issues} skip={!!focusId} topInset={topInset} />
     </MapContainer>
   );
 }

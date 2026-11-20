@@ -1,18 +1,32 @@
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
-import { connection } from "next/server";
-import { listIssues, createIssue } from "@/lib/db";
+import { after, connection } from "next/server";
+import { authorityEmailsFor, createIssue, listIssues } from "@/lib/db";
+import { getSession } from "@/lib/session";
 import { MODEL_TO_CATEGORY } from "@/lib/aiMap";
-import { isCategory, type AiClassification, type Issue } from "@/lib/types";
+import { departmentFor } from "@/lib/departments";
+import { mail } from "@/lib/mailer";
+import { isActive, isCategory, type AiClassification, type Issue } from "@/lib/types";
 
 const MAX_PHOTO_BYTES = 10 * 1024 * 1024;
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
 
+/**
+ * Open tickets near a spot, for the report form's duplicate check. There is no public board any
+ * more, so this returns only the fields that check needs: no names, notes or contractors.
+ */
 export async function GET() {
-  await connection(); // always read the file at request time, never prerender
+  await connection();
+  const session = await getSession();
+  if (!session) return Response.json({ error: "Please log in" }, { status: 401 });
   try {
-        return Response.json(await listIssues());
+    const issues = (await listIssues()).filter(isActive).map((i) => ({
+      id: i.id, title: i.title, category: i.category, lat: i.lat, lng: i.lng,
+      status: i.status, upvotes: i.upvotes, createdAt: i.createdAt, imageUrl: i.imageUrl,
+      department: i.department, description: "", comments: [],
+    }));
+    return Response.json(issues);
   } catch (err) {
     console.error(err);
     return Response.json({ error: "Could not read issues" }, { status: 500 });
@@ -20,6 +34,12 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const session = await getSession();
+  if (!session) return Response.json({ error: "Please log in to report an issue" }, { status: 401 });
+  if (session.role !== "citizen") {
+    return Response.json({ error: "Only citizens can file complaints" }, { status: 403 });
+  }
+
   let form: FormData;
   try {
     form = await request.formData();
@@ -78,14 +98,23 @@ export async function POST(request: Request) {
     upvotes: 0,
     comments: [],
     createdAt: new Date().toISOString(),
+    // Routed automatically: nobody picks the department.
+    department: departmentFor(category),
+    contractor: null,
   };
 
   try {
-     await createIssue(issue);
+    await createIssue(issue, session.id);
   } catch (err) {
     console.error(err);
     return Response.json({ error: "Could not save issue" }, { status: 500 });
   }
+
+  // Confirmation to the reporter and a heads-up to the department, after the response is sent.
+  after(async () => {
+    await mail.ticketCreatedUser(session.email, session.name, issue);
+    await mail.ticketCreatedDepartment(await authorityEmailsFor(issue.department), issue);
+  });
 
   return Response.json(issue, { status: 201 });
 }

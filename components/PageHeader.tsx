@@ -11,11 +11,11 @@ export default function PageHeader({
   children?: React.ReactNode;
 }) {
   return (
-    <header className="sticky top-0 z-900 border-b border-line bg-ground px-4 pb-3 pt-[max(1rem,env(safe-area-inset-top))]">
+    <header className="sticky top-0 z-900 border-b border-line-strong manila px-4 pb-3 pt-[max(1rem,env(safe-area-inset-top))]">
       <div className="flex items-end justify-between gap-3">
         <div className="min-w-0">
           <h1
-            className={`truncate font-cond font-bold uppercase leading-none text-paper ${
+            className={`truncate font-cond font-bold uppercase leading-none text-ink ${
               display ? "text-[2.5rem] tracking-[-0.01em]" : "text-[1.75rem] tracking-[0.02em]"
             }`}
           >
